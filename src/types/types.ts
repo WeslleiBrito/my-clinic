@@ -14,3 +14,20 @@ export interface PatientDB {
     created_at: string,
     updated_at: string
 }
+
+
+export interface Company {
+    id: string
+    name: string
+    cnpj: string
+    createdAt: string
+    updatedAt: string
+}
+
+export interface CompanyDB {
+    id: string
+    name: string
+    cnpj: string | null
+    created_at: string
+    updated_at: string
+}

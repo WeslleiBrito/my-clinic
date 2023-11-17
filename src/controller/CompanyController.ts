@@ -1,0 +1,44 @@
+import { Request, Response } from "express";
+import { ZodError } from "zod";
+import { BaseError } from "../errors/BaseError";
+import { CompaniesBusiness } from "../business/CompaniesBusiness";
+import { InputCreateCompanySchema, OutputCreateCompanyDTO } from "../dtos/company/InputCreateCompany";
+
+export class CompaniesController {
+
+    constructor(
+        private companiesBuisness: CompaniesBusiness
+    ){}
+
+    public createCompany = async (req: Request, res: Response) => {
+
+        try {
+            
+            const { name, cnpj } = req.body
+
+            const input = InputCreateCompanySchema.parse(
+                {
+                    name,
+                    cnpj
+                }
+            )
+
+            const output: OutputCreateCompanyDTO= await this.companiesBuisness.createCompany(input)
+
+            res.status(201).send(output)
+
+        } catch (error) {
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues)
+                console.log(error);
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.send("Erro inesperado\n " + error)
+                
+            }
+        }
+
+    }
+    
+}
