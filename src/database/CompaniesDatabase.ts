@@ -1,4 +1,4 @@
-import { CompanyDB } from "../types/types";
+import { CompanyDB, CompanyEditDB } from "../types/types";
 import { BaseDatabase } from "./BaseDatabase";
 
 
@@ -16,6 +16,11 @@ export class CompaniesDatabase extends BaseDatabase {
     public createCompany = async (input: CompanyDB): Promise<void> => {
 
         await CompaniesDatabase.connection(CompaniesDatabase.TABLE_COMPANIES).insert(input)
+    }
+
+    public editCompany = async (input: CompanyEditDB): Promise<void> => {
+
+        await CompaniesDatabase.connection(CompaniesDatabase.TABLE_COMPANIES).update(input)
     }
 
 }

@@ -1,7 +1,9 @@
 import { CompaniesDatabase } from "../database/CompaniesDatabase";
 import { InputCreateCompanyDTO, OutputCreateCompanyDTO } from "../dtos/company/InputCreateCompany";
+import { InputEditCompanyDTO, OutputEditCompanyDTO } from "../dtos/company/InputEditCompany";
 import { BadRequestError } from "../errors/BadRequestError";
 import { ConflictError } from "../errors/ConflictError";
+import { NotFoundError } from "../errors/NotFoundError";
 import { Company } from "../models/Company";
 import { IdGenerator } from "../services/IdGenerator";
 import { ValidateCPFCNPJ } from "../services/ValidateCPFCNPJ";
@@ -63,6 +65,59 @@ export class CompaniesBusiness {
 
         return {
             message: "Empresa cadastrada com sucesso!"
+        }
+    }
+
+    public editCompany = async (input: InputEditCompanyDTO): Promise<OutputEditCompanyDTO> => {
+
+        const {id, cnpj, name} = input
+        
+
+        const account = await this.companiesDatabase.findCompanyBy('id', id)
+
+        
+        if(!account){
+            throw new NotFoundError('Empresa não localizada.')
+        }
+
+        let newCnpj = account.cnpj
+
+        if(cnpj){
+
+            const cnpjValid = this.validateCNPJ.validate(cnpj)
+
+            if(!cnpjValid){
+                throw new BadRequestError("CNPJ inválido, verifique os dados e tente novamente.")
+            }
+
+            const cnpjExist = await this.companiesDatabase.findCompanyBy('cnpj', cnpj.replace(/[^a-zA-Z0-9]/g, ''))
+
+            if(cnpjExist?.id !== account.id){
+                throw new ConflictError("O cnpj informado já existe.")
+            }
+
+            newCnpj = cnpj.replace(/[^a-zA-Z0-9]/g, '')
+        }
+
+        if(name){
+            const nameExist = await this.companiesDatabase.findCompanyBy("name", name)
+
+            if(nameExist?.id !== account.id){
+                throw new ConflictError("O nome informado já existe.")
+            }
+        }
+        
+        await this.companiesDatabase.editCompany(
+            {
+                cnpj: newCnpj,
+                id: id,
+                name: name || account.name,
+                updated_at: new Date().toISOString()
+            }
+        )
+
+        return{
+            message: "Empresa editada com sucesso!"
         }
     }
 }

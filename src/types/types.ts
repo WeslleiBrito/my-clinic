@@ -27,7 +27,14 @@ export interface Company {
 export interface CompanyDB {
     id: string
     name: string
-    cnpj: string | null
+    cnpj: string | null 
     created_at: string
+    updated_at: string
+}
+
+export interface CompanyEditDB {
+    id: string,
+    name: string
+    cnpj: string | null,
     updated_at: string
 }
