@@ -7,6 +7,7 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { Company } from "../models/Company";
 import { IdGenerator } from "../services/IdGenerator";
 import { ValidateCPFCNPJ } from "../services/ValidateCPFCNPJ";
+import { CompanyModel } from "../types/types";
 
 
 
@@ -116,8 +117,24 @@ export class CompaniesBusiness {
             }
         )
 
-        return{
+        return {
             message: "Empresa editada com sucesso!"
         }
+    }
+
+    public getCompany = async (): Promise<CompanyModel[]> => {
+
+        const result = await this.companiesDatabase.getAllComanies()
+
+        return result.map((company) => {
+
+            return {
+                id: company.id,
+                name: company.name,
+                cnpj: company.cnpj ? company.cnpj : "",
+                createdAt: company.created_at,
+                updatedAt: company.updated_at
+            }
+        })
     }
 }

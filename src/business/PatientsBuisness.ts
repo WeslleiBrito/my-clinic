@@ -1,16 +1,19 @@
 import { PatientDatabase } from "../database/PatientsDatabase";
 import { InputEditPatientDTO, OutputEditPatientDTO } from "../dtos/patient/InputEditPatient";
 import { InputPatientDTO, OutputPatientDTO } from "../dtos/patient/InputPatient.dto";
+import { BadRequestError } from "../errors/BadRequestError";
 import { ConflictError } from "../errors/ConflictError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Patient, PatientModel } from "../models/Patient";
 import { IdGenerator } from "../services/IdGenerator";
+import { ValidateCPFCNPJ } from "../services/ValidateCPFCNPJ";
 
 
 export class PatientBuisness {
     constructor(
         private patientsDatabase: PatientDatabase,
-        private idGenerator: IdGenerator
+        private idGenerator: IdGenerator, 
+        private validateCPF : ValidateCPFCNPJ
     ){}
 
     public createPatient = async (input: InputPatientDTO): Promise<OutputPatientDTO> => {
@@ -30,6 +33,13 @@ export class PatientBuisness {
             if(cpfExist){
                 throw new ConflictError("O cpf informado já existe.")
             }
+
+            const cpfValid = this.validateCPF.validate(cpf)
+
+            if(!cpfValid){
+                throw new BadRequestError('CPF inválido.')
+            }
+
         }
 
         const id = this.idGenerator.generate()
@@ -64,6 +74,8 @@ export class PatientBuisness {
 
         const account = await this.patientsDatabase.findPatientBy("id", input.id)
 
+        let newCpf = account?.cpf
+
         if(!account){
             throw new NotFoundError("A conta informada não existe.")
         }
@@ -75,6 +87,15 @@ export class PatientBuisness {
             if(cpfExist && account.cpf !== input.cpf.replace(/[^a-zA-Z0-9]/g, '')){
                 throw new ConflictError("O cpf informado já existe.")
             }
+
+            const cpfValid = this.validateCPF.validate(input.cpf)
+
+            if(!cpfValid){
+                throw new BadRequestError('CPF inválido.')
+            }
+
+            newCpf = input.cpf.replace(/[^a-zA-Z0-9]/g, '')
+            
         }
 
         if(input.rg){
@@ -91,7 +112,7 @@ export class PatientBuisness {
             input.id,
             input.name || account.name,
             input.rg || account.rg,
-            input.cpf || account.cpf,
+            newCpf,
             account.created_at,
             new Date().toISOString()
         )

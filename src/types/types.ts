@@ -16,7 +16,7 @@ export interface PatientDB {
 }
 
 
-export interface Company {
+export interface CompanyModel {
     id: string
     name: string
     cnpj: string

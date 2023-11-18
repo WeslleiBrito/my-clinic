@@ -19,3 +19,4 @@ const newCompaniesController = new CompaniesController(
 
 companyRouter.post('/', newCompaniesController.createCompany)
 companyRouter.put('/:id', newCompaniesController.editCompany)
+companyRouter.get('/', newCompaniesController.getCompany)
