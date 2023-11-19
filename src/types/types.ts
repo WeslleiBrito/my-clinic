@@ -38,3 +38,12 @@ export interface CompanyEditDB {
     cnpj: string | null,
     updated_at: string
 }
+
+export interface ExamsDB {
+    id: string,
+    name: string,
+    price: number,
+    created_at: string,
+    updated_at: string
+}
+

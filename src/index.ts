@@ -3,6 +3,7 @@ import cors from 'cors'
 import dontenv from 'dotenv'
 import { patientRouter } from './router/patientRouter'
 import { companyRouter } from './router/companyRouter'
+import { examRouter } from './router/examRouter'
 
 dontenv.config()
 
@@ -17,3 +18,4 @@ app.listen(Number(process.env.PORT || 3003), () => {
 
 app.use('/patients', patientRouter)
 app.use('/company', companyRouter)
+app.use('/exam', examRouter)

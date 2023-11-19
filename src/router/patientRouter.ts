@@ -1,6 +1,6 @@
 import express from "express"
 import { PatientController } from "../controller/PatientController"
-import { PatientBuisness } from "../business/PatientsBuisness"
+import { PatientBuisness } from "../business/PatientsBusiness"
 import { PatientDatabase } from "../database/PatientsDatabase"
 import { IdGenerator } from "../services/IdGenerator"
 import { ValidateCPFCNPJ } from "../services/ValidateCPFCNPJ"

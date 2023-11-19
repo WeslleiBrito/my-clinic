@@ -32,7 +32,6 @@ export class CompaniesController {
         } catch (error) {
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
-                console.log(error);
             } else if (error instanceof BaseError) {
                 res.status(error.statusCode).send(error.message)
             } else {
@@ -65,7 +64,6 @@ export class CompaniesController {
         } catch (error) {
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
-                console.log(error);
             } else if (error instanceof BaseError) {
                 res.status(error.statusCode).send(error.message)
             } else {
@@ -87,7 +85,6 @@ export class CompaniesController {
         } catch (error) {
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
-                console.log(error);
             } else if (error instanceof BaseError) {
                 res.status(error.statusCode).send(error.message)
             } else {
