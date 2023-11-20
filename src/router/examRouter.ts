@@ -17,3 +17,4 @@ const newExameController = new ExamsController(
 
 examRouter.post('/', newExameController.createExam)
 examRouter.put('/:id', newExameController.editExam)
+examRouter.get('/', newExameController.getAllExam)

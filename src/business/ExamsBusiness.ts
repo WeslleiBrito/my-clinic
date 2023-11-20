@@ -70,7 +70,7 @@ export class ExamsBusiness {
         const newExam = new Exam(
             id,
             name || exam[0].name,
-            price ? price : exam[0].price,
+            typeof price !== "undefined" ? price : exam[0].price,
             exam[0].created_at,
             new Date().toISOString()
         )
@@ -87,4 +87,23 @@ export class ExamsBusiness {
             message: "Exame atualizado com sucesso!"
         }
     }
+
+
+    public getAllExam = async () => {
+
+        const search = await this.examsDatabase.findExamAll()
+
+        const result = search.map((exam) => {
+
+            return {
+                id: exam.id,
+                name: exam.name,
+                price: exam.price,
+                createdAt: exam.created_at,
+                updatedAt: exam.updated_at
+            }
+        })
+
+        return result
+    } 
 }
