@@ -1,6 +1,9 @@
 import { ExamsDatabase } from "../database/ExamsDatabase";
-import { InputCreateExamDTO, OutputCreateExamDTO } from "../dtos/exam/InputCreateExam";
+import { InputCreateExamDTO, OutputCreateExamDTO } from "../dtos/exam/InputCreateExam.dto";
+import { InputEditExamDTO, OutputEditExamDTO } from "../dtos/exam/InputEditExam.dto";
 import { ConflictError } from "../errors/ConflictError";
+import { NotFoundError } from "../errors/NotFoundError";
+import { Exam } from "../models/Exam";
 import { IdGenerator } from "../services/IdGenerator";
 import { ExamsDB } from "../types/types";
 
@@ -40,6 +43,48 @@ export class ExamsBusiness {
 
         return{
             message: exams.length > 1 ? "Exames criados com sucesso!" : "Exame criado com sucesso!"
+        }
+    }
+
+    public editExam = async (input: InputEditExamDTO): Promise<OutputEditExamDTO> => {
+        
+        const {id, name, price} = input 
+
+        const exam = await this.examsDatabase.findExamBy('id', [id])
+
+        if(exam.length < 1){
+            throw new NotFoundError('O id informado não existe.')
+        }
+
+        if(name){
+            const nameExist = await this.examsDatabase.findExamBy('name', [name])
+
+            if(nameExist.length > 0){
+                if(nameExist[0].id !== id){
+                    throw new ConflictError('O nome informado já existe.')
+                }
+            }
+        }
+
+
+        const newExam = new Exam(
+            id,
+            name || exam[0].name,
+            price ? price : exam[0].price,
+            exam[0].created_at,
+            new Date().toISOString()
+        )
+
+        await this.examsDatabase.editExam({
+            created_at: newExam.getCreatedAt(),
+            id: newExam.getId(),
+            name: newExam.getName(),
+            price: newExam.getPrice(),
+            updated_at: newExam.getUpdatedAt()
+        })
+
+        return {
+            message: "Exame atualizado com sucesso!"
         }
     }
 }

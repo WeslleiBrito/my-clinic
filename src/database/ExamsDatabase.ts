@@ -25,4 +25,12 @@ export class ExamsDatabase extends BaseDatabase {
         await ExamsDatabase.connection(ExamsDatabase.TABLE_EXAMS).insert(input)
 
     }
+
+
+    public editExam = async (input: ExamsDB): Promise<void> => {
+        
+        const {id, name, price, updated_at} = input
+
+        await ExamsDatabase.connection(ExamsDatabase.TABLE_EXAMS).update({name, price, updated_at}).where({id})
+    }
 }

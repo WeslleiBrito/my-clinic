@@ -26,4 +26,4 @@ export const InputCreateExamSchema = z.object(
     {
         exams: z.array(ExamSchema)
     }
-)
+).transform(data => data as InputCreateExamDTO)
