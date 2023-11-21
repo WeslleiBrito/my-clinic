@@ -1,29 +1,29 @@
 import { Request, Response } from "express";
 import { ZodError } from "zod";
 import { BaseError } from "../errors/BaseError";
-import { InputCreateExamSchema, OutputCreateExamDTO } from "../dtos/exam/InputCreateExam.dto";
-import { ExamsBusiness } from "../business/ExamsBusiness";
-import { InputEditExamSchema, OutputEditExamDTO } from "../dtos/exam/InputEditExam.dto";
+import { OccupationalRiskBusiness } from "../business/OccupationalRiskBusiness";
+import { InputCreateOccupationalRiskSchema, OutputCreateOccupationalRiskDTO } from "../dtos/occupationalRisk/InputCreateOccupationalRisk.dto";
+import { InputEditInputEditOccupationalRiskSchema, OutputEditOccupationalRiskDTO } from "../dtos/occupationalRisk/InputEditOccupationalRisk.dto";
 
-export class ExamsController {
+export class OccupationalRiskController {
 
     constructor(
-        private examsBuisness: ExamsBusiness
+        private OccupationalRiskBuisness: OccupationalRiskBusiness
     ){}
 
-    public createExam = async (req: Request, res: Response) => {
+    public createOccupationalRisk = async (req: Request, res: Response) => {
 
         try {
             
-            const { exams } = req.body
+            const { occupationalRisk } = req.body
 
-            const input = InputCreateExamSchema.parse(
+            const input = InputCreateOccupationalRiskSchema.parse(
                 {
-                    exams
+                    occupationalRisk
                 }
             )
 
-            const output: OutputCreateExamDTO = await this.examsBuisness.createExam(input)
+            const output: OutputCreateOccupationalRiskDTO = await this.OccupationalRiskBuisness.createOccupationalRisk(input)
 
             res.status(201).send(output)
 
@@ -40,21 +40,20 @@ export class ExamsController {
 
     }
 
-    public editExam = async (req: Request, res: Response) => {
+    public editOccupationalRisk = async (req: Request, res: Response) => {
 
         try {
             
-            const { name, price } = req.body
+            const { name } = req.body
 
-            const input = InputEditExamSchema.parse(
+            const input = InputEditInputEditOccupationalRiskSchema.parse(
                 {
                     id: req.params.id,
-                    name,
-                    price
+                    name
                 }
             )
 
-            const output: OutputEditExamDTO = await this.examsBuisness.editExam(input)
+            const output: OutputEditOccupationalRiskDTO = await this.OccupationalRiskBuisness.editOccupationalRisk(input)
 
             res.status(201).send(output)
 
@@ -70,11 +69,11 @@ export class ExamsController {
 
     }
 
-    public getAllExam = async (req: Request, res: Response) => {
+    public getAllOccupationalRisk = async (req: Request, res: Response) => {
 
         try {
     
-            const output = await this.examsBuisness.getAllExam()
+            const output = await this.OccupationalRiskBuisness.getAllOccupationalRisk()
 
             res.status(200).send(output)
 

@@ -47,3 +47,10 @@ export interface ExamsDB {
     updated_at: string
 }
 
+export interface OccupationalRisksDB {
+    id: string,
+    name: string,
+    created_at: string,
+    updated_at: string
+}
+
