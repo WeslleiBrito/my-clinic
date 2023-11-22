@@ -27,7 +27,7 @@ export interface CompanyModel {
 export interface CompanyDB {
     id: string
     name: string
-    cnpj: string | null 
+    cnpj: string | null
     created_at: string
     updated_at: string
 }
@@ -54,3 +54,23 @@ export interface OccupationalRisksDB {
     updated_at: string
 }
 
+export interface FormsDB {
+    id: string,
+    id_company: string,
+    id_patient: string,
+    name_company: string,
+    name_patient: string,
+    cnpj: string | undefined,
+    cpf: string | undefined,
+    number_procedures: number,
+    amount: number,
+    created_at: string,
+    updated_at: string
+}
+
+export interface ProceduresFormsDB {
+    id: string,
+    id_form: string,
+    id_exam: string,
+    name_exam: string
+}

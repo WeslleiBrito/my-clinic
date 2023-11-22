@@ -116,4 +116,29 @@ CREATE TABLE IF NOT EXISTS occupational_risks (
     name TEXT NOT NULL UNIQUE,
     created_at TEXT DEFAULT(DATETIME()) NOT NULL,
     updated_at TEXT DEFAULT(DATETIME()) NOT NULL
-)
+);
+
+CREATE TABLE IF NOT EXISTS forms (
+    id TEXT PRIMARY KEY NOT NULL,
+    id_company TEXT NOT NULL,
+    id_patient TEXT NOT NULL,
+    name_company TEXT NOT NULL,
+    name_patient TEXT NOT NULL,
+    cnpj TEXT,
+    cpf TEXT,
+    number_procedures INT NOT NULL,
+    amount INT DEFAULT(0) NOT NULL,
+    created_at TEXT DEFAULT(DATETIME()) NOT NULL,
+    updated_at TEXT DEFAULT(DATETIME()) NOT NULL,
+    FOREIGN KEY(id_company) REFERENCES companies(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(id_patient) REFERENCES patients(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS procedures_forms (
+    id TEXT PRIMARY KEY NOT NULL,
+    id_form TEXT NOT NULL,
+    id_exam TEXT NOT NULL,
+    name_exam TEXT NOT NULL,
+    FOREIGN KEY(id_form) REFERENCES forms(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(id_exam) REFERENCES exams(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
