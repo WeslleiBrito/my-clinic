@@ -11,7 +11,12 @@ export class Form {
         private numberProcedures: number,
         private amount: number,
         private createdAt: string,
-        private updatedAt: string
+        private updatedAt: string,
+        private exams: {
+            id: string,
+            name: string,
+            price: number
+        }[]
     ){}
 
     
@@ -58,6 +63,11 @@ export class Form {
     public getUpdatedAt = (): string => {
         return this.updatedAt
     }
+
+    public getExams = (): {id: string, name: string, price: number}[] => {
+        return this.exams
+    }
+
 
     public setNumberProcedures = (newNumberProcedures: number): void => {
         this.numberProcedures = newNumberProcedures

@@ -2,6 +2,7 @@ import  z  from "zod"
 
 
 export interface InputEditFormDTO {
+    id: string,
     idCompany?: string,
     idPatient?: string,
     idExams? : {
@@ -22,6 +23,7 @@ export const FormSchema = z.object(
 
 export const InputEditFormSchema = z.object(
     {
+        id: z.string({required_error: "O id é obrigatório.", invalid_type_error: "O id deve ser do tipo string."}),
         idCompany: z.string({ invalid_type_error: "Espera-se que o id da empresa venha como uma string."}).optional(),
         idPatient: z.string({ invalid_type_error: "Espera-se que o id do paciente venha como uma string."}).optional(),
         idExams: z.array(FormSchema).optional()
