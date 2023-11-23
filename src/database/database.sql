@@ -139,6 +139,9 @@ CREATE TABLE IF NOT EXISTS procedures_forms (
     id_form TEXT NOT NULL,
     id_exam TEXT NOT NULL,
     name_exam TEXT NOT NULL,
+    price INT DEFAULT(0) NOT NULL,
     FOREIGN KEY(id_form) REFERENCES forms(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(id_exam) REFERENCES exams(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+DROP TABLE IF EXISTS procedures_forms;

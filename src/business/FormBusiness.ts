@@ -2,6 +2,7 @@ import { CompaniesDatabase } from "../database/CompaniesDatabase";
 import { ExamsDatabase } from "../database/ExamsDatabase";
 import { FormDatabase } from "../database/FormDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
+import { ProceduresFormsDatabase } from "../database/proceduresFormsDatabase";
 import { InputCreateFormDTO, OutputCreateFormDTO } from "../dtos/Form/InputCreateForm.dto";
 import { InputEditFormDTO, OutputEditFormDTO } from "../dtos/Form/InputEditForm.dto";
 import { InputCreateExamDTO, OutputCreateExamDTO } from "../dtos/exam/InputCreateExam.dto";
@@ -11,7 +12,7 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { Exam } from "../models/Exam";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
-import { ExamsDB } from "../types/types";
+import { ExamsDB, ProceduresFormsDB } from "../types/types";
 
 
 export class FormBusiness {
@@ -21,6 +22,7 @@ export class FormBusiness {
         private examDatabase: ExamsDatabase,
         private companyDatabase: CompaniesDatabase,
         private patientDatabase: PatientDatabase,
+        private proceduresFormsDatabase: ProceduresFormsDatabase,
         private idGenerator: IdGenerator
     ){}
 
@@ -99,6 +101,8 @@ export class FormBusiness {
     public editForm = async (input: InputEditFormDTO): Promise<OutputEditFormDTO> => {
         
         const {id, idCompany, idExams, idPatient} = input 
+        let addProcedure: ProceduresFormsDB[] = []
+        let removeProcedure: string[] = []
 
         const form = await this.formDatabase.findFormBy('id', [id])
 
@@ -106,8 +110,15 @@ export class FormBusiness {
             throw new NotFoundError('O formulário informado não existe.')
         }
 
-        // criar a busca unificada dos procedimentos em relação ao id do formulário.
-        
+        if(idCompany){
+            const companyExist = await this.companyDatabase.findCompanyBy('id', idCompany)
+
+            if(!companyExist){
+                throw new NotFoundError('A empresa informado não existe.')
+            }
+
+        }
+
         if(idCompany){
             const companyExist = await this.formDatabase.findFormBy('id', [idCompany])
 
@@ -122,23 +133,69 @@ export class FormBusiness {
             }
         }
 
+        if(idPatient){
+            const patientExist = await this.patientDatabase.findPatientBy('id', idPatient)
 
-        const newExam = new Exam(
+            if(!patientExist){
+                throw new NotFoundError('O paciente informado não existe.')
+            }
+        }
+        
+        if(idExams){
+
+            const idExamsExist = await this.examDatabase.findExamBy('id', idExams.map((exam) => exam.id))
+
+            if(idExams.length > idExamsExist.length){
+                throw new NotFoundError(idExams.length - idExamsExist.length === 1 ? "Um dos ids informado não exite." : "Mais de um id não exite.")
+            }
+
+            idExams.forEach((item) => {
+
+                const examSearch = idExamsExist.find((exam) => exam.id === item.id)
+
+                if(item.acction){
+
+                    addProcedure.includes(
+                        {
+                            id: this.idGenerator.generate(),
+                            id_exam: item.id,
+                            id_form: id,
+                            name_exam: examSearch ? examSearch.name : "",
+                            price: examSearch ? examSearch.price : 0
+                        }
+                    )
+
+                }else{
+
+                    removeProcedure.includes(item.id)
+                }
+            })  
+        }
+
+        const procedures = await this.proceduresFormsDatabase.findProceduresFormsBy('id_form', [id])
+
+        const newForm = new Form(
             id,
-            name || exam[0].name,
-            typeof price !== "undefined" ? price : exam[0].price,
-            exam[0].created_at,
-            new Date().toISOString()
+            form[0].id_company,
+            form[0].id_patient,
+            form[0].name_company,
+            form[0].name_patient,
+            form[0].cnpj ? form[0].cnpj : "",
+            form[0].cpf ? form[0].cpf : "",
+            form[0].number_procedures,
+            form[0].amount,
+            form[0].created_at,
+            form[0].updated_at,            
+            procedures.map((procedure) => {
+                return {
+                    id: procedure.id,
+                    name: procedure.name_exam,
+                    price: procedure.price
+                }
+            })
         )
-
-        await this.formDatabase.editExam({
-            created_at: newExam.getCreatedAt(),
-            id: newExam.getId(),
-            name: newExam.getName(),
-            price: newExam.getPrice(),
-            updated_at: newExam.getUpdatedAt()
-        })
-
+        
+        
         return {
             message: "Exame atualizado com sucesso!"
         }

@@ -7,6 +7,7 @@ export interface InputEditFormDTO {
     idPatient?: string,
     idExams? : {
         id: string,
+        acction: boolean
     }[]
     
 }
@@ -17,7 +18,8 @@ export interface OutputEditFormDTO {
 
 export const FormSchema = z.object(
     {
-        id: z.string({required_error: "O id do exame deve ser informado.", invalid_type_error: "Espera-se que o id do exame venha como uma string."})
+        id: z.string({required_error: "O id do exame deve ser informado.", invalid_type_error: "Espera-se que o id do exame venha como uma string."}),
+        acction: z.boolean({required_error: "É obrigatório informar a ação a ser executada.", invalid_type_error: "Espera-se que a ação seja um valor boolean."})
     }
 )
 

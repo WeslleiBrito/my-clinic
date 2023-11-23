@@ -72,5 +72,6 @@ export interface ProceduresFormsDB {
     id: string,
     id_form: string,
     id_exam: string,
-    name_exam: string
+    name_exam: string,
+    price: number
 }
