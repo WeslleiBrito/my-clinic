@@ -73,6 +73,30 @@ export class Form {
         this.numberProcedures = newNumberProcedures
     }
 
+    public setIdCompany = (newIdCompany: string): void => {
+        this.idCompany = newIdCompany
+    }
+
+    public setIdPatient = (newIdPatient: string): void => {
+        this.idPatient = newIdPatient
+    }
+
+    public setNameCompany = (newNameCompany: string): void => {
+        this.nameCompany = newNameCompany
+    }
+
+    public setNamePatient = (newNamePatient: string): void => {
+        this.namePatient = newNamePatient
+    }
+
+    public setCnpj = (newCnpj: string | undefined): void => {
+        this.cnpj = newCnpj
+    }
+
+    public setCpf = (newCpf: string | undefined): void => {
+        this.cpf = newCpf
+    }
+
     public setAmount = (newAmount: number): void => {
         this.amount = newAmount
     }
