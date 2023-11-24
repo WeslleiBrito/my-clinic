@@ -2,19 +2,16 @@ import { CompaniesDatabase } from "../database/CompaniesDatabase";
 import { ExamsDatabase } from "../database/ExamsDatabase";
 import { FormDatabase } from "../database/FormDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
-import { ProceduresFormsDatabase } from "../database/proceduresFormsDatabase";
-import { InputCreateFormDTO, OutputCreateFormDTO } from "../dtos/Form/InputCreateForm.dto";
-import { InputEditFormDTO, OutputEditFormDTO } from "../dtos/Form/InputEditForm.dto";
-import { InputCreateExamDTO, OutputCreateExamDTO } from "../dtos/exam/InputCreateExam.dto";
-import { InputEditExamDTO, OutputEditExamDTO } from "../dtos/exam/InputEditExam.dto";
+import { ProceduresFormsDatabase } from "../database/ProceduresFormsDatabase";
+import { InputCreateFormDTO, OutputCreateFormDTO } from "../dtos/form/InputCreateForm.dto";
+import { InputEditFormDTO, OutputEditFormDTO } from "../dtos/form/InputEditForm.dto";
 import { BadRequestError } from "../errors/BadRequestError";
 import { ConflictError } from "../errors/ConflictError";
 import { NotFoundError } from "../errors/NotFoundError";
-import { Exam } from "../models/Exam";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
 import { ValidateCPFCNPJ } from "../services/ValidateCPFCNPJ";
-import { CompanyDB, ExamsDB, PatientDB, ProceduresFormsDB } from "../types/types";
+import { CompanyDB, ModelForm, PatientDB, ProceduresFormsDB } from "../types/types";
 
 
 export class FormBusiness {
@@ -53,9 +50,11 @@ export class FormBusiness {
             throw new NotFoundError('O paciente informada não existe.')
         }
 
-        const exams: {id: string, name: string, price: number}[] = examExistAll.map((exam) => {
+        const exams: {id: string, name: string, price: number, idExame: string, idForm: string}[] = examExistAll.map((exam) => {
             return {
                 id: exam.id,
+                idExame: "",
+                idForm: "",
                 name: exam.name,
                 price: exam.price
             }
@@ -70,6 +69,7 @@ export class FormBusiness {
             idPatient,
             companyExist.name,
             patientExist.name,
+            patientExist.rg,
             companyExist.cnpj,
             patientExist.cpf,
             idExams.length,
@@ -83,6 +83,7 @@ export class FormBusiness {
         await this.formDatabase.createForm(
             {
                 amount: newForm.getAmount(),
+                rg: newForm.getRg(),
                 cnpj: newForm.getCnpj(),
                 cpf: newForm.getCpf(),
                 created_at: newForm.getCreatedAt(),
@@ -95,6 +96,18 @@ export class FormBusiness {
                 updated_at: newForm.getUpdatedAt()
             }
         )
+        
+        const proceduresDB: ProceduresFormsDB[] = exams.map((exam) => {
+            return {
+                id: this.idGenerator.generate(),
+                id_exam: exam.id,
+                id_form: newForm.getId(),
+                name_exam: exam.name,
+                price: exam.price
+            }
+        })
+
+        await this.proceduresFormsDatabase.createProceduresForms(proceduresDB)
 
         return{
             message: "Formulário criado com sucesso!"
@@ -104,6 +117,7 @@ export class FormBusiness {
     public editForm = async (input: InputEditFormDTO): Promise<OutputEditFormDTO> => {
         
         const {id, idCompany, idExams, idPatient, cnpj, cpf} = input 
+
         let addProcedure: ProceduresFormsDB[] = []
         let removeProcedure: ProceduresFormsDB[] = []
 
@@ -147,8 +161,9 @@ export class FormBusiness {
         if(idExams){
 
             const idExamsExist = await this.examDatabase.findExamBy('id', idExams.map((exam) => exam.id))
-
-            if(idExams.length > idExamsExist.length){
+    
+            
+            if(idExams.length !== idExamsExist.length){
                 throw new NotFoundError(idExams.length - idExamsExist.length === 1 ? "Um dos ids informado não exite." : "Mais de um id não exite.")
             }
 
@@ -158,7 +173,7 @@ export class FormBusiness {
 
                 if(item.acction){
 
-                    addProcedure.includes(
+                    addProcedure.push(
                         {
                             id: this.idGenerator.generate(),
                             id_exam: item.id,
@@ -170,7 +185,7 @@ export class FormBusiness {
 
                 }else{
 
-                    removeProcedure.includes(
+                    removeProcedure.push(
                         {
                             id: this.idGenerator.generate(),
                             id_exam: item.id,
@@ -180,7 +195,8 @@ export class FormBusiness {
                         }
                     )
                 }
-            })  
+            })
+            
         }
 
         if(cnpj){
@@ -217,12 +233,13 @@ export class FormBusiness {
 
         const procedures = await this.proceduresFormsDatabase.findProceduresFormsBy('id_form', [id])
 
-        const newForm = new Form(
+        const newForm = new Form (
             id,
             form[0].id_company,
             form[0].id_patient,
             form[0].name_company,
             form[0].name_patient,
+            form[0].rg,
             typeof cnpj !== "undefined" ? cnpj : form[0].cnpj,
             typeof cpf !== "undefined" ? cpf  : form[0].cpf,
             form[0].number_procedures,
@@ -232,6 +249,8 @@ export class FormBusiness {
             procedures.map((procedure) => {
                 return {
                     id: procedure.id,
+                    idExame: procedure.id_exam,
+                    idForm: procedure.id_form,
                     name: procedure.name_exam,
                     price: procedure.price
                 }
@@ -254,6 +273,7 @@ export class FormBusiness {
             newForm.setIdPatient(idPatient)
             newForm.setNamePatient(patient.name)
             newForm.setCpf(typeof cpf !== "undefined" ? cpf : patient.cpf)
+            newForm.setRg(patient.rg)
         }
         
         if(idExams){
@@ -267,29 +287,95 @@ export class FormBusiness {
 
         newForm.setUpdatedAt(new Date().toISOString())
 
-        // verificar se já posso chamar a funçao de editar o formulário
+        await this.formDatabase.editForm(
+            {
+                amount: newForm.getAmount(),
+                rg: newForm.getRg(),
+                cnpj: newForm.getCnpj(),
+                cpf: newForm.getCpf(),
+                created_at: newForm.getCreatedAt(),
+                id: newForm.getId(),
+                id_company: newForm.getIdCompany(),
+                id_patient: newForm.getIdPatient(),
+                name_company: newForm.getNameCompany(),
+                name_patient: newForm.getNamePatient(),
+                number_procedures: newForm.getNumberProcedures(),
+                updated_at: newForm.getUpdatedAt()
+            }
+        )
+
+        if(addProcedure.length > 0){
+            await this.proceduresFormsDatabase.createProceduresForms(addProcedure)
+        }
+
+        if(removeProcedure.length > 0){
+            console.log("entrei");
+            
+            await this.proceduresFormsDatabase.deleteProceduresForms(id, removeProcedure.map((exam) => exam.id_exam))
+        }
         
         return {
-            message: "Exame atualizado com sucesso!"
+            message: "Formulário atualizado com sucesso!"
         }
     }
 
 
-    public getAllExam = async () => {
+    public getAllForms = async (): Promise<ModelForm[]> => {
 
-        const search = await this.formDatabase.findExamAll()
+        const forms = await this.formDatabase.findAllForm()
+        const proceduresAll = await this.proceduresFormsDatabase.findAllProceduresForms()
 
-        const result = search.map((exam) => {
+        const formsModel: ModelForm[] = forms.map((form) => {
 
+            const procedures: {id: string, name: string, price: number, idExame: string, idForm: string}[] = []
+
+            proceduresAll.forEach((procedure) => {
+                
+                if(procedure.id_form === form.id){
+                    
+                    procedures.push({
+                        id: procedure.id,
+                        idExame: procedure.id_exam,
+                        idForm: procedure.id_form,
+                        name: procedure.name_exam,
+                        price: procedure.price
+                    })
+                }
+            })
+
+            const newForm = new Form (
+                form.id,
+                form.id_company,
+                form.id_patient,
+                form.name_company,
+                form.name_patient,
+                form.rg,
+                form.cnpj,
+                form.cpf,
+                form.number_procedures,
+                form.amount,
+                form.created_at,
+                form.updated_at,
+                procedures
+            )
+            
             return {
-                id: exam.id,
-                name: exam.name,
-                price: exam.price,
-                createdAt: exam.created_at,
-                updatedAt: exam.updated_at
+                id: newForm.getId(),
+                idCompany: newForm.getIdCompany(),
+                idPatient: newForm.getIdPatient(),
+                nameCompany: newForm.getNameCompany(),
+                namePatient: newForm.getNamePatient(),
+                rg: newForm.getRg(),
+                cnpj: newForm.getCnpj() ? newForm.getCnpj() : "",
+                cpf: newForm.getCpf() ? newForm.getCpf() : "",
+                numberProcedures: newForm.getNumberProcedures(),
+                amount: newForm.getAmount(),
+                createdAt: newForm.getCreatedAt(),
+                updatedAt: newForm.getUpdatedAt(),
+                exams: newForm.getExams()
             }
-        })
+        })  
 
-        return result
+        return formsModel
     } 
 }

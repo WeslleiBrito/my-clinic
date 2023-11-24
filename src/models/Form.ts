@@ -6,6 +6,7 @@ export class Form {
         private idPatient: string,
         private nameCompany: string,
         private namePatient: string,
+        private rg: string,
         private cnpj: string | undefined,
         private cpf: string | undefined,
         private numberProcedures: number,
@@ -14,6 +15,8 @@ export class Form {
         private updatedAt: string,
         private exams: {
             id: string,
+            idExame: string,
+            idForm: string,
             name: string,
             price: number
         }[]
@@ -40,6 +43,10 @@ export class Form {
         return this.namePatient
     }
 
+    public getRg = (): string => {
+        return this.rg
+    }
+
     public getCnpj = (): string | undefined => {
         return this.cnpj
     }
@@ -64,7 +71,7 @@ export class Form {
         return this.updatedAt
     }
 
-    public getExams = (): {id: string, name: string, price: number}[] => {
+    public getExams = (): {id: string, name: string, price: number, idExame: string, idForm: string}[] => {
         return this.exams
     }
 
@@ -95,6 +102,10 @@ export class Form {
 
     public setCpf = (newCpf: string | undefined): void => {
         this.cpf = newCpf
+    }
+
+    public setRg = (newRg: string ): void => {
+        this.rg = newRg
     }
 
     public setAmount = (newAmount: number): void => {

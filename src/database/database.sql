@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS forms (
     id_patient TEXT NOT NULL,
     name_company TEXT NOT NULL,
     name_patient TEXT NOT NULL,
+    rg TEXT NOT NULL,
     cnpj TEXT,
     cpf TEXT,
     number_procedures INT NOT NULL,

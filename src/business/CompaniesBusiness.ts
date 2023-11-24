@@ -57,7 +57,7 @@ export class CompaniesBusiness {
         await this.companiesDatabase.createCompany(
             {
                 id: newCompany.getId(),
-                cnpj: cnpj ? cnpj.replace(/[^a-zA-Z0-9]/g, '') : null,
+                cnpj: cnpj ? cnpj.replace(/[^a-zA-Z0-9]/g, '') : "",
                 created_at: newCompany.getCreatedAt(),
                 name: newCompany.getName(),
                 updated_at: newCompany.getUpdatedAt()
@@ -81,7 +81,7 @@ export class CompaniesBusiness {
             throw new NotFoundError('Empresa não localizada.')
         }
 
-        let newCnpj = account.cnpj
+        let newCnpj = account.cnpj || ""
 
         if(cnpj){
 

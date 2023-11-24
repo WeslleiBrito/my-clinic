@@ -60,6 +60,7 @@ export interface FormDB {
     id_patient: string,
     name_company: string,
     name_patient: string,
+    rg: string,
     cnpj: string | undefined,
     cpf: string | undefined,
     number_procedures: number,
@@ -74,4 +75,24 @@ export interface ProceduresFormsDB {
     id_exam: string,
     name_exam: string,
     price: number
+}
+
+export interface ModelForm {
+    id: string,
+    idCompany: string,
+    idPatient: string,
+    nameCompany: string,
+    namePatient: string,
+    rg: string,
+    cnpj: string | undefined,
+    cpf: string | undefined,
+    numberProcedures: number,
+    amount: number,
+    createdAt: string,
+    updatedAt: string,
+    exams: {
+        id: string,
+        name: string,
+        price: number
+    }[]
 }

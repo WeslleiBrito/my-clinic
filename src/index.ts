@@ -5,6 +5,7 @@ import { patientRouter } from './router/patientRouter'
 import { companyRouter } from './router/companyRouter'
 import { examRouter } from './router/examRouter'
 import { occupationalRiskRouter } from './router/occupationalRiskRouter'
+import { formRouter } from './router/formRouter'
 
 dontenv.config()
 
@@ -21,3 +22,4 @@ app.use('/patients', patientRouter)
 app.use('/company', companyRouter)
 app.use('/exam', examRouter)
 app.use('/occupational-risk', occupationalRiskRouter)
+app.use('/form', formRouter)

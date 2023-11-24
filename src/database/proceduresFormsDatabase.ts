@@ -1,4 +1,4 @@
-import { FormDB, ProceduresFormsDB } from "../types/types";
+import { ProceduresFormsDB } from "../types/types";
 import { BaseDatabase } from "./BaseDatabase";
 
 
@@ -20,7 +20,7 @@ export class ProceduresFormsDatabase extends BaseDatabase {
         return result
     }
 
-    public createProceduresForms = async (input: ProceduresFormsDB): Promise<void> => {
+    public createProceduresForms = async (input: ProceduresFormsDB[]): Promise<void> => {
 
         await ProceduresFormsDatabase.connection(ProceduresFormsDatabase.TABLE_PROCEDURES_FORMS).insert(input)
 
@@ -39,8 +39,12 @@ export class ProceduresFormsDatabase extends BaseDatabase {
         ).where({id})
     }
 
-    public deleteProceduresForms  = async (id: string[]): Promise<void> => {
+    public deleteProceduresForms  = async (idForm: string, idExams: string[]): Promise<void> => {
         
-        await ProceduresFormsDatabase.connection(ProceduresFormsDatabase.TABLE_PROCEDURES_FORMS).del().whereIn('id', id)
+        for (const id of idExams){
+
+            await ProceduresFormsDatabase.connection(ProceduresFormsDatabase.TABLE_PROCEDURES_FORMS).del().where({id_exam: id}).andWhere({id_form: idForm})
+
+        }
     }
 }
