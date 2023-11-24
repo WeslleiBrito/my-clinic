@@ -324,6 +324,8 @@ export class FormBusiness {
 
         const forms = await this.formDatabase.findAllForm()
         const proceduresAll = await this.proceduresFormsDatabase.findAllProceduresForms()
+        const companies = await this.companyDatabase.getAllComanies()
+        const patients = await this.patientDatabase.findPatientAll()
 
         const formsModel: ModelForm[] = forms.map((form) => {
 
@@ -342,13 +344,16 @@ export class FormBusiness {
                     })
                 }
             })
+            
+            const nameCompany = companies.find((company) => company.id === form.id_company) as CompanyDB
+            const namePatient = patients.find((patient) => patient.id === form.id_patient) as PatientDB
 
             const newForm = new Form (
                 form.id,
                 form.id_company,
                 form.id_patient,
-                form.name_company,
-                form.name_patient,
+                nameCompany.name,
+                namePatient.name,
                 form.rg,
                 form.cnpj,
                 form.cpf,

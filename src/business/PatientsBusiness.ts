@@ -140,11 +140,11 @@ export class PatientBuisness {
         const result: PatientModel[] = search.map((patient) => {
             
             const value: PatientModel = {
-                cpf: patient.cpf ? patient.cpf : "",
-                createdAt: patient.created_at,
                 id: patient.id,
                 name: patient.name,
                 rg: patient.rg,
+                cpf: patient.cpf ? patient.cpf : "",
+                createdAt: patient.created_at,
                 updatedAt: patient.updated_at
 
             }
