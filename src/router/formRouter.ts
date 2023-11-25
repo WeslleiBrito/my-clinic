@@ -6,8 +6,8 @@ import { FormBusiness } from "../business/FormBusiness"
 import { FormDatabase } from "../database/FormDatabase"
 import { CompaniesDatabase } from "../database/CompaniesDatabase"
 import { PatientDatabase } from "../database/PatientsDatabase"
-import { ProceduresFormsDatabase } from "../database/ProceduresFormsDatabase"
-import { ValidateCPFCNPJ } from "../services/ValidateCPFCNPJ"
+import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase'
+
 
 export const formRouter = express.Router()
 
@@ -19,7 +19,6 @@ const newFormController = new FormController(
         new PatientDatabase(),
         new ProceduresFormsDatabase(),
         new IdGenerator(),
-        new ValidateCPFCNPJ()
     )
 )
 

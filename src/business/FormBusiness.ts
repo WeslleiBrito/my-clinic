@@ -3,14 +3,11 @@ import { ExamsDatabase } from "../database/ExamsDatabase";
 import { FormDatabase } from "../database/FormDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
-import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto';
-import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.dto'
-import { BadRequestError } from "../errors/BadRequestError";
-import { ConflictError } from "../errors/ConflictError";
+import { InputCreateFormDTO, OutputCreateFormDTO } from '../../src/dtos/form/InputCreateForm.dto'
+import { InputEditFormDTO, OutputEditFormDTO } from '../../src/dtos/form/InputEditForm.dto'
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
-import { ValidateCPFCNPJ } from "../services/ValidateCPFCNPJ";
 import { CompanyDB, ModelForm, PatientDB, ProceduresFormsDB } from "../types/types";
 
 
@@ -23,7 +20,6 @@ export class FormBusiness {
         private patientDatabase: PatientDatabase,
         private proceduresFormsDatabase: ProceduresFormsDatabase,
         private idGenerator: IdGenerator,
-        private validateCpfCnpj: ValidateCPFCNPJ
     ){}
 
 
@@ -116,10 +112,12 @@ export class FormBusiness {
 
     public editForm = async (input: InputEditFormDTO): Promise<OutputEditFormDTO> => {
         
-        const {id, idCompany, idExams, idPatient, cnpj, cpf} = input 
+        const {id, idCompany, idExams, idPatient} = input 
 
         let addProcedure: ProceduresFormsDB[] = []
         let removeProcedure: ProceduresFormsDB[] = []
+        let add = 0
+        let lower = 0
 
         const form = await this.formDatabase.findFormBy('id', [id])
 
@@ -134,20 +132,6 @@ export class FormBusiness {
                 throw new NotFoundError('A empresa informado não existe.')
             }
 
-        }
-
-        if(idCompany){
-            const companyExist = await this.formDatabase.findFormBy('id', [idCompany])
-
-            if(!companyExist){
-                throw new NotFoundError('O id da empresa informado não existe.')
-            }
-
-            if(companyExist.length > 0){
-                if(companyExist[0].id !== id){
-                    throw new ConflictError('O nome informado já existe.')
-                }
-            }
         }
 
         if(idPatient){
@@ -196,39 +180,9 @@ export class FormBusiness {
                     )
                 }
             })
-            
-        }
 
-        if(cnpj){
-            const cnpjValid = this.validateCpfCnpj.validate(cnpj)
-
-            if(!cnpjValid){
-                throw new BadRequestError('CNPJ inválido')
-            }
-
-            const cnpjExist = await this.companyDatabase.findCompanyBy('cnpj', cnpj.replace(/\D/g, ''))
-
-            if(cnpjExist){
-                if(cnpjExist.id !== id){
-                    throw new ConflictError('O CNPJ informado já é usado por outra empresa.')
-                }
-            }
-        }
-
-        if(cpf){
-            const cpfValid = this.validateCpfCnpj.validate(cpf)
-
-            if(!cpfValid){
-                throw new BadRequestError('CPF inválido')
-            }
-
-            const cpfExist = await this.patientDatabase.findPatientBy('cpf', cpf.replace(/\D/g, ''))
-
-            if(cpfExist){
-                if(cpfExist.id !== id){
-                    throw new ConflictError('O CPF informado já é usado por outro paciente.')
-                }
-            }
+            add = addProcedure.reduce((accumulator, currentPrice) => {return accumulator + currentPrice.price}, 0)
+            lower = removeProcedure.reduce((accumulator, currentPrice) => {return accumulator + currentPrice.price}, 0)            
         }
 
         const procedures = await this.proceduresFormsDatabase.findProceduresFormsBy('id_form', [id])
@@ -240,8 +194,8 @@ export class FormBusiness {
             form[0].name_company,
             form[0].name_patient,
             form[0].rg,
-            typeof cnpj !== "undefined" ? cnpj : form[0].cnpj,
-            typeof cpf !== "undefined" ? cpf  : form[0].cpf,
+            form[0].cnpj,
+            form[0].cpf,
             form[0].number_procedures,
             form[0].amount,
             form[0].created_at,
@@ -263,7 +217,7 @@ export class FormBusiness {
 
             newForm.setIdCompany(idCompany)
             newForm.setNameCompany(company.name)
-            newForm.setCnpj(typeof cnpj !== "undefined" ? cnpj : company.cnpj)
+            newForm.setCnpj(company.cnpj)
         }
 
         if(idPatient){
@@ -272,19 +226,12 @@ export class FormBusiness {
 
             newForm.setIdPatient(idPatient)
             newForm.setNamePatient(patient.name)
-            newForm.setCpf(typeof cpf !== "undefined" ? cpf : patient.cpf)
+            newForm.setCpf(patient.cpf)
             newForm.setRg(patient.rg)
         }
-        
-        if(idExams){
-            const examsRemoved = await this.examDatabase.findExamBy('id', removeProcedure.map((item) => item.id))
-            const examsIncludes = await this.examDatabase.findExamBy('id', addProcedure.map((item) => item.id))
-            const add = examsIncludes.reduce((accumulator, currentPrice) => accumulator + currentPrice.price, 0)
-            const lower = examsRemoved.reduce((accumulator, currentPrice) => accumulator + currentPrice.price, 0)
-            newForm.setAmount(newForm.getAmount() - lower + add)
-            newForm.setNumberProcedures(newForm.getNumberProcedures() - removeProcedure.length + addProcedure.length)
-        }
 
+        newForm.setAmount(newForm.getAmount() - lower + add)
+        newForm.setNumberProcedures(newForm.getNumberProcedures() - removeProcedure.length + addProcedure.length)
         newForm.setUpdatedAt(new Date().toISOString())
 
         await this.formDatabase.editForm(
@@ -305,12 +252,12 @@ export class FormBusiness {
         )
 
         if(addProcedure.length > 0){
+            
             await this.proceduresFormsDatabase.createProceduresForms(addProcedure)
         }
 
         if(removeProcedure.length > 0){
-            console.log("entrei");
-            
+
             await this.proceduresFormsDatabase.deleteProceduresForms(id, removeProcedure.map((exam) => exam.id_exam))
         }
         
@@ -324,8 +271,6 @@ export class FormBusiness {
 
         const forms = await this.formDatabase.findAllForm()
         const proceduresAll = await this.proceduresFormsDatabase.findAllProceduresForms()
-        const companies = await this.companyDatabase.getAllComanies()
-        const patients = await this.patientDatabase.findPatientAll()
 
         const formsModel: ModelForm[] = forms.map((form) => {
 
@@ -344,16 +289,13 @@ export class FormBusiness {
                     })
                 }
             })
-            
-            const nameCompany = companies.find((company) => company.id === form.id_company) as CompanyDB
-            const namePatient = patients.find((patient) => patient.id === form.id_patient) as PatientDB
 
             const newForm = new Form (
                 form.id,
                 form.id_company,
                 form.id_patient,
-                nameCompany.name,
-                namePatient.name,
+                form.name_company,
+                form.name_patient,
                 form.rg,
                 form.cnpj,
                 form.cpf,

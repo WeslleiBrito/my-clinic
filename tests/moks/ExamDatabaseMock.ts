@@ -23,6 +23,13 @@ const ExamsMock: ExamsDB[] = [
         name: "Avaliação clínica",
         price: 0,
         updated_at: new Date().toISOString()
+    },
+    {
+        created_at: new Date().toISOString(),
+        id: "idExam004",
+        name: "Micológico de unha",
+        price: 30,
+        updated_at: new Date().toISOString()
     }
 ]
 

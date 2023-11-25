@@ -7,7 +7,7 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_exam: "idExam002",
         id_form: "idForm003",
         name_exam: "Espirometria",
-        price: 0
+        price: 15
     },
     {
         id: "procedure002",
@@ -21,6 +21,20 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_exam: "idExam003",
         id_form: "idForm001",
         name_exam: "Avaliação clínica",
+        price: 0
+    },
+    {
+        id: "procedure004",
+        id_exam: "idExam001",
+        id_form: "idForm001",
+        name_exam: "Glicose",
+        price: 0
+    },
+    {
+        id: "procedure005",
+        id_exam: "idExam002",
+        id_form: "idForm001",
+        name_exam: "Espirometria",
         price: 0
     }
 ]
