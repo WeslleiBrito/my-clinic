@@ -6,7 +6,7 @@ export class PatientDatabase extends BaseDatabase {
 
     public static TABLE_PATIENTS = "patients"
 
-    public createPatient = async (input: PatientDB) => {
+    public createPatient = async (input: PatientDB): Promise<void> => {
 
         await PatientDatabase.connection(PatientDatabase.TABLE_PATIENTS).insert({
             id: input.id,
