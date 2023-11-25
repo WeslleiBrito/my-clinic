@@ -6,7 +6,7 @@ export class ExamsDatabase extends BaseDatabase {
 
     public static TABLE_EXAMS = "exams"
 
-    public findExamBy = async (collumn: "name" | "id", values: string[]): Promise<ExamsDB[]> => {
+    public findExamBy = async (collumn: "id", values: string[]): Promise<ExamsDB[]> => {
         
         const result: ExamsDB[] = await ExamsDatabase.connection(ExamsDatabase.TABLE_EXAMS).whereIn(collumn, values)
 

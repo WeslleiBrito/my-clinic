@@ -50,7 +50,7 @@ export class FormDatabaseMock extends BaseDatabase {
 
     public static TABLE_FORMS = "forms"
 
-    public findFormBy = async (collumn: "name" | "id", values: string[]): Promise<FormDB[]> => {
+    public findFormBy = async (collumn: "id", values: string[]): Promise<FormDB[]> => {
         
         const result: FormDB[] = []
 

@@ -2,9 +2,9 @@ import { CompaniesDatabase } from "../database/CompaniesDatabase";
 import { ExamsDatabase } from "../database/ExamsDatabase";
 import { FormDatabase } from "../database/FormDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
-import { ProceduresFormsDatabase } from "../database/ProceduresFormsDatabase";
-import { InputCreateFormDTO, OutputCreateFormDTO } from "../dtos/form/InputCreateForm.dto";
-import { InputEditFormDTO, OutputEditFormDTO } from "../dtos/form/InputEditForm.dto";
+import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
+import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto';
+import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.dto'
 import { BadRequestError } from "../errors/BadRequestError";
 import { ConflictError } from "../errors/ConflictError";
 import { NotFoundError } from "../errors/NotFoundError";
