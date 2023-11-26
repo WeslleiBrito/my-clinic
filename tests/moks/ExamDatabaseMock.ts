@@ -14,7 +14,7 @@ const ExamsMock: ExamsDB[] = [
         created_at: new Date().toISOString(),
         id: "idExam002",
         name: "Espirometria",
-        price: 0,
+        price: 15,
         updated_at: new Date().toISOString()
     },
     {

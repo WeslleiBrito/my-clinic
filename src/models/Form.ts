@@ -15,8 +15,6 @@ export class Form {
         private updatedAt: string,
         private exams: {
             id: string,
-            idExame: string,
-            idForm: string,
             name: string,
             price: number
         }[]
@@ -71,7 +69,7 @@ export class Form {
         return this.updatedAt
     }
 
-    public getExams = (): {id: string, name: string, price: number, idExame: string, idForm: string}[] => {
+    public getExams = (): {id: string, name: string, price: number}[] => {
         return this.exams
     }
 

@@ -6,7 +6,6 @@ import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import { PatientDatabaseMock } from '../../moks/PatientDatabaseMock'
 import { ProceduresFormsDatabaseMock } from '../../moks/ProceduresFormsDatabaseMock'
 import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
-import { ZodError } from 'zod'
 import { BaseError } from '../../../src/errors/BaseError'
 
 

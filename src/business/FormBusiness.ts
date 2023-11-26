@@ -8,7 +8,7 @@ import { InputEditFormDTO, OutputEditFormDTO } from '../../src/dtos/form/InputEd
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
-import { CompanyDB, ModelForm, PatientDB, ProceduresFormsDB } from "../types/types";
+import { CompanyDB, ExamsDB, ModelForm, PatientDB, ProceduresFormsDB } from "../types/types";
 
 
 export class FormBusiness {
@@ -153,7 +153,7 @@ export class FormBusiness {
 
             idExams.forEach((item) => {
 
-                const examSearch = idExamsExist.find((exam) => exam.id === item.id)
+                const examSearch = idExamsExist.find((exam) => exam.id === item.id) as ExamsDB
 
                 if(item.acction){
 
@@ -162,8 +162,8 @@ export class FormBusiness {
                             id: this.idGenerator.generate(),
                             id_exam: item.id,
                             id_form: id,
-                            name_exam: examSearch ? examSearch.name : "",
-                            price: examSearch ? examSearch.price : 0
+                            name_exam: examSearch.name,
+                            price: examSearch.price
                         }
                     )
 
@@ -174,8 +174,8 @@ export class FormBusiness {
                             id: this.idGenerator.generate(),
                             id_exam: item.id,
                             id_form: id,
-                            name_exam: examSearch ? examSearch.name : "",
-                            price: examSearch ? examSearch.price : 0
+                            name_exam: examSearch.name,
+                            price: examSearch.price
                         }
                     )
                 }
@@ -274,16 +274,14 @@ export class FormBusiness {
 
         const formsModel: ModelForm[] = forms.map((form) => {
 
-            const procedures: {id: string, name: string, price: number, idExame: string, idForm: string}[] = []
+            const procedures: {id: string, name: string, price: number}[] = []
 
             proceduresAll.forEach((procedure) => {
                 
                 if(procedure.id_form === form.id){
                     
                     procedures.push({
-                        id: procedure.id,
-                        idExame: procedure.id_exam,
-                        idForm: procedure.id_form,
+                        id: procedure.id_exam,
                         name: procedure.name_exam,
                         price: procedure.price
                     })

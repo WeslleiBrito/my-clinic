@@ -26,12 +26,12 @@ const FormMock: FormDB[] = [
         id_patient: "idPatient002",
         name_company: "Otávio e Rafaela Filmagens ME",
         name_patient: "Vanessa Benedita Rayssa Mendes",
-        number_procedures: 3,
+        number_procedures: 1,
         rg: "256521098",
         updated_at: new Date().toISOString()
     },
     {
-        amount: 0,
+        amount: 15,
         cnpj: "42941090000165",
         cpf: "98488159889",
         created_at: new Date().toISOString(),
