@@ -19,7 +19,7 @@ export interface PatientDB {
 export interface CompanyModel {
     id: string
     name: string
-    cnpj: string
+    cnpj: string 
     createdAt: string
     updatedAt: string
 }

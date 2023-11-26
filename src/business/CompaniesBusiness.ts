@@ -93,9 +93,12 @@ export class CompaniesBusiness {
 
             const cnpjExist = await this.companiesDatabase.findCompanyBy('cnpj', cnpj.replace(/[^a-zA-Z0-9]/g, ''))
 
-            if(cnpjExist?.id !== account.id){
-                throw new ConflictError("O cnpj informado já existe.")
+            if(cnpjExist){
+                if(cnpjExist.id !== account.id){
+                    throw new ConflictError("O cnpj informado já existe.")
+                }
             }
+            
 
             newCnpj = cnpj.replace(/[^a-zA-Z0-9]/g, '')
         }
@@ -103,9 +106,12 @@ export class CompaniesBusiness {
         if(name){
             const nameExist = await this.companiesDatabase.findCompanyBy("name", name)
 
-            if(nameExist?.id !== account.id){
-                throw new ConflictError("O nome informado já existe.")
+            if(nameExist){
+                if(nameExist.id !== account.id){
+                    throw new ConflictError("O nome informado já existe.")
+                }
             }
+            
         }
         
         await this.companiesDatabase.editCompany(
@@ -127,7 +133,7 @@ export class CompaniesBusiness {
         const result = await this.companiesDatabase.getAllComanies()
 
         return result.map((company) => {
-
+            
             return {
                 id: company.id,
                 name: company.name,

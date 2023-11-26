@@ -1,5 +1,5 @@
-import {CompanyDB, CompanyEditDB} from '../../src/types/types'
-import {BaseDatabase} from '../../src/database/BaseDatabase'
+import { CompanyDB, CompanyEditDB } from '../../src/types/types'
+import { BaseDatabase } from '../../src/database/BaseDatabase'
 
 const CompanyMock: CompanyDB[] = [
     {
@@ -23,6 +23,13 @@ const CompanyMock: CompanyDB[] = [
         name: "Marcos Vinicius e Isis Assessoria Jurídica Ltda",
         updated_at: new Date().toISOString(),
     },
+    {
+        cnpj: undefined,
+        created_at: new Date().toISOString(),
+        id: "idCompany004",
+        name: "Clara e Francisco Limpeza Ltda",
+        updated_at: new Date().toISOString(),
+    }
 ]
 
 
