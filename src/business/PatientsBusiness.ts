@@ -19,16 +19,16 @@ export class PatientBuisness {
     public createPatient = async (input: InputPatientDTO): Promise<OutputPatientDTO> => {
 
         const {rg, cpf, name} = input
+        const patientAll = await this.patientsDatabase.findPatientAll()
 
-        const rgExist = await this.patientsDatabase.findPatientBy('rg', rg.replace(/[^a-zA-Z0-9]/g, ''))
+        const rgExist = patientAll.find((patient) => patient.rg === rg.replace(/[^a-zA-Z0-9]/g, ''))
 
         if(rgExist){
             throw new ConflictError("O rg informado já existe.")
         }
 
-
         if(cpf){
-            const cpfExist = await this.patientsDatabase.findPatientBy( 'cpf', cpf.replace(/[^a-zA-Z0-9]/g, ''))
+            const cpfExist = patientAll.find((patient) => patient.cpf === cpf.replace(/[^a-zA-Z0-9]/g, ''))
 
             if(cpfExist){
                 throw new ConflictError("O cpf informado já existe.")

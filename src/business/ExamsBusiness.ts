@@ -5,7 +5,7 @@ import { ConflictError } from "../errors/ConflictError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Exam } from "../models/Exam";
 import { IdGenerator } from "../services/IdGenerator";
-import { ExamsDB } from "../types/types";
+import { ExamModel, ExamsDB } from "../types/types";
 
 
 export class ExamsBusiness {
@@ -41,26 +41,28 @@ export class ExamsBusiness {
 
         await this.examsDatabase.createExam(examsDB)
 
-        return{
-            message: exams.length > 1 ? "Exames criados com sucesso!" : "Exame criado com sucesso!"
+        return{ message: exams.length > 1 ? "Exames criados com sucesso!" : "Exame criado com sucesso!"
+           
         }
     }
 
     public editExam = async (input: InputEditExamDTO): Promise<OutputEditExamDTO> => {
         
         const {id, name, price} = input 
+        const exams = await this.examsDatabase.findExamAll()
 
-        const exam = await this.examsDatabase.findExamBy('id', [id])
+        const exam = exams.find((examTest) => examTest.id === id)
 
-        if(exam.length < 1){
+        if(!exam){
             throw new NotFoundError('O id informado não existe.')
         }
 
         if(name){
-            const nameExist = await this.examsDatabase.findExamBy('name', [name])
 
-            if(nameExist.length > 0){
-                if(nameExist[0].id !== id){
+            const nameExist = exams.find((examTest) => examTest.name.toLocaleLowerCase() === name.toLocaleLowerCase())
+
+            if(nameExist){
+                if(nameExist.id !== id){
                     throw new ConflictError('O nome informado já existe.')
                 }
             }
@@ -69,9 +71,9 @@ export class ExamsBusiness {
 
         const newExam = new Exam(
             id,
-            name || exam[0].name,
-            typeof price !== "undefined" ? price : exam[0].price,
-            exam[0].created_at,
+            name || exam.name,
+            typeof price !== "undefined" ? price : exam.price,
+            exam.created_at,
             new Date().toISOString()
         )
 
@@ -89,18 +91,26 @@ export class ExamsBusiness {
     }
 
 
-    public getAllExam = async () => {
+    public getAllExam = async (): Promise<ExamModel[]> => {
 
         const search = await this.examsDatabase.findExamAll()
 
         const result = search.map((exam) => {
 
+            const newExam = new Exam(
+                exam.id,
+                exam.name,
+                exam.price,
+                exam.created_at,
+                exam.updated_at
+            )
+
             return {
-                id: exam.id,
-                name: exam.name,
-                price: exam.price,
-                createdAt: exam.created_at,
-                updatedAt: exam.updated_at
+                id: newExam.getId(),
+                name: newExam.getName(),
+                price: newExam.getPrice(),
+                createdAt: newExam.getCreatedAt(),
+                updatedAt: newExam.getUpdatedAt()
             }
         })
 

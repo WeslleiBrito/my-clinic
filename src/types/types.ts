@@ -96,3 +96,11 @@ export interface ModelForm {
         price: number
     }[]
 }
+
+export interface ExamModel {
+    id: string,
+    name: string,
+    price: number,
+    createdAt: string,
+    updatedAt: string
+}

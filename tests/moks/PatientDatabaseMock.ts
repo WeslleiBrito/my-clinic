@@ -26,6 +26,14 @@ const PatientsMock: PatientDB[] = [
         rg: "339141980",
         updated_at: new Date().toISOString(),
         cpf: "98488159889"
+    },
+    {
+        created_at: new Date().toISOString(),
+        id: "idPatient004",
+        name: "Emilly Gabrielly da Conceição",
+        rg: "134167879",
+        updated_at: new Date().toISOString(),
+        cpf: undefined
     }
 ]
 
