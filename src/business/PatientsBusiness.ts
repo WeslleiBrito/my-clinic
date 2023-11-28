@@ -74,11 +74,12 @@ export class PatientBuisness {
 
         const account = await this.patientsDatabase.findPatientBy("id", input.id)
 
-        let newCpf = account?.cpf
 
         if(!account){
             throw new NotFoundError("A conta informada não existe.")
         }
+
+        let newCpf = account.cpf
 
         if(input.cpf){
 
