@@ -104,3 +104,10 @@ export interface ExamModel {
     createdAt: string,
     updatedAt: string
 }
+
+export interface OccupationalRiscModel {
+    id: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string
+}

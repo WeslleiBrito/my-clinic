@@ -36,6 +36,13 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_form: "idForm001",
         name_exam: "Espirometria",
         price: 0
+    },
+    {
+        id: "procedure006",
+        id_exam: "idExam002",
+        id_form: "idForm004",
+        name_exam: "Espirometria",
+        price: 15
     }
 ]
 

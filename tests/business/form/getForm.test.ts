@@ -5,7 +5,6 @@ import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import { PatientDatabaseMock } from '../../moks/PatientDatabaseMock'
 import { ProceduresFormsDatabaseMock } from '../../moks/ProceduresFormsDatabaseMock'
 import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
-import { BaseError } from '../../../src/errors/BaseError'
 import { ModelForm } from '../../../src/types/types'
 
 
@@ -95,6 +94,28 @@ describe("Testando o getForms", () => {
                 namePatient: "Cecília Rosa Carla Almada",
                 numberProcedures: 1,
                 rg: "339141980",
+                updatedAt: expect.any(String)
+            },
+            {
+                id: 'idForm004',
+                cnpj: '',
+                cpf: '',
+                createdAt: expect.any(String),
+                exams: [
+                   
+                    {
+                        id: "idExam002",
+                        name: "Espirometria",
+                        price: 15
+                    }
+                ],
+                amount: 15,
+                idCompany: "idCompany004",
+                idPatient: "idPatient004",
+                nameCompany: "Clara e Francisco Limpeza Ltda",
+                namePatient: "Emilly Gabrielly da Conceição",
+                numberProcedures: 1,
+                rg: "134167879",
                 updatedAt: expect.any(String)
             }
         ]

@@ -5,7 +5,7 @@ import { ConflictError } from "../errors/ConflictError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { OccupationalRisk } from "../models/OccupationalRisk";
 import { IdGenerator } from "../services/IdGenerator";
-import { OccupationalRisksDB } from "../types/types";
+import { OccupationalRiscModel, OccupationalRisksDB } from "../types/types";
 
 
 export class OccupationalRiskBusiness {
@@ -49,17 +49,18 @@ export class OccupationalRiskBusiness {
         
         const {id, name } = input 
 
-        const occupationalRisk = await this.occupationalRiskDatabase.findOccupationalRiskBy('id', [id])
-
-        if(occupationalRisk.length < 1){
+        const occupationalAll = await this.occupationalRiskDatabase.findOccupationalRiskAll()
+        const occupationalRisk = occupationalAll.find((occupational) => occupational.id === id)
+        
+        if(!occupationalRisk){
             throw new NotFoundError('O id informado não existe.')
         }
 
         if(name){
-            const nameExist = await this.occupationalRiskDatabase.findOccupationalRiskBy('name', [name])
+            const nameExist = occupationalAll.find((occupational) => occupational.name.toLowerCase() === name.toLowerCase())
 
-            if(nameExist.length > 0){
-                if(nameExist[0].id !== id){
+            if(nameExist){
+                if(nameExist.id !== id){
                     throw new ConflictError('O nome informado já existe.')
                 }
             }
@@ -68,8 +69,8 @@ export class OccupationalRiskBusiness {
 
         const newOccupationalRisk = new OccupationalRisk(
             id,
-            name || occupationalRisk[0].name,
-            occupationalRisk[0].created_at,
+            name || occupationalRisk.name,
+            occupationalRisk.created_at,
             new Date().toISOString()
         )
 
@@ -86,7 +87,7 @@ export class OccupationalRiskBusiness {
     }
 
 
-    public getAllOccupationalRisk = async () => {
+    public getAllOccupationalRisk = async (): Promise<OccupationalRiscModel[]> => {
 
         const search = await this.occupationalRiskDatabase.findOccupationalRiskAll()
 
