@@ -3,6 +3,7 @@ import {PatientDatabaseMock} from '../../moks/PatientDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import { ValidateCPFCNPJ } from '../../../src/services/ValidateCPFCNPJ'
 import { PatientModel } from '../../../src/models/Patient'
+import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 
 
 
@@ -10,6 +11,7 @@ describe('Testando o patientBusiness', () => {
 
     const patientBusiness = new PatientBuisness(
         new PatientDatabaseMock(),
+        new FormDatabaseMock(),
         new IdGeneratorMock(),
         new ValidateCPFCNPJ()
     )
@@ -45,6 +47,14 @@ describe('Testando o patientBusiness', () => {
             id: "idPatient004",
             name: "Emilly Gabrielly da Conceição",
             rg: "134167879",
+            updatedAt: expect.any(String)
+        },
+        {
+            createdAt: expect.any(String),
+            cpf: "66377985762",
+            id: "idPatient005",
+            name: "César Kaique Fábio da Rosa",
+            rg: "405072922",
             updatedAt: expect.any(String)
         }
     ]

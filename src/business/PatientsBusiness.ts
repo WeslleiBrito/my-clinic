@@ -1,4 +1,6 @@
+import { FormDatabase } from "../database/FormDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
+import { InputDeletePatientDTO, OutputDeletePatientDTO } from "../dtos/patient/InputDeletePatient.dto";
 import { InputEditPatientDTO, OutputEditPatientDTO } from "../dtos/patient/InputEditPatient";
 import { InputPatientDTO, OutputPatientDTO } from "../dtos/patient/InputPatient.dto";
 import { BadRequestError } from "../errors/BadRequestError";
@@ -12,6 +14,7 @@ import { ValidateCPFCNPJ } from "../services/ValidateCPFCNPJ";
 export class PatientBuisness {
     constructor(
         private patientsDatabase: PatientDatabase,
+        private formDatabase: FormDatabase,
         private idGenerator: IdGenerator, 
         private validateCPF : ValidateCPFCNPJ
     ){}
@@ -155,5 +158,26 @@ export class PatientBuisness {
 
         return result
 
+    }
+
+    public deletePatient = async (input: InputDeletePatientDTO): Promise<OutputDeletePatientDTO> => {
+
+        const patient = await this.patientsDatabase.findPatientBy('id', input.id)
+
+        if(!patient){
+            throw new NotFoundError("Paciente não encontrada, verifique o id")
+        }
+
+        const [isInteraction] = await this.formDatabase.findFormBy('id_patient', [input.id])
+        
+        if(isInteraction){
+            throw new BadRequestError("Não é possível excluir um paciente que possui registros ativos.")
+        }
+
+        await this.patientsDatabase.deletePatient(input.id)
+
+        return {
+            message: "Paciente deletada com sucesso!"
+        }
     }
 }

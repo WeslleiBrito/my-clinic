@@ -12,6 +12,6 @@ export interface OutputDeleteCompanyDTO {
 
 export const InputDeleteCompanySchema = z.object(
     {
-        id: z.string({required_error: "O id do formulário não foi informado."})
+        id: z.string({required_error: "O id da empresa não foi informado."})
     }
 ).transform(data => data as InputDeleteCompanyDTO)

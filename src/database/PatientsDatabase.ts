@@ -18,14 +18,12 @@ export class PatientDatabase extends BaseDatabase {
         })
     }   
 
-
     public findPatientBy = async (collumn: 'rg' | 'cpf' | 'id' | 'name', value: string): Promise<PatientDB | undefined> => {
 
         const [result]: PatientDB[] | undefined = await PatientDatabase.connection(PatientDatabase.TABLE_PATIENTS).where({[collumn]: value})
         
         return result
     }
-   
 
     public findPatientAll = async (): Promise<PatientDB[]> => {
 
@@ -45,7 +43,12 @@ export class PatientDatabase extends BaseDatabase {
             }
         ).where({id: input.id})
     }
-   
+    
+    public deletePatient = async (id: string): Promise<void> => {
+        
+        await PatientDatabase.connection(PatientDatabase.TABLE_PATIENTS).del().where({id})
+
+    }
     
 }
 

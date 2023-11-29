@@ -34,6 +34,14 @@ const PatientsMock: PatientDB[] = [
         rg: "134167879",
         updated_at: new Date().toISOString(),
         cpf: undefined
+    },
+    {
+        created_at: new Date().toISOString(),
+        id: "idPatient005",
+        name: "César Kaique Fábio da Rosa",
+        rg: "405072922",
+        updated_at: new Date().toISOString(),
+        cpf: "66377985762"
     }
 ]
 
@@ -63,5 +71,7 @@ export class PatientDatabaseMock extends BaseDatabase {
 
     }
    
-    
+    public deletePatient = async (id: string): Promise<void> => {
+
+    }
 }

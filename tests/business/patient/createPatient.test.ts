@@ -4,12 +4,13 @@ import {PatientDatabaseMock} from '../../moks/PatientDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import { ValidateCPFCNPJ } from '../../../src/services/ValidateCPFCNPJ'
 import { BaseError } from '../../../src/errors/BaseError'
-
+import {FormDatabaseMock} from '../../moks/FormDatabaseMock'
 
 describe('Testando o patientBusiness', () => {
 
     const patientBusiness = new PatientBuisness(
         new PatientDatabaseMock(),
+        new FormDatabaseMock(),
         new IdGeneratorMock(),
         new ValidateCPFCNPJ()
     )
