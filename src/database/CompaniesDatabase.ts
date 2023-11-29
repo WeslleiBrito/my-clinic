@@ -23,12 +23,18 @@ export class CompaniesDatabase extends BaseDatabase {
         await CompaniesDatabase.connection(CompaniesDatabase.TABLE_COMPANIES).update(input)
     }
 
-    public getAllComanies = async (): Promise<CompanyDB[]> => {
+    public getAllCompanies = async (): Promise<CompanyDB[]> => {
 
         const result: CompanyDB[] = await CompaniesDatabase.connection(CompaniesDatabase.TABLE_COMPANIES)
 
         return result
         
+    }
+
+    public deleteCompany = async (id: string): Promise<void> => {
+
+        await CompaniesDatabase.connection(CompaniesDatabase.TABLE_COMPANIES).del().where({id})
+                
     }
 
 }

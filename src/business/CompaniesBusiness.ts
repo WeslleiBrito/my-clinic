@@ -1,5 +1,7 @@
 import { CompaniesDatabase } from "../database/CompaniesDatabase";
+import { FormDatabase } from "../database/FormDatabase";
 import { InputCreateCompanyDTO, OutputCreateCompanyDTO } from "../dtos/company/InputCreateCompany";
+import { InputDeleteCompanyDTO, OutputDeleteCompanyDTO } from "../dtos/company/InputDeleteCompany.dto";
 import { InputEditCompanyDTO, OutputEditCompanyDTO } from "../dtos/company/InputEditCompany";
 import { BadRequestError } from "../errors/BadRequestError";
 import { ConflictError } from "../errors/ConflictError";
@@ -14,6 +16,7 @@ import { CompanyModel } from "../types/types";
 export class CompaniesBusiness {
     constructor(
         private companiesDatabase: CompaniesDatabase,
+        private formDatabase: FormDatabase,
         private validateCNPJ: ValidateCPFCNPJ,
         private idGenerator: IdGenerator
     ){}
@@ -130,7 +133,7 @@ export class CompaniesBusiness {
 
     public getCompany = async (): Promise<CompanyModel[]> => {
 
-        const result = await this.companiesDatabase.getAllComanies()
+        const result = await this.companiesDatabase.getAllCompanies()
 
         return result.map((company) => {
             
@@ -142,5 +145,26 @@ export class CompaniesBusiness {
                 updatedAt: company.updated_at
             }
         })
+    }
+
+    public deleteCompany = async (input: InputDeleteCompanyDTO): Promise<OutputDeleteCompanyDTO> => {
+
+        const company = await this.companiesDatabase.findCompanyBy('id', input.id)
+
+        if(!company){
+            throw new NotFoundError("Empresa não encontrada, verifique o id")
+        }
+
+        const [isInteraction] = await this.formDatabase.findFormBy('id_company', [input.id])
+        
+        if(isInteraction){
+            throw new BadRequestError("Não é possível excluir uma empresa que possui registros ativos.")
+        }
+
+        await this.companiesDatabase.deleteCompany(input.id)
+
+        return {
+            message: "Empresa deletada com sucesso!"
+        }
     }
 }

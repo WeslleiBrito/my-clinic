@@ -4,12 +4,14 @@ import { ValidateCPFCNPJMock } from '../../moks/ValidateCPFCNPJ'
 import {IdGeneratorMock} from '../../moks/IdGeneratorMock'
 import { InputEditCompanySchema } from '../../../src/dtos/company/InputEditCompany'
 import { BaseError } from '../../../src/errors/BaseError'
+import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 
 
 describe('Testando o editCompany', () => {
 
     const companyBusiness = new CompaniesBusiness(
         new CompaniesDatabaseMock(),
+        new FormDatabaseMock(),
         new ValidateCPFCNPJMock(),
         new IdGeneratorMock()
     )

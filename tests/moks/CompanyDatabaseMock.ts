@@ -29,6 +29,13 @@ const CompanyMock: CompanyDB[] = [
         id: "idCompany004",
         name: "Clara e Francisco Limpeza Ltda",
         updated_at: new Date().toISOString(),
+    },
+    {
+        cnpj: "48231240000123",
+        created_at: new Date().toISOString(),
+        id: "idCompany005",
+        name: "Fernando e Mário Buffet ME",
+        updated_at: new Date().toISOString(),
     }
 ]
 
@@ -52,9 +59,12 @@ export class CompaniesDatabaseMock extends BaseDatabase {
 
     }
 
-    public getAllComanies = async (): Promise<CompanyDB[]> => {
+    public getAllCompanies = async (): Promise<CompanyDB[]> => {
        
         return CompanyMock 
     }
 
+    public deleteCompany = async (id: string): Promise<void> => {
+
+    }
 }

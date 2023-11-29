@@ -3,6 +3,7 @@ import {CompaniesDatabaseMock} from '../../moks/CompanyDatabaseMock'
 import { ValidateCPFCNPJMock } from '../../moks/ValidateCPFCNPJ'
 import {IdGeneratorMock} from '../../moks/IdGeneratorMock'
 import { CompanyModel } from '../../../src/types/types'
+import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 
 
 describe('Testando o getCompany', () => {
@@ -10,9 +11,11 @@ describe('Testando o getCompany', () => {
 
     const companyBusiness = new CompaniesBusiness(
         new CompaniesDatabaseMock(),
+        new FormDatabaseMock(),
         new ValidateCPFCNPJMock(),
         new IdGeneratorMock()
     )
+
     const companyMockTest: CompanyModel[] = [
         {
             cnpj: "40968052000170",
@@ -41,6 +44,13 @@ describe('Testando o getCompany', () => {
             id: "idCompany004",
             name: "Clara e Francisco Limpeza Ltda",
             updatedAt: expect.any(String)
+        },
+        {
+            cnpj: "48231240000123",
+            createdAt: expect.any(String),
+            id: "idCompany005",
+            name: "Fernando e Mário Buffet ME",
+            updatedAt: expect.any(String)
         }
     ]
 
@@ -50,7 +60,5 @@ describe('Testando o getCompany', () => {
 
         expect(output).toEqual(companyMockTest)
     })
-    
-
-    
+ 
 })

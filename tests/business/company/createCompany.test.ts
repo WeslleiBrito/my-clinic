@@ -4,13 +4,17 @@ import { ValidateCPFCNPJMock } from '../../moks/ValidateCPFCNPJ'
 import {IdGeneratorMock} from '../../moks/IdGeneratorMock'
 import { InputCreateCompanySchema } from '../../../src/dtos/company/InputCreateCompany'
 import { BaseError } from '../../../src/errors/BaseError'
+import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
+import { ValidateCPFCNPJ } from '../../../src/services/ValidateCPFCNPJ'
+import { IdGenerator } from '../../../src/services/IdGenerator'
 
 
 describe('Testando o createCompany', () => {
 
     const companyBusiness = new CompaniesBusiness(
         new CompaniesDatabaseMock(),
-        new ValidateCPFCNPJMock(),
+        new FormDatabaseMock(),
+        new ValidateCPFCNPJ(),
         new IdGeneratorMock()
     )
 
