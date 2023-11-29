@@ -1,5 +1,5 @@
 import {FormBusiness} from '../../../src/business/FormBusiness'
-import { InputEditFormSchema } from '../../../src/dtos/form/InputEditForm.dto'
+import { InputEditFormSchema } from '../../../src/dtos/Form/InputEditForm.dto'
 import { CompaniesDatabaseMock } from '../../moks/CompanyDatabaseMock'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'

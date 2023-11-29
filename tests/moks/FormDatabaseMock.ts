@@ -105,4 +105,8 @@ export class FormDatabaseMock extends BaseDatabase {
     public editForm = async (input: FormDB): Promise<void> => {
         
     }
+
+    public deleteForm = async (id: string): Promise<void> => {
+        
+    }
 }

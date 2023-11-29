@@ -75,4 +75,10 @@ export class FormDatabase extends BaseDatabase {
             }
         ).where({id})
     }
+
+    public deleteForm = async (id: string): Promise<void> => {
+
+        await FormDatabase.connection(FormDatabase.TABLE_FORMS).del().where({id})
+        
+    }
 }

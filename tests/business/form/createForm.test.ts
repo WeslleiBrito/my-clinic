@@ -1,6 +1,5 @@
 import {FormBusiness} from '../../../src/business/FormBusiness'
-import { InputCreateFormSchema } from '../../../src/dtos/form/InputCreateForm.dto'
-import { ValidateCPFCNPJ } from '../../../src/services/ValidateCPFCNPJ'
+import { InputCreateFormSchema } from '../../../src/dtos/Form/InputCreateForm.dto'
 import { CompaniesDatabaseMock } from '../../moks/CompanyDatabaseMock'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'

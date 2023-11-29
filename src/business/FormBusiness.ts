@@ -3,8 +3,9 @@ import { ExamsDatabase } from "../database/ExamsDatabase";
 import { FormDatabase } from "../database/FormDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
-import { InputCreateFormDTO, OutputCreateFormDTO } from '../../src/dtos/form/InputCreateForm.dto'
-import { InputEditFormDTO, OutputEditFormDTO } from '../../src/dtos/form/InputEditForm.dto'
+import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto'
+import { InputDeleteFormDTO, OutputDeleteFormDTO } from "../dtos/Form/InputDeleteForm.dto";
+import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.dto'
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
@@ -266,7 +267,6 @@ export class FormBusiness {
         }
     }
 
-
     public getAllForms = async (): Promise<ModelForm[]> => {
 
         const forms = await this.formDatabase.findAllForm()
@@ -322,5 +322,22 @@ export class FormBusiness {
         })  
 
         return formsModel
-    } 
+    }
+
+    public deleteForm = async (input: InputDeleteFormDTO): Promise<OutputDeleteFormDTO> => {
+
+        const formExist = await this.formDatabase.findFormBy('id', [input.id])
+   
+
+        if(formExist.length === 0){
+           throw new NotFoundError("O formulário informado não exite, verifique o id.")
+        }
+
+        await this.formDatabase.deleteForm(input.id)
+
+        return {
+            message: "Formulário deletado com sucesso."
+        }
+
+    }
 }
