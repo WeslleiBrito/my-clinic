@@ -330,12 +330,12 @@ export class FormBusiness {
 
         if(addOccupationalRisk.length > 0){
             
-            await this.occupationalRiskDatabase.createOccupationalRisk(addOccupationalRisk)
+            await this.occupationalRiskFormDatabase.createOccupationalRiskForms(addOccupationalRisk)
         }
 
-        if(removeProcedure.length > 0){
+        if(removeOccupationalRisk.length > 0){
 
-            await this.proceduresFormsDatabase.deleteProceduresForms(id, removeProcedure.map((exam) => exam.id_exam))
+            await this.proceduresFormsDatabase.deleteProceduresForms(id, removeOccupationalRisk.map((occupational) => occupational.id_risk))
         }
         
         return {
@@ -347,6 +347,7 @@ export class FormBusiness {
 
         const forms = await this.formDatabase.findAllForm()
         const proceduresAll = await this.proceduresFormsDatabase.findAllProceduresForms()
+        const occupationalRiskAll = await this.occupationalRiskFormDatabase.findAllOccupationalRiskForms()
 
         const formsModel: ModelForm[] = forms.map((form) => {
 
@@ -377,7 +378,13 @@ export class FormBusiness {
                 form.amount,
                 form.created_at,
                 form.updated_at,
-                procedures
+                procedures,
+                occupationalRiskAll.map((item) => {
+                    return {
+                        id: item.id,
+                        name: item.name_risk
+                    }
+                })
             )
             
             return {
@@ -393,7 +400,8 @@ export class FormBusiness {
                 amount: newForm.getAmount(),
                 createdAt: newForm.getCreatedAt(),
                 updatedAt: newForm.getUpdatedAt(),
-                exams: newForm.getExams()
+                exams: newForm.getExams(),
+                OccupationalHazards: newForm.getOccupationalHazards()
             }
         })  
 

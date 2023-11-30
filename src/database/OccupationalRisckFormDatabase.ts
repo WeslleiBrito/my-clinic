@@ -4,7 +4,7 @@ import { BaseDatabase } from "./BaseDatabase";
 
 export class OccupationalRiskFormsDatabase extends BaseDatabase {
 
-    public static OCCUPATIONAL_RISK_FORMS = "occupationalRisk_forms"
+    public static OCCUPATIONAL_RISK_FORMS = "occupational_risk_forms"
 
     public findOccupationalRiskFormsBy = async (collumn: "id" | "id_form" | "id_risk" | "name_risk", values: string[]): Promise<OccupationalRiskFormsDB[]> => {
         
