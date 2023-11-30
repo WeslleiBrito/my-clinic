@@ -58,4 +58,6 @@ export class OccupationalRiskDatabaseMock extends BaseDatabase {
 
 
     public editOccupationalRisk = async (input: OccupationalRisksDB): Promise<void> => {}
+
+    public deleteOccupationalRisk = async (id: string): Promise<void> => {}
 }

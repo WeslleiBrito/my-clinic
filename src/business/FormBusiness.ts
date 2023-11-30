@@ -1,6 +1,8 @@
 import { CompaniesDatabase } from "../database/CompaniesDatabase";
 import { ExamsDatabase } from "../database/ExamsDatabase";
 import { FormDatabase } from "../database/FormDatabase";
+import { OccupationalRiskFormsDatabase } from "../database/OccupationalRisckFormDatabase";
+import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
 import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto'
@@ -9,7 +11,7 @@ import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
-import { CompanyDB, ExamsDB, ModelForm, PatientDB, ProceduresFormsDB } from "../types/types";
+import { CompanyDB, ExamsDB, ModelForm, OccupationalRiskFormsDB, OccupationalRisksDB, PatientDB, ProceduresFormsDB } from "../types/types";
 
 
 export class FormBusiness {
@@ -21,18 +23,28 @@ export class FormBusiness {
         private patientDatabase: PatientDatabase,
         private proceduresFormsDatabase: ProceduresFormsDatabase,
         private idGenerator: IdGenerator,
+        private occupationalRiskDatabase: OccupationalRiskDatabase,
+        private occupationalRiskFormDatabase: OccupationalRiskFormsDatabase,
+
     ){}
 
 
     public createForm = async (input: InputCreateFormDTO): Promise<OutputCreateFormDTO> => {
 
-        const {idCompany, idExams, idPatient} = input
+        const {idCompany, idExams, idPatient, idOccupationalHazards} = input
 
         const examExistAll = await this.examDatabase.findExamBy('id', idExams.map((exam) => exam.id))
 
         if(examExistAll.length !== idExams.length){
 
-            throw new NotFoundError(idExams.length - examExistAll.length === 1 ? 'Existe um exame com id inválido.' : 'Existe mais de um exame com id inválido.')
+            throw new NotFoundError(idExams.length - examExistAll.length === 1 ? 'Existe um exame com id inválido.' : 'Existem mais de um exame com id inválido.')
+        }
+
+        const occupationalHazardsAll = await this.occupationalRiskDatabase.findOccupationalRiskBy('id', idOccupationalHazards.map((occupationalHazards) => occupationalHazards.id))
+
+        if(occupationalHazardsAll.length !== idOccupationalHazards.length){
+
+            throw new NotFoundError(idOccupationalHazards.length - occupationalHazardsAll.length === 1 ? 'Existe um risco ocupacional com id inválido.' : 'Existem mais de um risco ocupacional com id inválido.')
         }
 
         const companyExist = await this.companyDatabase.findCompanyBy('id', idCompany)
@@ -57,6 +69,13 @@ export class FormBusiness {
             }
         })
 
+        const occupationalRisks: {id: string, name: string}[] = occupationalHazardsAll.map((riskOccupational) => {
+            return {
+                id: riskOccupational.id,
+                name: riskOccupational.name
+            }
+        })
+
         const id = this.idGenerator.generate()
         const date = new Date().toISOString()
 
@@ -73,7 +92,8 @@ export class FormBusiness {
             exams.reduce((accumulator, currentPrice) => accumulator + currentPrice.price, 0),
             date,
             date,
-            exams
+            exams,
+            occupationalRisks
         )
         
         
@@ -104,7 +124,17 @@ export class FormBusiness {
             }
         })
 
+        const occupationalRiskDB: OccupationalRiskFormsDB[] = occupationalRisks.map((occupationalRisk) => {
+            return {
+                id: this.idGenerator.generate(),
+                id_form: id,
+                id_risk: occupationalRisk.id,
+                name_risk: occupationalRisk.name
+            }
+        })
+
         await this.proceduresFormsDatabase.createProceduresForms(proceduresDB)
+        await this.occupationalRiskFormDatabase.createOccupationalRiskForms(occupationalRiskDB)
 
         return{
             message: "Formulário criado com sucesso!"
@@ -113,10 +143,13 @@ export class FormBusiness {
 
     public editForm = async (input: InputEditFormDTO): Promise<OutputEditFormDTO> => {
         
-        const {id, idCompany, idExams, idPatient} = input 
+        const {id, idCompany, idExams, idPatient, idOccupationalHazards} = input 
 
         let addProcedure: ProceduresFormsDB[] = []
         let removeProcedure: ProceduresFormsDB[] = []
+        const addOccupationalRisk: OccupationalRiskFormsDB[] = []
+        const removeOccupationalRisk: OccupationalRiskFormsDB[] = []
+
         let add = 0
         let lower = 0
 
@@ -172,7 +205,7 @@ export class FormBusiness {
 
                     removeProcedure.push(
                         {
-                            id: this.idGenerator.generate(),
+                            id: "",
                             id_exam: item.id,
                             id_form: id,
                             name_exam: examSearch.name,
@@ -186,7 +219,47 @@ export class FormBusiness {
             lower = removeProcedure.reduce((accumulator, currentPrice) => {return accumulator + currentPrice.price}, 0)            
         }
 
-        const procedures = await this.proceduresFormsDatabase.findProceduresFormsBy('id_form', [id])
+        if(idOccupationalHazards){
+
+            const idOccupationalHazardsExist = await this.occupationalRiskDatabase.findOccupationalRiskBy('id', idOccupationalHazards.map((occupational) => occupational.id))
+    
+            
+            if(idOccupationalHazards.length !== idOccupationalHazardsExist.length){
+                throw new NotFoundError(idOccupationalHazardsExist.length - idOccupationalHazards.length === 1 ? "Um dos ids informado não exite." : "Mais de um id não exite.")
+            }
+
+            idOccupationalHazards.forEach((item) => {
+
+                const occupationalSearch = idOccupationalHazardsExist.find((occupational) => occupational.id === item.id) 
+
+                if(occupationalSearch){
+                    if(item.acction){
+
+                        addOccupationalRisk.push(
+                            {
+                                id: this.idGenerator.generate(),
+                                id_form: id,
+                                id_risk: occupationalSearch.id,
+                                name_risk: occupationalSearch.name
+                            }
+                        )
+    
+                    }else{
+    
+                        removeOccupationalRisk.push(
+                            {
+                                id: occupationalSearch.id,
+                                id_form: id,
+                                id_risk: occupationalSearch.id,
+                                name_risk: occupationalSearch.name
+                               
+                            }
+                        )
+                    }
+                }
+                
+            })         
+        }
 
         const newForm = new Form (
             id,
@@ -201,15 +274,8 @@ export class FormBusiness {
             form[0].amount,
             form[0].created_at,
             form[0].updated_at,            
-            procedures.map((procedure) => {
-                return {
-                    id: procedure.id,
-                    idExame: procedure.id_exam,
-                    idForm: procedure.id_form,
-                    name: procedure.name_exam,
-                    price: procedure.price
-                }
-            })
+            [],
+            []
         )
 
         if(idCompany){
@@ -255,6 +321,16 @@ export class FormBusiness {
         if(addProcedure.length > 0){
             
             await this.proceduresFormsDatabase.createProceduresForms(addProcedure)
+        }
+
+        if(removeProcedure.length > 0){
+
+            await this.proceduresFormsDatabase.deleteProceduresForms(id, removeProcedure.map((exam) => exam.id_exam))
+        }
+
+        if(addOccupationalRisk.length > 0){
+            
+            await this.occupationalRiskDatabase.createOccupationalRisk(addOccupationalRisk)
         }
 
         if(removeProcedure.length > 0){

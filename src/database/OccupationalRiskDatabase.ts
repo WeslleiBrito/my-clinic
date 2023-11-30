@@ -33,4 +33,10 @@ export class OccupationalRiskDatabase extends BaseDatabase {
 
         await OccupationalRiskDatabase.connection(OccupationalRiskDatabase.OCCUPATIONAL_RISKS).update({name, updated_at}).where({id})
     }
+
+    public deleteOccupationalRisk = async (id: string): Promise<void> => {
+
+        await OccupationalRiskDatabase.connection(OccupationalRiskDatabase.OCCUPATIONAL_RISKS).del().where({id})
+        
+    }
 }

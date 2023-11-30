@@ -16,13 +16,14 @@ export class FormController {
 
         try {
             
-            const { idCompany, idPatient, idExams } = req.body
+            const { idCompany, idPatient, idExams, OccupationalHazards } = req.body
 
             const input = InputCreateFormSchema.parse(
                 {
                     idCompany,
                     idPatient,
-                    idExams
+                    idExams,
+                    OccupationalHazards
                 }
             )
 
@@ -52,7 +53,9 @@ export class FormController {
                     idPatient,
                     cnpj,
                     cpf,
-                    idExams} = req.body
+                    idExams,
+                    idOccupationalHazards
+                } = req.body
 
             const input = InputEditFormSchema.parse(
                 {
@@ -61,7 +64,8 @@ export class FormController {
                     idPatient,
                     cnpj,
                     cpf,
-                    idExams
+                    idExams,
+                    idOccupationalHazards
                 }
             )
 

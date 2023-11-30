@@ -59,4 +59,13 @@ CREATE TABLE IF NOT EXISTS procedures_forms (
     FOREIGN KEY(id_exam) REFERENCES exams(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS occupationalRisk_forms (
+    id TEXT PRIMARY KEY NOT NULL,
+    id_form TEXT NOT NULL,
+    id_risk TEXT NOT NULL,
+    name_risk TEXT NOT NULL,
+    FOREIGN KEY(id_form) REFERENCES forms(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(id_risk) REFERENCES occupational_risks(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 DROP TABLE IF EXISTS procedures_forms;

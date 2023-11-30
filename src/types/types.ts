@@ -94,6 +94,10 @@ export interface ModelForm {
         id: string,
         name: string,
         price: number
+    }[],
+    OccupationalHazards: {
+        id: string,
+        name: string
     }[]
 }
 
@@ -110,4 +114,11 @@ export interface OccupationalRiscModel {
     name: string,
     createdAt: string,
     updatedAt: string
+}
+
+export interface OccupationalRiskFormsDB {
+    id: string,
+    id_form: string,
+    id_risk: string,
+    name_risk: string
 }

@@ -17,6 +17,10 @@ export class Form {
             id: string,
             name: string,
             price: number
+        }[],
+        private occupationalHazards: {
+            id: string,
+            name: string
         }[]
     ){}
 
@@ -73,7 +77,10 @@ export class Form {
         return this.exams
     }
 
-
+    public getOccupationalHazards = (): {id: string, name: string}[] => {
+        return this.occupationalHazards
+    }
+    
     public setNumberProcedures = (newNumberProcedures: number): void => {
         this.numberProcedures = newNumberProcedures
     }
@@ -114,4 +121,5 @@ export class Form {
         this.updatedAt = newDate
     }
     
+
 }
