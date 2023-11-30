@@ -33,4 +33,10 @@ export class ExamsDatabase extends BaseDatabase {
 
         await ExamsDatabase.connection(ExamsDatabase.TABLE_EXAMS).update({name, price, updated_at}).where({id})
     }
+
+    public deleteExam = async (id: string): Promise<void> => {
+
+        await ExamsDatabase.connection(ExamsDatabase.TABLE_EXAMS).del().where({id})
+
+    } 
 }

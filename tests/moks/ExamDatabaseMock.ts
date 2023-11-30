@@ -30,6 +30,13 @@ const ExamsMock: ExamsDB[] = [
         name: "Micológico de unha",
         price: 30,
         updated_at: new Date().toISOString()
+    },
+    {
+        created_at: new Date().toISOString(),
+        id: "idExam005",
+        name: "Exame sem registros",
+        price: 2,
+        updated_at: new Date().toISOString()
     }
 ]
 
@@ -68,4 +75,6 @@ export class ExamsDatabaseMock extends BaseDatabase {
     public createExam = async (input: ExamsDB[]): Promise<void> => {}
 
     public editExam = async (input: ExamsDB): Promise<void> => {}
+
+    public deleteExam = async (id: string): Promise<void> => {} 
 }

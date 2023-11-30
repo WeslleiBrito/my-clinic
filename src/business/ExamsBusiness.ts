@@ -1,6 +1,9 @@
 import { ExamsDatabase } from "../database/ExamsDatabase";
+import { ProceduresFormsDatabase } from "../database/proceduresFormsDatabase";
 import { InputCreateExamDTO, OutputCreateExamDTO } from "../dtos/exam/InputCreateExam.dto";
+import { InputDeleteExamDTO, OutputDeleteExamDTO } from "../dtos/exam/InputDeleteExam.dto";
 import { InputEditExamDTO, OutputEditExamDTO } from "../dtos/exam/InputEditExam.dto";
+import { BadRequestError } from "../errors/BadRequestError";
 import { ConflictError } from "../errors/ConflictError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Exam } from "../models/Exam";
@@ -12,7 +15,8 @@ export class ExamsBusiness {
 
     constructor(
         private examsDatabase: ExamsDatabase,
-        private idGenerator: IdGenerator
+        private idGenerator: IdGenerator,
+        private proceduresFormsDatabase: ProceduresFormsDatabase
     ){}
 
 
@@ -90,7 +94,6 @@ export class ExamsBusiness {
         }
     }
 
-
     public getAllExam = async (): Promise<ExamModel[]> => {
 
         const search = await this.examsDatabase.findExamAll()
@@ -115,5 +118,26 @@ export class ExamsBusiness {
         })
 
         return result
-    } 
+    }
+    
+    public deleteExam = async (input: InputDeleteExamDTO): Promise<OutputDeleteExamDTO> => {
+
+        const [exam] = await this.examsDatabase.findExamBy('id', [input.id])
+
+        if(!exam){
+            throw new NotFoundError("Exame não encontrada, verifique o id")
+        }
+
+        const [isInteraction] = await this.proceduresFormsDatabase.findProceduresFormsBy('id_exam', [input.id])
+        
+        if(isInteraction){
+            throw new BadRequestError("Não é possível excluir um exame que possui registros ativos.")
+        }
+
+        await this.examsDatabase.deleteExam(input.id)
+
+        return {
+            message: "Exame deletado com sucesso!"
+        }
+    }
 }

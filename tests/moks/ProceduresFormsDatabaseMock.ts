@@ -50,7 +50,7 @@ export class ProceduresFormsDatabaseMock extends BaseDatabase {
 
     public static TABLE_PROCEDURES_FORMS = "procedures_forms"
 
-    public findProceduresFormsBy = async (collumn: "id" | "id_form", values: string[]): Promise<ProceduresFormsDB[]> => {
+    public findProceduresFormsBy = async (collumn: "id" | "id_form" | "id_exam" | "name_exam", values: string[]): Promise<ProceduresFormsDB[]> => {
         
         const result: ProceduresFormsDB[] = []
 

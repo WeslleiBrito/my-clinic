@@ -4,6 +4,7 @@ import { BaseError } from "../errors/BaseError";
 import { InputCreateExamSchema, OutputCreateExamDTO } from "../dtos/exam/InputCreateExam.dto";
 import { ExamsBusiness } from "../business/ExamsBusiness";
 import { InputEditExamSchema, OutputEditExamDTO } from "../dtos/exam/InputEditExam.dto";
+import { InputDeleteExamSchema, OutputDeleteExamDTO } from "../dtos/exam/InputDeleteExam.dto";
 
 export class ExamsController {
 
@@ -90,5 +91,29 @@ export class ExamsController {
 
     }
     
-    
+    public deleteExam = async (req: Request, res: Response) => {
+
+        try {
+
+            const input = InputDeleteExamSchema.parse(
+                {
+                    id: req.params.id
+                }
+            )
+
+            const output: OutputDeleteExamDTO = await this.examsBuisness.deleteExam(input)
+
+            res.status(201).send(output)
+
+        } catch (error) {
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues)
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.send("Erro inesperado\n " + error)
+            }
+        }
+
+    }
 }

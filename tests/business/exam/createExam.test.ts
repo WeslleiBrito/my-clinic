@@ -3,13 +3,15 @@ import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import {InputCreateExamSchema} from '../../../src/dtos/exam/InputCreateExam.dto'
 import { BaseError } from '../../../src/errors/BaseError'
+import { ProceduresFormsDatabaseMock } from '../../moks/ProceduresFormsDatabaseMock'
 
 
 describe('Testando o examBusiness', () => {
 
     const examBusiness = new ExamsBusiness(
         new ExamsDatabaseMock(),
-        new IdGeneratorMock()
+        new IdGeneratorMock(),
+        new ProceduresFormsDatabaseMock()
     )
     
     test("Deve criar um novo exame", async () => {

@@ -2,13 +2,15 @@ import {ExamsBusiness} from '../../../src/business/ExamsBusiness'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import { ExamModel } from '../../../src/types/types'
+import { ProceduresFormsDatabaseMock } from '../../moks/ProceduresFormsDatabaseMock'
 
 
 describe('Testando o examBusiness', () => {
 
     const examBusiness = new ExamsBusiness(
         new ExamsDatabaseMock(),
-        new IdGeneratorMock()
+        new IdGeneratorMock(), 
+        new ProceduresFormsDatabaseMock()
     )
 
     const examModelMock: ExamModel[] = [
@@ -41,6 +43,13 @@ describe('Testando o examBusiness', () => {
             price: 30,
             updatedAt: expect.any(String)
         },
+        {
+            createdAt: expect.any(String),
+            id: "idExam005",
+            name: "Exame sem registros",
+            price: 2,
+            updatedAt: expect.any(String)
+        }
     ] 
 
     test("Buscando todos os exams", async () => {
