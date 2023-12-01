@@ -6,7 +6,7 @@ export interface InputDeleteOccupationalRiskDTO {
 }
 
 
-export interface OutputDeleteOccupationalRiskExamDTO {
+export interface OutputDeleteOccupationalRiskDTO {
     message: string
 }
 

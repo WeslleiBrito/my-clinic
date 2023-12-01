@@ -2,6 +2,7 @@ import {OccupationalRiskBusiness} from '../../../src/business/OccupationalRiskBu
 import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import { OccupationalRiscModel } from '../../../src/types/types'
+import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
 
 
 
@@ -9,7 +10,8 @@ describe("Testando o occupationalRisk", () => {
 
     const occupationalRisk = new OccupationalRiskBusiness(
         new OccupationalRiskDatabaseMock(),
-        new IdGeneratorMock()
+        new IdGeneratorMock(),
+        new OccupationalRiskFormsDatabaseMock()
     )
 
     const occupationalModel: OccupationalRiscModel[] = [
@@ -29,6 +31,12 @@ describe("Testando o occupationalRisk", () => {
             createdAt: expect.any(String),
             id: "occupational003",
             name: "Poeira",
+            updatedAt: expect.any(String)
+        },
+        {
+            createdAt: expect.any(String),
+            id: "occupational004",
+            name: "Químico",
             updatedAt: expect.any(String)
         }
     ]

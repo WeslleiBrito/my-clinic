@@ -1,6 +1,4 @@
 import  z  from "zod"
-import { idOccupationalHazardsSchema } from "./InputCreateForm.dto"
-
 
 export interface InputEditFormDTO {
     id: string,
@@ -41,6 +39,6 @@ export const InputEditFormSchema = z.object(
         idCompany: z.string({ invalid_type_error: "Espera-se que o id da empresa venha como uma string."}).optional(),
         idPatient: z.string({ invalid_type_error: "Espera-se que o id do paciente venha como uma string."}).optional(),
         idExams: z.array(idExamsSchema).optional(),
-        idOccupationalHazards: z.array(idOccupationalHazardsSchema).optional()
+        idOccupationalHazards: z.array(idOccupationalHazards).optional()
     }
 ).transform(data => data as InputEditFormDTO)

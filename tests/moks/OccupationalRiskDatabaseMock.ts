@@ -20,6 +20,12 @@ const OccupationalRisksMock: OccupationalRisksDB[] = [
         id: "occupational003",
         name: "Poeira",
         updated_at: new Date().toISOString()
+    },
+    {
+        created_at: new Date().toISOString(),
+        id: "occupational004",
+        name: "Químico",
+        updated_at: new Date().toISOString()
     }
 ]
 

@@ -68,4 +68,4 @@ CREATE TABLE IF NOT EXISTS occupationalRisk_forms (
     FOREIGN KEY(id_risk) REFERENCES occupational_risks(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS procedures_forms;
+DROP TABLE IF EXISTS occupationalRisk_forms;

@@ -4,6 +4,7 @@ import { BaseError } from "../errors/BaseError";
 import { OccupationalRiskBusiness } from "../business/OccupationalRiskBusiness";
 import { InputCreateOccupationalRiskSchema, OutputCreateOccupationalRiskDTO } from "../dtos/occupationalRisk/InputCreateOccupationalRisk.dto";
 import { InputEditInputEditOccupationalRiskSchema, OutputEditOccupationalRiskDTO } from "../dtos/occupationalRisk/InputEditOccupationalRisk.dto";
+import { InputDeleteOccupationalRiskSchema, OutputDeleteOccupationalRiskDTO } from "../dtos/occupationalRisk/InputDeleteOccupationalRisk.dto";
 
 export class OccupationalRiskController {
 
@@ -89,5 +90,31 @@ export class OccupationalRiskController {
 
     }
     
-    
+    public deleteOccupationalRisk = async (req: Request, res: Response) => {
+
+        try {
+            
+        
+            const input = InputDeleteOccupationalRiskSchema.parse(
+                {
+                    id: req.params.id
+                }
+            )
+
+            const output: OutputDeleteOccupationalRiskDTO = await this.OccupationalRiskBuisness.deleteOccupationalRisk(input)
+
+            res.status(201).send(output)
+
+        } catch (error) {
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues)
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.send("Erro inesperado\n " + error)
+                
+            }
+        }
+
+    }
 }

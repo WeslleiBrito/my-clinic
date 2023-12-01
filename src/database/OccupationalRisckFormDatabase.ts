@@ -1,4 +1,4 @@
-import { OccupationalRiskFormsDB, ProceduresFormsDB } from "../types/types";
+import { OccupationalRiskFormsDB } from "../types/types";
 import { BaseDatabase } from "./BaseDatabase";
 
 

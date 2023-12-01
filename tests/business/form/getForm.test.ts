@@ -6,6 +6,8 @@ import { PatientDatabaseMock } from '../../moks/PatientDatabaseMock'
 import { ProceduresFormsDatabaseMock } from '../../moks/ProceduresFormsDatabaseMock'
 import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 import { ModelForm } from '../../../src/types/types'
+import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
+import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
 
 
 describe("Testando o getForms", () => {
@@ -16,7 +18,9 @@ describe("Testando o getForms", () => {
         new CompaniesDatabaseMock(),
         new PatientDatabaseMock(),
         new ProceduresFormsDatabaseMock(),
-        new IdGeneratorMock()
+        new IdGeneratorMock(),
+        new OccupationalRiskDatabaseMock(),
+        new OccupationalRiskFormsDatabaseMock()
     )
 
     test('Buscando todos os formulários', async () => {
@@ -50,7 +54,13 @@ describe("Testando o getForms", () => {
                 namePatient: "Alexandre Anderson Geraldo Figueiredo",
                 numberProcedures: 3,
                 rg: "184133580",
-                updatedAt: expect.any(String)
+                updatedAt: expect.any(String),
+                OccupationalHazards: [
+                    {
+                        id: "occupational001",
+                        name: "Fisico"
+                    }
+                ]
             },
             {
                 id: 'idForm002',
@@ -72,7 +82,17 @@ describe("Testando o getForms", () => {
                 namePatient: "Vanessa Benedita Rayssa Mendes",
                 numberProcedures: 1,
                 rg: "256521098",
-                updatedAt: expect.any(String)
+                updatedAt: expect.any(String),
+                OccupationalHazards: [
+                    {
+                        id: "occupational002",
+                        name: "Ruído"
+                    },
+                    {
+                        id: "occupational003",
+                        name: "Poeira"
+                    }
+                ]
             },
             {
                 id: 'idForm003',
@@ -94,7 +114,13 @@ describe("Testando o getForms", () => {
                 namePatient: "Cecília Rosa Carla Almada",
                 numberProcedures: 1,
                 rg: "339141980",
-                updatedAt: expect.any(String)
+                updatedAt: expect.any(String),
+                OccupationalHazards: [
+                    {
+                        id: "occupational003",
+                        name: "Poeira"
+                    }
+                ]
             },
             {
                 id: 'idForm004',
@@ -116,7 +142,8 @@ describe("Testando o getForms", () => {
                 namePatient: "Emilly Gabrielly da Conceição",
                 numberProcedures: 1,
                 rg: "134167879",
-                updatedAt: expect.any(String)
+                updatedAt: expect.any(String),
+                OccupationalHazards: []
             }
         ]
 

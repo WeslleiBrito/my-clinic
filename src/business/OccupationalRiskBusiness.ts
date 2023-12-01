@@ -1,6 +1,9 @@
+import { OccupationalRiskFormsDatabase } from "../database/OccupationalRisckFormDatabase";
 import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase";
 import { InputCreateOccupationalRiskDTO, OutputCreateOccupationalRiskDTO } from "../dtos/occupationalRisk/InputCreateOccupationalRisk.dto";
+import { InputDeleteOccupationalRiskDTO, OutputDeleteOccupationalRiskDTO } from "../dtos/occupationalRisk/InputDeleteOccupationalRisk.dto";
 import { InputEditOccupationalRiskDTO, OutputEditOccupationalRiskDTO } from "../dtos/occupationalRisk/InputEditOccupationalRisk.dto";
+import { BadRequestError } from "../errors/BadRequestError";
 import { ConflictError } from "../errors/ConflictError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { OccupationalRisk } from "../models/OccupationalRisk";
@@ -12,7 +15,8 @@ export class OccupationalRiskBusiness {
 
     constructor(
         private occupationalRiskDatabase: OccupationalRiskDatabase,
-        private idGenerator: IdGenerator
+        private idGenerator: IdGenerator,
+        private occupationalRiskFormsDatabase: OccupationalRiskFormsDatabase
     ){}
 
 
@@ -86,7 +90,6 @@ export class OccupationalRiskBusiness {
         }
     }
 
-
     public getAllOccupationalRisk = async (): Promise<OccupationalRiscModel[]> => {
 
         const search = await this.occupationalRiskDatabase.findOccupationalRiskAll()
@@ -103,4 +106,25 @@ export class OccupationalRiskBusiness {
 
         return result
     } 
+
+    public deleteOccupationalRisk = async (input: InputDeleteOccupationalRiskDTO): Promise<OutputDeleteOccupationalRiskDTO> => {
+
+        const [occupationalRisk] = await this.occupationalRiskDatabase.findOccupationalRiskBy('id', [input.id])
+
+        if(!occupationalRisk){
+            throw new NotFoundError("Risco ocupacional não encontrada, verifique o id")
+        }
+
+        const [isInteraction] = await this.occupationalRiskFormsDatabase.findOccupationalRiskFormsBy('id_risk', [input.id])
+        
+        if(isInteraction){
+            throw new BadRequestError("Não é possível excluir um risco ocupacional que possui registros ativos.")
+        }
+
+        await this.occupationalRiskDatabase.deleteOccupationalRisk(input.id)
+
+        return {
+            message: "Risco ocupacional deletado com sucesso!"
+        }
+    }
 }

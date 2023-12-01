@@ -7,6 +7,8 @@ import { PatientDatabaseMock } from '../../moks/PatientDatabaseMock'
 import { ProceduresFormsDatabaseMock } from '../../moks/ProceduresFormsDatabaseMock'
 import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 import { BaseError } from '../../../src/errors/BaseError'
+import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
+import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
 
 
 describe("Testando a edição dos formulários", () => {
@@ -17,7 +19,9 @@ describe("Testando a edição dos formulários", () => {
         new CompaniesDatabaseMock(),
         new PatientDatabaseMock(),
         new ProceduresFormsDatabaseMock(),
-        new IdGeneratorMock()
+        new IdGeneratorMock(),
+        new OccupationalRiskDatabaseMock(),
+        new OccupationalRiskFormsDatabaseMock()
     )
 
     test("Testando edição completa do form", async () => {
@@ -37,6 +41,16 @@ describe("Testando a edição dos formulários", () => {
                         acction: true
                     }
 
+                ],
+                idOccupationalHazards: [
+                    {
+                        id: "occupational001",
+                        acction: false
+                    },
+                    {
+                        id: "occupational002",
+                        acction: true
+                    }
                 ]
             }
         )
@@ -188,7 +202,7 @@ describe("Testando a edição dos formulários", () => {
                             acction: false
                         },
                         {
-                            id: "idExam invalido 1",
+                            id: "idExam invalido 2",
                             acction: false
                         }
                     ]
@@ -202,4 +216,64 @@ describe("Testando a edição dos formulários", () => {
             expect(error).toBeInstanceOf(BaseError)
         }
     })
+
+    test("Deve gerar um erro caso um id idOccupationalHazards seja inválido.", async () => {
+
+        expect.assertions(2)
+
+        try {
+            const input = InputEditFormSchema.parse(
+                {
+                    id: "idForm002",
+                    idCompany: "idCompany002",
+                    idPatient: "idPatient003",
+                    idOccupationalHazards: [
+                    
+                        {
+                            id: "id inválido",
+                            acction: false
+                        }
+                    ]
+                }
+            )
+    
+           await formBusiness.editForm(input)
+
+        } catch (error) {
+            expect(error).toBeDefined()
+            expect(error).toBeInstanceOf(BaseError)
+        }
+    })
+
+    test("Deve gerar um erro caso mais de um idOccupationalHazards seja inválido.", async () => {
+
+        expect.assertions(2)
+
+        try {
+            const input = InputEditFormSchema.parse(
+                {
+                    id: "idForm002",
+                    idCompany: "idCompany002",
+                    idPatient: "idPatient003",
+                    idOccupationalHazards: [
+                        {
+                            id: "id inválido 1",
+                            acction: true
+                        },
+                        {
+                            id: "id inválido 2",
+                            acction: false
+                        }
+                    ]
+                }
+            )
+    
+           await formBusiness.editForm(input)
+
+        } catch (error) {
+            expect(error).toBeDefined()
+            expect(error).toBeInstanceOf(BaseError)
+        }
+    })
+
 })

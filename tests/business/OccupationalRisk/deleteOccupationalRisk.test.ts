@@ -5,35 +5,39 @@ import { ExamsBusiness } from '../../../src/business/ExamsBusiness'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { ProceduresFormsDatabaseMock } from '../../moks/ProceduresFormsDatabaseMock'
 import { InputDeleteExamSchema } from '../../../src/dtos/exam/InputDeleteExam.dto'
+import { OccupationalRiskBusiness } from '../../../src/business/OccupationalRiskBusiness'
+import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
+import { InputDeleteOccupationalRiskSchema } from '../../../src/dtos/occupationalRisk/InputDeleteOccupationalRisk.dto'
+import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
 
 
-describe('Testando o deleteExam.', () => {
+describe('Testando o deleteOccupationalRisk.', () => {
 
 
-    const examBusiness = new ExamsBusiness(
-        new ExamsDatabaseMock(),
+    const occupationalRiskBusiness = new OccupationalRiskBusiness(
+        new OccupationalRiskDatabaseMock(),
         new IdGeneratorMock(),
-        new ProceduresFormsDatabaseMock()
+        new OccupationalRiskFormsDatabaseMock()
     )
 
-    test('Sucesso ao deletar um exame.', async () => {
+    test('Sucesso ao deletar um risco ocupacional.', async () => {
 
-        const input = InputDeleteExamSchema.parse(
+        const input = InputDeleteOccupationalRiskSchema.parse(
             {
-                id: "idExam005"
+                id: "occupational004"
             }
         )
 
-        const output = await examBusiness.deleteExam(input)
+        const output = await occupationalRiskBusiness.deleteOccupationalRisk(input)
 
         expect(output).toEqual(
             {
-                message: "Exame deletado com sucesso!"
+                message: "Risco ocupacional deletado com sucesso!"
             }
         )
     })
 
-    test("Deve gerar um erro caso um id do exame seja inválido.", async () => {
+    test("Deve gerar um erro caso o id do exame seja inválido.", async () => {
 
         expect.assertions(2)
 
@@ -44,7 +48,7 @@ describe('Testando o deleteExam.', () => {
                 }
             )
     
-           await examBusiness.deleteExam(input)
+           await occupationalRiskBusiness.deleteOccupationalRisk(input)
 
         } catch (error) {
             expect(error).toBeDefined()
@@ -59,11 +63,11 @@ describe('Testando o deleteExam.', () => {
         try {
             const input = InputDeleteCompanySchema.parse(
                 {
-                    id: "idExam002",
+                    id: "occupational001",
                 }
             )
     
-            await examBusiness.deleteExam(input)
+            await occupationalRiskBusiness.deleteOccupationalRisk(input)
 
         } catch (error) {
             expect(error).toBeDefined()

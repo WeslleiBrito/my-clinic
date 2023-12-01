@@ -7,6 +7,8 @@ import { PatientDatabaseMock } from '../../moks/PatientDatabaseMock'
 import { ProceduresFormsDatabaseMock } from '../../moks/ProceduresFormsDatabaseMock'
 import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 import { BaseError } from '../../../src/errors/BaseError'
+import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
+import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
 
 
 describe("Testando a edição dos formulários", () => {
@@ -17,7 +19,9 @@ describe("Testando a edição dos formulários", () => {
         new CompaniesDatabaseMock(),
         new PatientDatabaseMock(),
         new ProceduresFormsDatabaseMock(),
-        new IdGeneratorMock()
+        new IdGeneratorMock(),
+        new OccupationalRiskDatabaseMock(),
+        new OccupationalRiskFormsDatabaseMock()
     )
 
     test("Sucesso ao deletar", async () => {

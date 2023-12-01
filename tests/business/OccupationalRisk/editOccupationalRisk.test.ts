@@ -3,6 +3,7 @@ import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabas
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import { InputEditInputEditOccupationalRiskSchema } from '../../../src/dtos/occupationalRisk/InputEditOccupationalRisk.dto'
 import { BaseError } from '../../../src/errors/BaseError'
+import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
 
 
 
@@ -10,7 +11,8 @@ describe("Testando o occupationalRisk", () => {
 
     const OccupationalRisk = new OccupationalRiskBusiness(
         new OccupationalRiskDatabaseMock(),
-        new IdGeneratorMock()
+        new IdGeneratorMock(),
+        new OccupationalRiskFormsDatabaseMock()
     )
 
 

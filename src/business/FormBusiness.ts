@@ -225,38 +225,37 @@ export class FormBusiness {
     
             
             if(idOccupationalHazards.length !== idOccupationalHazardsExist.length){
-                throw new NotFoundError(idOccupationalHazardsExist.length - idOccupationalHazards.length === 1 ? "Um dos ids informado não exite." : "Mais de um id não exite.")
+                throw new NotFoundError(idOccupationalHazards.length - idOccupationalHazardsExist.length === 1 ? "Um dos ids informado não exite." : "Mais de um id não exite.")
             }
 
             idOccupationalHazards.forEach((item) => {
 
-                const occupationalSearch = idOccupationalHazardsExist.find((occupational) => occupational.id === item.id) 
+                const occupationalSearch = idOccupationalHazardsExist.find((occupational) => occupational.id === item.id) as OccupationalRisksDB
+                
+                if(item.acction){
 
-                if(occupationalSearch){
-                    if(item.acction){
+                    addOccupationalRisk.push(
+                        {
+                            id: this.idGenerator.generate(),
+                            id_form: id,
+                            id_risk: occupationalSearch.id,
+                            name_risk: occupationalSearch.name
+                        }
+                    )
 
-                        addOccupationalRisk.push(
-                            {
-                                id: this.idGenerator.generate(),
-                                id_form: id,
-                                id_risk: occupationalSearch.id,
-                                name_risk: occupationalSearch.name
-                            }
-                        )
-    
-                    }else{
-    
-                        removeOccupationalRisk.push(
-                            {
-                                id: occupationalSearch.id,
-                                id_form: id,
-                                id_risk: occupationalSearch.id,
-                                name_risk: occupationalSearch.name
-                               
-                            }
-                        )
-                    }
+                }else{
+
+                    removeOccupationalRisk.push(
+                        {
+                            id: occupationalSearch.id,
+                            id_form: id,
+                            id_risk: occupationalSearch.id,
+                            name_risk: occupationalSearch.name
+                           
+                        }
+                    )
                 }
+             
                 
             })         
         }
@@ -327,7 +326,7 @@ export class FormBusiness {
 
             await this.proceduresFormsDatabase.deleteProceduresForms(id, removeProcedure.map((exam) => exam.id_exam))
         }
-
+        
         if(addOccupationalRisk.length > 0){
             
             await this.occupationalRiskFormDatabase.createOccupationalRiskForms(addOccupationalRisk)
@@ -352,6 +351,7 @@ export class FormBusiness {
         const formsModel: ModelForm[] = forms.map((form) => {
 
             const procedures: {id: string, name: string, price: number}[] = []
+            const occupationalRisks: {id: string, name: string}[] = []
 
             proceduresAll.forEach((procedure) => {
                 
@@ -361,6 +361,17 @@ export class FormBusiness {
                         id: procedure.id_exam,
                         name: procedure.name_exam,
                         price: procedure.price
+                    })
+                }
+            })
+
+            occupationalRiskAll.forEach((occupational) => {
+                
+                if(occupational.id_form === form.id){
+                    
+                    occupationalRisks.push({
+                        id: occupational.id_risk,
+                        name: occupational.name_risk
                     })
                 }
             })
@@ -379,12 +390,7 @@ export class FormBusiness {
                 form.created_at,
                 form.updated_at,
                 procedures,
-                occupationalRiskAll.map((item) => {
-                    return {
-                        id: item.id,
-                        name: item.name_risk
-                    }
-                })
+                occupationalRisks
             )
             
             return {
