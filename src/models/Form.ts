@@ -1,125 +1,144 @@
 export class Form {
 
     constructor(
-        private id: string,
-        private idCompany: string,
-        private idPatient: string,
-        private nameCompany: string,
-        private namePatient: string,
-        private rg: string,
-        private cnpj: string | undefined,
-        private cpf: string | undefined,
-        private numberProcedures: number,
-        private amount: number,
-        private createdAt: string,
-        private updatedAt: string,
-        private exams: {
+        private input: {
             id: string,
-            name: string,
-            price: number
-        }[],
-        private occupationalHazards: {
-            id: string,
-            name: string
-        }[]
-    ){}
+            idCompany: string,
+            idPatient: string,
+            nameCompany: string,
+            namePatient: string,
+            rg: string,
+            cnpj: string | undefined,
+            cpf: string | undefined,
+            numberProcedures: number,
+            idTypeExamAso: string,
+            status: boolean,
+            amount: number,
+            createdAt: string,
+            updatedAt: string,
+            exams: {
+                id: string,
+                name: string,
+                price: number
+            }[],
+            occupationalHazards: {
+                id: string,
+                name: string
+            }[]
+        }
+    ) { }
 
-    
+
     public getId = (): string => {
-        return this.id
+        return this.input.id
     }
 
     public getIdCompany = (): string => {
-        return this.idCompany
+        return this.input.idCompany
     }
 
     public getIdPatient = (): string => {
-        return this.idPatient
+        return this.input.idPatient
     }
 
     public getNameCompany = (): string => {
-        return this.nameCompany
+        return this.input.nameCompany
     }
 
     public getNamePatient = (): string => {
-        return this.namePatient
+        return this.input.namePatient
     }
 
     public getRg = (): string => {
-        return this.rg
+        return this.input.rg
     }
 
     public getCnpj = (): string | undefined => {
-        return this.cnpj
+        return this.input.cnpj
+    }
+
+    public getIdTypeExamAso = (): string => {
+        return this.input.idTypeExamAso
+    }
+
+    public getStatus = (): boolean => {
+        return this.input.status
     }
 
     public getCpf = (): string | undefined => {
-        return this.cpf
+        return this.input.cpf
     }
-    
+
     public getNumberProcedures = (): number => {
-        return this.numberProcedures
+        return this.input.numberProcedures
     }
 
     public getAmount = (): number => {
-        return this.amount
+        return this.input.amount
     }
 
     public getCreatedAt = (): string => {
-        return this.createdAt
+        return this.input.createdAt
     }
 
     public getUpdatedAt = (): string => {
-        return this.updatedAt
+        return this.input.updatedAt
     }
 
-    public getExams = (): {id: string, name: string, price: number}[] => {
-        return this.exams
+    public getExams = (): { id: string, name: string, price: number }[] => {
+        return this.input.exams
     }
 
-    public getOccupationalHazards = (): {id: string, name: string}[] => {
-        return this.occupationalHazards
+    public getOccupationalHazards = (): { id: string, name: string }[] => {
+        return this.input.occupationalHazards
     }
-    
+
     public setNumberProcedures = (newNumberProcedures: number): void => {
-        this.numberProcedures = newNumberProcedures
+        this.input.numberProcedures = newNumberProcedures
     }
 
     public setIdCompany = (newIdCompany: string): void => {
-        this.idCompany = newIdCompany
+        this.input.idCompany = newIdCompany
     }
 
     public setIdPatient = (newIdPatient: string): void => {
-        this.idPatient = newIdPatient
+        this.input.idPatient = newIdPatient
     }
 
     public setNameCompany = (newNameCompany: string): void => {
-        this.nameCompany = newNameCompany
+        this.input.nameCompany = newNameCompany
     }
 
     public setNamePatient = (newNamePatient: string): void => {
-        this.namePatient = newNamePatient
+        this.input.namePatient = newNamePatient
     }
 
     public setCnpj = (newCnpj: string | undefined): void => {
-        this.cnpj = newCnpj
+        this.input.cnpj = newCnpj
     }
 
     public setCpf = (newCpf: string | undefined): void => {
-        this.cpf = newCpf
+        this.input.cpf = newCpf
     }
 
-    public setRg = (newRg: string ): void => {
-        this.rg = newRg
+    public setRg = (newRg: string): void => {
+        this.input.rg = newRg
     }
 
     public setAmount = (newAmount: number): void => {
-        this.amount = newAmount
+        this.input.amount = newAmount
     }
 
     public setUpdatedAt = (newDate: string): void => {
-        this.updatedAt = newDate
+        this.input.updatedAt = newDate
     }
-    
+
+    public setIdTypeExamAso = (newIdTypeExamAso: string): void => {
+        this.input.idTypeExamAso = newIdTypeExamAso
+    }
+
+    public setStatus = (newStatus: boolean): void => {
+        this.input.status = newStatus
+    }
 
 }

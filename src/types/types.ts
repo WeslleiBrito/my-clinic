@@ -54,6 +54,13 @@ export interface OccupationalRisksDB {
     updated_at: string
 }
 
+export interface TypeExameAsoDB {
+    id: string,
+    name: string,
+    created_at: string,
+    updated_at: string
+}
+
 export interface FormDB {
     id: string,
     id_company: string,
@@ -64,6 +71,8 @@ export interface FormDB {
     cnpj: string | undefined,
     cpf: string | undefined,
     number_procedures: number,
+    id_type_exam: string,
+    status_exam: 0 | 1,
     amount: number,
     created_at: string,
     updated_at: string
@@ -110,6 +119,13 @@ export interface ExamModel {
 }
 
 export interface OccupationalRiscModel {
+    id: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string
+}
+
+export interface TypeExamAsoModel {
     id: string,
     name: string,
     createdAt: string,

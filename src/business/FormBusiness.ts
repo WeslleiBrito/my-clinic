@@ -4,6 +4,7 @@ import { FormDatabase } from "../database/FormDatabase";
 import { OccupationalRiskFormsDatabase } from "../database/OccupationalRisckFormDatabase";
 import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
+import { TypeExamAsoDatabase } from "../database/TypeExamAsoDatabase";
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
 import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto'
 import { InputDeleteFormDTO, OutputDeleteFormDTO } from "../dtos/Form/InputDeleteForm.dto";
@@ -25,13 +26,14 @@ export class FormBusiness {
         private idGenerator: IdGenerator,
         private occupationalRiskDatabase: OccupationalRiskDatabase,
         private occupationalRiskFormDatabase: OccupationalRiskFormsDatabase,
+        private typeExameAsoDatabase: TypeExamAsoDatabase
 
     ){}
 
 
     public createForm = async (input: InputCreateFormDTO): Promise<OutputCreateFormDTO> => {
 
-        const {idCompany, idExams, idPatient, idOccupationalHazards} = input
+        const {idCompany, idExams, idPatient, idOccupationalHazards, idTypeExamAso, status} = input
 
         const examExistAll = await this.examDatabase.findExamBy('id', idExams.map((exam) => exam.id))
 
@@ -76,24 +78,34 @@ export class FormBusiness {
             }
         })
 
+        const [typeExamAsoExist] = await this.typeExameAsoDatabase.findTypeExamAsoBy('id', [idTypeExamAso])
+
+        if(!typeExamAsoExist){
+            throw new NotFoundError('O tipo do exame informada não existe.')
+        }
+
         const id = this.idGenerator.generate()
         const date = new Date().toISOString()
 
         const newForm = new Form(
-            id,
-            idCompany,
-            idPatient,
-            companyExist.name,
-            patientExist.name,
-            patientExist.rg,
-            companyExist.cnpj,
-            patientExist.cpf,
-            idExams.length,
-            exams.reduce((accumulator, currentPrice) => accumulator + currentPrice.price, 0),
-            date,
-            date,
-            exams,
-            occupationalRisks
+            {
+                amount: exams.reduce((accumulator, currentPrice) => accumulator + currentPrice.price, 0),
+                cnpj: companyExist.cnpj,
+                cpf: patientExist.cpf,
+                createdAt: date,
+                exams: exams,
+                id: id,
+                idCompany: idCompany,
+                idPatient: idPatient,
+                nameCompany: companyExist.name,
+                namePatient: patientExist.name,
+                numberProcedures: idExams.length,
+                occupationalHazards: occupationalRisks,
+                rg: patientExist.rg,
+                updatedAt: date,
+                idTypeExamAso: typeExamAsoExist.id,
+                status: status
+            }
         )
         
         
@@ -110,7 +122,9 @@ export class FormBusiness {
                 name_company: newForm.getNameCompany(),
                 name_patient: newForm.getNamePatient(),
                 number_procedures: newForm.getNumberProcedures(),
-                updated_at: newForm.getUpdatedAt()
+                updated_at: newForm.getUpdatedAt(),
+                id_type_exam: newForm.getIdTypeExamAso(),
+                status_exam: newForm.getStatus() ? 1 : 0
             }
         )
         

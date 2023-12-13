@@ -32,6 +32,22 @@ CREATE TABLE IF NOT EXISTS occupational_risks (
     updated_at TEXT DEFAULT(DATETIME()) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS type_exams_aso (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL UNIQUE,
+    created_at TEXT DEFAULT(DATETIME()) NOT NULL,
+    updated_at TEXT DEFAULT(DATETIME()) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS status_exams_aso (
+    id TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL UNIQUE,
+    id_form TEXT NOT NULL,
+    created_at TEXT DEFAULT(DATETIME()) NOT NULL,
+    updated_at TEXT DEFAULT(DATETIME()) NOT NULL,
+    FOREIGN KEY(id_form) REFERENCES forms(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS forms (
     id TEXT PRIMARY KEY NOT NULL,
     id_company TEXT NOT NULL,
@@ -42,11 +58,14 @@ CREATE TABLE IF NOT EXISTS forms (
     cnpj TEXT,
     cpf TEXT,
     number_procedures INT NOT NULL,
+    id_type_exam TEXT NOT NULL,
+    status_exam INT NOT NULL,
     amount INT DEFAULT(0) NOT NULL,
     created_at TEXT DEFAULT(DATETIME()) NOT NULL,
     updated_at TEXT DEFAULT(DATETIME()) NOT NULL,
     FOREIGN KEY(id_company) REFERENCES companies(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY(id_patient) REFERENCES patients(id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY(id_patient) REFERENCES patients(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(id_type_exam) REFERENCES type_exams_aso(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS procedures_forms (

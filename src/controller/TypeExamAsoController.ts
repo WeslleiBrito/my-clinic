@@ -5,26 +5,30 @@ import { OccupationalRiskBusiness } from "../business/OccupationalRiskBusiness";
 import { InputCreateOccupationalRiskSchema, OutputCreateOccupationalRiskDTO } from "../dtos/occupationalRisk/InputCreateOccupationalRisk.dto";
 import { InputEditOccupationalRiskSchema, OutputEditOccupationalRiskDTO } from "../dtos/occupationalRisk/InputEditOccupationalRisk.dto";
 import { InputDeleteOccupationalRiskSchema, OutputDeleteOccupationalRiskDTO } from "../dtos/occupationalRisk/InputDeleteOccupationalRisk.dto";
+import { TypeExamAsoBusiness } from "../business/TypeExamAsoBusiness";
+import { InputCreateTypeExamAsoSchema, OutputCreateTypeExamAsoDTO } from "../dtos/TypeExamAso/InputCreateTypeExamAso.dto";
+import { InputEditTypeExamAsoSchema, OutputEditTypeExamAsoDTO } from "../dtos/TypeExamAso/InputEditTypeExamAso.dto";
+import { InputDeleteTypeExamAsoSchema, OutputDeleteTypeExamAsoDTO } from "../dtos/TypeExamAso/InputDeleteTypeExamAso.dto";
 
-export class OccupationalRiskController {
+export class TypeExamAsoController {
 
     constructor(
-        private OccupationalRiskBuisness: OccupationalRiskBusiness
+        private TypeExamAsoBuisness: TypeExamAsoBusiness
     ){}
 
-    public createOccupationalRisk = async (req: Request, res: Response) => {
+    public createTypeExamAso = async (req: Request, res: Response) => {
 
         try {
             
-            const { occupationalRisk } = req.body
+            const { typeExams } = req.body
 
-            const input = InputCreateOccupationalRiskSchema.parse(
+            const input = InputCreateTypeExamAsoSchema.parse(
                 {
-                    occupationalRisk
+                    typeExams
                 }
             )
 
-            const output: OutputCreateOccupationalRiskDTO = await this.OccupationalRiskBuisness.createOccupationalRisk(input)
+            const output: OutputCreateTypeExamAsoDTO = await this.TypeExamAsoBuisness.createTypeExamAso(input)
 
             res.status(201).send(output)
 
@@ -41,20 +45,20 @@ export class OccupationalRiskController {
 
     }
 
-    public editOccupationalRisk = async (req: Request, res: Response) => {
+    public editTypeExamAso = async (req: Request, res: Response) => {
 
         try {
             
             const { name } = req.body
 
-            const input = InputEditOccupationalRiskSchema.parse(
+            const input = InputEditTypeExamAsoSchema.parse(
                 {
                     id: req.params.id,
                     name
                 }
             )
 
-            const output: OutputEditOccupationalRiskDTO = await this.OccupationalRiskBuisness.editOccupationalRisk(input)
+            const output: OutputEditTypeExamAsoDTO = await this.TypeExamAsoBuisness.editTypeExamAso(input)
 
             res.status(201).send(output)
 
@@ -70,11 +74,11 @@ export class OccupationalRiskController {
 
     }
 
-    public getAllOccupationalRisk = async (req: Request, res: Response) => {
+    public getAllTypeExamAso = async (req: Request, res: Response) => {
 
         try {
     
-            const output = await this.OccupationalRiskBuisness.getAllOccupationalRisk()
+            const output = await this.TypeExamAsoBuisness.getAllTypeExamAso()
 
             res.status(200).send(output)
 
@@ -90,18 +94,18 @@ export class OccupationalRiskController {
 
     }
     
-    public deleteOccupationalRisk = async (req: Request, res: Response) => {
+    public deleteTypeExamAso = async (req: Request, res: Response) => {
 
         try {
             
         
-            const input = InputDeleteOccupationalRiskSchema.parse(
+            const input = InputDeleteTypeExamAsoSchema.parse(
                 {
                     id: req.params.id
                 }
             )
 
-            const output: OutputDeleteOccupationalRiskDTO = await this.OccupationalRiskBuisness.deleteOccupationalRisk(input)
+            const output: OutputDeleteTypeExamAsoDTO = await this.TypeExamAsoBuisness.deleteTypeExamAso(input)
 
             res.status(201).send(output)
 
