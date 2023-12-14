@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS forms (
     rg TEXT NOT NULL,
     cnpj TEXT,
     cpf TEXT,
+    function_patient TEXT NOT NULL,
     number_procedures INT NOT NULL,
     id_type_exam TEXT NOT NULL,
     status_exam INT NOT NULL,

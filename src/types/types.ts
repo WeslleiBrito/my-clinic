@@ -19,7 +19,7 @@ export interface PatientDB {
 export interface CompanyModel {
     id: string
     name: string
-    cnpj: string 
+    cnpj: string
     createdAt: string
     updatedAt: string
 }
@@ -70,6 +70,7 @@ export interface FormDB {
     rg: string,
     cnpj: string | undefined,
     cpf: string | undefined,
+    function_patient: string,
     number_procedures: number,
     id_type_exam: string,
     status_exam: 0 | 1,
@@ -95,10 +96,16 @@ export interface ModelForm {
     rg: string,
     cnpj: string | undefined,
     cpf: string | undefined,
+    functionPatient: string,
+    status: boolean,
     numberProcedures: number,
     amount: number,
     createdAt: string,
     updatedAt: string,
+    typeExamAso: {
+        id: string,
+        name: string
+    },
     exams: {
         id: string,
         name: string,
@@ -107,7 +114,7 @@ export interface ModelForm {
     OccupationalHazards: {
         id: string,
         name: string
-    }[]
+    }[]   
 }
 
 export interface ExamModel {

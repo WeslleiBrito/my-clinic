@@ -1,3 +1,5 @@
+import { ModelForm } from "../types/types"
+
 export class Form {
 
     constructor(
@@ -10,8 +12,12 @@ export class Form {
             rg: string,
             cnpj: string | undefined,
             cpf: string | undefined,
+            functionPatient: string,
             numberProcedures: number,
-            idTypeExamAso: string,
+            typeExamAso: {
+                id: string,
+                name: string
+            },
             status: boolean,
             amount: number,
             createdAt: string,
@@ -57,8 +63,12 @@ export class Form {
         return this.input.cnpj
     }
 
-    public getIdTypeExamAso = (): string => {
-        return this.input.idTypeExamAso
+    public getFunctionPatient = (): string => {
+        return this.input.functionPatient
+    }
+
+    public getIdTypeExamAso = (): {id: string, name: string} => {
+        return this.input.typeExamAso
     }
 
     public getStatus = (): boolean => {
@@ -93,6 +103,28 @@ export class Form {
         return this.input.occupationalHazards
     }
 
+    public getAllFormModel = (): ModelForm => {
+        
+        return {
+            id: this.input.id,
+            namePatient: this.input.namePatient,
+            nameCompany: this.input.nameCompany,
+            idPatient: this.input.idPatient,
+            idCompany: this.input.idCompany,
+            rg: this.input.rg,
+            cpf: this.input.cpf,
+            cnpj: this.input.cnpj,
+            functionPatient: this.input.functionPatient,
+            status: this.input.status,
+            amount: this.input.amount,
+            createdAt: this.input.createdAt,
+            updatedAt: this.input.updatedAt,
+            numberProcedures: this.input.numberProcedures,
+            typeExamAso: this.input.typeExamAso,
+            exams: this.input.exams,
+            OccupationalHazards: this.input.occupationalHazards
+        }
+    }
     public setNumberProcedures = (newNumberProcedures: number): void => {
         this.input.numberProcedures = newNumberProcedures
     }
@@ -133,12 +165,16 @@ export class Form {
         this.input.updatedAt = newDate
     }
 
-    public setIdTypeExamAso = (newIdTypeExamAso: string): void => {
-        this.input.idTypeExamAso = newIdTypeExamAso
+    public setIdTypeExamAso = (newIdTypeExamAso: {id: string, name: string}): void => {
+        this.input.typeExamAso = newIdTypeExamAso
     }
 
     public setStatus = (newStatus: boolean): void => {
         this.input.status = newStatus
+    }
+
+    public setFunctionPatient = (newFunctionPatient: string): void => {
+        this.input.functionPatient = newFunctionPatient
     }
 
 }

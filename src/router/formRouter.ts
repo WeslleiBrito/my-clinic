@@ -9,6 +9,7 @@ import { PatientDatabase } from "../database/PatientsDatabase"
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase'
 import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase"
 import { OccupationalRiskFormsDatabase } from "../database/OccupationalRisckFormDatabase"
+import { TypeExamAsoDatabase } from "../database/TypeExamAsoDatabase"
 
 
 export const formRouter = express.Router()
@@ -22,7 +23,8 @@ const newFormController = new FormController(
         new ProceduresFormsDatabase(),
         new IdGenerator(),
         new OccupationalRiskDatabase(),
-        new OccupationalRiskFormsDatabase()
+        new OccupationalRiskFormsDatabase(),
+        new TypeExamAsoDatabase()
     )
 )
 

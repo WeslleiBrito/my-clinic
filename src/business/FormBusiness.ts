@@ -33,7 +33,7 @@ export class FormBusiness {
 
     public createForm = async (input: InputCreateFormDTO): Promise<OutputCreateFormDTO> => {
 
-        const {idCompany, idExams, idPatient, idOccupationalHazards, idTypeExamAso, status} = input
+        const {idCompany, idExams, idPatient, idOccupationalHazards, idTypeExamAso, status, functionPatient} = input
 
         const examExistAll = await this.examDatabase.findExamBy('id', idExams.map((exam) => exam.id))
 
@@ -103,8 +103,12 @@ export class FormBusiness {
                 occupationalHazards: occupationalRisks,
                 rg: patientExist.rg,
                 updatedAt: date,
-                idTypeExamAso: typeExamAsoExist.id,
-                status: status
+                typeExamAso: {
+                    id: typeExamAsoExist.id,
+                    name: typeExamAsoExist.name
+                },
+                status: status,
+                functionPatient: functionPatient
             }
         )
         
@@ -123,8 +127,9 @@ export class FormBusiness {
                 name_patient: newForm.getNamePatient(),
                 number_procedures: newForm.getNumberProcedures(),
                 updated_at: newForm.getUpdatedAt(),
-                id_type_exam: newForm.getIdTypeExamAso(),
-                status_exam: newForm.getStatus() ? 1 : 0
+                id_type_exam: newForm.getIdTypeExamAso().id,
+                status_exam: newForm.getStatus() ? 1 : 0,
+                function_patient: newForm.getFunctionPatient()
             }
         )
         
@@ -157,7 +162,7 @@ export class FormBusiness {
 
     public editForm = async (input: InputEditFormDTO): Promise<OutputEditFormDTO> => {
         
-        const {id, idCompany, idExams, idPatient, idOccupationalHazards} = input 
+        const {id, idCompany, idExams, idPatient, idOccupationalHazards, functionPatient, idTypeExamAso, status} = input 
 
         let addProcedure: ProceduresFormsDB[] = []
         let removeProcedure: ProceduresFormsDB[] = []
@@ -167,9 +172,9 @@ export class FormBusiness {
         let add = 0
         let lower = 0
 
-        const form = await this.formDatabase.findFormBy('id', [id])
+        const searchForm = await this.formDatabase.findFormBy('id', [id])
 
-        if(form.length < 1){
+        if(searchForm.length < 1){
             throw new NotFoundError('O formulário informado não existe.')
         }
 
@@ -274,21 +279,43 @@ export class FormBusiness {
             })         
         }
 
+        if(idTypeExamAso){
+
+            const idTypeExamAsoExist = await this.typeExameAsoDatabase.findTypeExamAsoBy('id', [idTypeExamAso])
+
+            if(!idTypeExamAsoExist){
+                throw new NotFoundError('O tipo do exame informado não existe.')
+            }
+        }
+
+        const [formDatabase] = [...searchForm]
+    
+        const [typeExamAso] = await this.typeExameAsoDatabase.findTypeExamAsoBy('id', [formDatabase.id_type_exam])
+        
         const newForm = new Form (
-            id,
-            form[0].id_company,
-            form[0].id_patient,
-            form[0].name_company,
-            form[0].name_patient,
-            form[0].rg,
-            form[0].cnpj,
-            form[0].cpf,
-            form[0].number_procedures,
-            form[0].amount,
-            form[0].created_at,
-            form[0].updated_at,            
-            [],
-            []
+            {
+                amount: formDatabase.amount,
+                cnpj: formDatabase.cnpj,
+                cpf: formDatabase.cpf,
+                createdAt: formDatabase.created_at,
+                exams: [],
+                functionPatient: formDatabase.function_patient,
+                id: id,
+                idCompany: formDatabase.id_company,
+                idPatient: formDatabase.id_patient,
+                nameCompany: formDatabase.name_company,
+                namePatient: formDatabase.name_patient,
+                numberProcedures: formDatabase.number_procedures,
+                occupationalHazards: [],
+                rg: formDatabase.rg,
+                status: formDatabase.status_exam ? true : false,
+                typeExamAso: {
+                    id: typeExamAso.id,
+                    name: typeExamAso.name
+                },
+                updatedAt: formDatabase.updated_at
+            }
+
         )
 
         if(idCompany){
@@ -314,6 +341,11 @@ export class FormBusiness {
         newForm.setNumberProcedures(newForm.getNumberProcedures() - removeProcedure.length + addProcedure.length)
         newForm.setUpdatedAt(new Date().toISOString())
 
+        if(idTypeExamAso){
+            const [typeExamAso] = await this.typeExameAsoDatabase.findTypeExamAsoBy('id', [idTypeExamAso])
+            newForm.setIdTypeExamAso({id: typeExamAso.id, name: typeExamAso.name})
+        }
+
         await this.formDatabase.editForm(
             {
                 amount: newForm.getAmount(),
@@ -327,7 +359,10 @@ export class FormBusiness {
                 name_company: newForm.getNameCompany(),
                 name_patient: newForm.getNamePatient(),
                 number_procedures: newForm.getNumberProcedures(),
-                updated_at: newForm.getUpdatedAt()
+                updated_at: newForm.getUpdatedAt(),
+                function_patient: functionPatient || newForm.getFunctionPatient(),
+                id_type_exam: newForm.getIdTypeExamAso().id,
+                status_exam: newForm.getStatus() ? 1 : 0
             }
         )
 
@@ -361,9 +396,9 @@ export class FormBusiness {
         const forms = await this.formDatabase.findAllForm()
         const proceduresAll = await this.proceduresFormsDatabase.findAllProceduresForms()
         const occupationalRiskAll = await this.occupationalRiskFormDatabase.findAllOccupationalRiskForms()
+        const formsModel: ModelForm[] = []
 
-        const formsModel: ModelForm[] = forms.map((form) => {
-
+        for (const form of forms){
             const procedures: {id: string, name: string, price: number}[] = []
             const occupationalRisks: {id: string, name: string}[] = []
 
@@ -389,41 +424,37 @@ export class FormBusiness {
                     })
                 }
             })
-
+                
+            const [typeExamAso] = await this.typeExameAsoDatabase.findTypeExamAsoBy('id', [form.id_type_exam]) 
+                
             const newForm = new Form (
-                form.id,
-                form.id_company,
-                form.id_patient,
-                form.name_company,
-                form.name_patient,
-                form.rg,
-                form.cnpj,
-                form.cpf,
-                form.number_procedures,
-                form.amount,
-                form.created_at,
-                form.updated_at,
-                procedures,
-                occupationalRisks
+                {
+                    id: form.id,
+                    namePatient: form.name_patient,
+                    nameCompany: form.name_company,
+                    idPatient: form.id_patient,
+                    idCompany: form.id_company,
+                    rg: form.rg,
+                    cpf: form.cpf,
+                    cnpj: form.cnpj,
+                    numberProcedures: form.number_procedures,
+                    functionPatient: form.function_patient,
+                    typeExamAso: {
+                        id: typeExamAso.id,
+                        name: typeExamAso.name
+                    },
+                    status: form.status_exam ? true : false,
+                    createdAt: form.created_at,
+                    updatedAt: form.updated_at,
+                    amount: form.amount,
+                    exams: procedures,
+                    occupationalHazards: occupationalRisks
+                }
             )
-            
-            return {
-                id: newForm.getId(),
-                idCompany: newForm.getIdCompany(),
-                idPatient: newForm.getIdPatient(),
-                nameCompany: newForm.getNameCompany(),
-                namePatient: newForm.getNamePatient(),
-                rg: newForm.getRg(),
-                cnpj: newForm.getCnpj() ? newForm.getCnpj() : "",
-                cpf: newForm.getCpf() ? newForm.getCpf() : "",
-                numberProcedures: newForm.getNumberProcedures(),
-                amount: newForm.getAmount(),
-                createdAt: newForm.getCreatedAt(),
-                updatedAt: newForm.getUpdatedAt(),
-                exams: newForm.getExams(),
-                OccupationalHazards: newForm.getOccupationalHazards()
-            }
-        })  
+
+            formsModel.push(newForm.getAllFormModel())
+        }
+        
 
         return formsModel
     }
