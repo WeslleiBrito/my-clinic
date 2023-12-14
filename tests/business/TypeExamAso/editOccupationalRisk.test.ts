@@ -1,48 +1,49 @@
-import {OccupationalRiskBusiness} from '../../../src/business/OccupationalRiskBusiness'
-import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
-import { InputEditInputEditOccupationalRiskSchema } from '../../../src/dtos/occupationalRisk/InputEditOccupationalRisk.dto'
+import { InputEditOccupationalRiskSchema } from '../../../src/dtos/occupationalRisk/InputEditOccupationalRisk.dto'
 import { BaseError } from '../../../src/errors/BaseError'
-import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
+import { TypeExamAsoBusiness } from '../../../src/business/TypeExamAsoBusiness'
+import { TypeExamAsoDatabaseMock } from '../../moks/TypeExamAsoDatabaseMock'
+import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
+import { InputEditTypeExamAsoSchema } from '../../../src/dtos/TypeExamAso/InputEditTypeExamAso.dto'
 
 
 
-describe("Testando o occupationalRisk", () => {
+describe("Testando o Type Exam Aso", () => {
 
-    const OccupationalRisk = new OccupationalRiskBusiness(
-        new OccupationalRiskDatabaseMock(),
+    const typeExamAsoBusiness = new TypeExamAsoBusiness (
+        new TypeExamAsoDatabaseMock(),
         new IdGeneratorMock(),
-        new OccupationalRiskFormsDatabaseMock()
+        new FormDatabaseMock()
     )
 
 
     test("Edição completa", async () => {
 
-        const input = InputEditInputEditOccupationalRiskSchema.parse({
-            id: "occupational002",
+        const input = InputEditTypeExamAsoSchema.parse({
+            id: "typeExamAso001",
             name: "Novo nome"
         })
 
-        const output = await OccupationalRisk.editOccupationalRisk(input)
+        const output = await typeExamAsoBusiness.editTypeExamAso(input)
 
         expect(output).toEqual(
             {
-                message: "Risco ocupacional editado com sucesso atualizado com sucesso!"
+                message: "Formulário atualizado com sucesso!"
             }
         )
     })
 
     test("Edição sem passar o nome", async () => {
 
-        const input = InputEditInputEditOccupationalRiskSchema.parse({
-            id: "occupational002"
+        const input = InputEditOccupationalRiskSchema.parse({
+            id: "typeExamAso002"
         })
 
-        const output = await OccupationalRisk.editOccupationalRisk(input)
+        const output = await typeExamAsoBusiness.editTypeExamAso(input)
 
         expect(output).toEqual(
             {
-                message: "Risco ocupacional editado com sucesso atualizado com sucesso!"
+                message: "Formulário atualizado com sucesso!"
             }
         )
     })
@@ -52,13 +53,13 @@ describe("Testando o occupationalRisk", () => {
 
         try {
             
-            const input = InputEditInputEditOccupationalRiskSchema.parse(
+            const input = InputEditOccupationalRiskSchema.parse(
                 {
                     id: "id inválido"
                 }
             )
     
-           await OccupationalRisk.editOccupationalRisk(input)
+           await typeExamAsoBusiness.editTypeExamAso(input)
 
         } catch (error) {
             expect(error).toBeDefined()
@@ -66,19 +67,19 @@ describe("Testando o occupationalRisk", () => {
         }
     })
 
-    test("Deve gerar um erro quando o nome já estiver sendo usando em outro risco ocupacional.", async () => {
+    test("Deve gerar um erro quando o nome já estiver sendo usando em outro tipo de exame aso.", async () => {
         expect.assertions(2)
 
         try {
             
-            const input = InputEditInputEditOccupationalRiskSchema.parse(
+            const input = InputEditOccupationalRiskSchema.parse(
                 {
-                    id: "occupational002",
-                    name: "Fisico"
+                    id: "typeExamAso002",
+                    name: "Demissional"
                 }
             )
     
-           await OccupationalRisk.editOccupationalRisk(input)
+           await typeExamAsoBusiness.editTypeExamAso(input)
 
         } catch (error) {
             expect(error).toBeDefined()
