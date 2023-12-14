@@ -1,6 +1,6 @@
 import {FormBusiness} from '../../../src/business/FormBusiness'
 import { CompaniesDatabaseMock } from '../../moks/CompanyDatabaseMock'
-import { InputDeleteFormSchema } from '../../../src/dtos/Form/InputDeleteForm.dto'
+import { InputDeleteFormSchema } from '../../../src/dtos/form/InputDeleteForm.dto'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import { PatientDatabaseMock } from '../../moks/PatientDatabaseMock'
@@ -9,6 +9,7 @@ import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 import { BaseError } from '../../../src/errors/BaseError'
 import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
 import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
+import { TypeExamAsoDatabaseMock } from '../../moks/TypeExamAsoDatabaseMock'
 
 
 describe("Testando a edição dos formulários", () => {
@@ -21,7 +22,8 @@ describe("Testando a edição dos formulários", () => {
         new ProceduresFormsDatabaseMock(),
         new IdGeneratorMock(),
         new OccupationalRiskDatabaseMock(),
-        new OccupationalRiskFormsDatabaseMock()
+        new OccupationalRiskFormsDatabaseMock(),
+        new TypeExamAsoDatabaseMock()
     )
 
     test("Sucesso ao deletar", async () => {

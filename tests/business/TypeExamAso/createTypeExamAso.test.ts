@@ -29,7 +29,7 @@ describe("Testando o TypeExamAso", () => {
         const output = await TypeExamAso.createTypeExamAso(input)
 
         expect(output).toEqual({
-            message: "Tipo de exames aso criados com sucesso!"
+            message: "Tipo de exame aso criado com sucesso!"
         })
     })
 
@@ -51,7 +51,7 @@ describe("Testando o TypeExamAso", () => {
         const output = await TypeExamAso.createTypeExamAso(input)
 
         expect(output).toEqual({
-            message: "Riscos ocupacionais criados com sucesso!"
+            message: "Tipos de exames aso criados com sucesso!"
         })
     })
 

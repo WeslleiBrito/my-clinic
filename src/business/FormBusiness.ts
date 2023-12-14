@@ -6,9 +6,9 @@ import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
 import { TypeExamAsoDatabase } from "../database/TypeExamAsoDatabase";
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
-import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto'
-import { InputDeleteFormDTO, OutputDeleteFormDTO } from "../dtos/Form/InputDeleteForm.dto";
-import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.dto'
+import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/form/InputCreateForm.dto'
+import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/form/InputDeleteForm.dto'
+import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/form/InputEditForm.dto'
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
@@ -281,7 +281,7 @@ export class FormBusiness {
 
         if(idTypeExamAso){
 
-            const idTypeExamAsoExist = await this.typeExameAsoDatabase.findTypeExamAsoBy('id', [idTypeExamAso])
+            const [idTypeExamAsoExist] = await this.typeExameAsoDatabase.findTypeExamAsoBy('id', [idTypeExamAso])
 
             if(!idTypeExamAsoExist){
                 throw new NotFoundError('O tipo do exame informado não existe.')
@@ -435,8 +435,8 @@ export class FormBusiness {
                     idPatient: form.id_patient,
                     idCompany: form.id_company,
                     rg: form.rg,
-                    cpf: form.cpf,
-                    cnpj: form.cnpj,
+                    cpf: form.cpf ? form.cpf : '',
+                    cnpj: form.cnpj ? form.cnpj : '',
                     numberProcedures: form.number_procedures,
                     functionPatient: form.function_patient,
                     typeExamAso: {

@@ -8,6 +8,7 @@ import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 import { ModelForm } from '../../../src/types/types'
 import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
 import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
+import { TypeExamAsoDatabaseMock } from '../../moks/TypeExamAsoDatabaseMock'
 
 
 describe("Testando o getForms", () => {
@@ -20,7 +21,8 @@ describe("Testando o getForms", () => {
         new ProceduresFormsDatabaseMock(),
         new IdGeneratorMock(),
         new OccupationalRiskDatabaseMock(),
-        new OccupationalRiskFormsDatabaseMock()
+        new OccupationalRiskFormsDatabaseMock(),
+        new TypeExamAsoDatabaseMock()
     )
 
     test('Buscando todos os formulários', async () => {
@@ -29,6 +31,12 @@ describe("Testando o getForms", () => {
                 id: 'idForm001',
                 cnpj: '40968052000170',
                 cpf: '14963598108',
+                functionPatient: "Auxiliar Administrativo",
+                status: true,
+                typeExamAso: {
+                    id: "typeExamAso001",
+                    name: "Admissional"
+                },
                 createdAt: expect.any(String),
                 exams: [
                     {
@@ -66,6 +74,12 @@ describe("Testando o getForms", () => {
                 id: 'idForm002',
                 cnpj: '97316319000162',
                 cpf: '75766888902',
+                functionPatient: "Serviços gerais",
+                status: false,
+                typeExamAso: {
+                    id: "typeExamAso002",
+                    name: "Demissional"
+                },
                 createdAt: expect.any(String),
                 exams: [
                    
@@ -98,6 +112,12 @@ describe("Testando o getForms", () => {
                 id: 'idForm003',
                 cnpj: '42941090000165',
                 cpf: '98488159889',
+                functionPatient: "Motorista",
+                status: true,
+                typeExamAso: {
+                    id: "typeExamAso001",
+                    name: "Admissional"
+                },
                 createdAt: expect.any(String),
                 exams: [
                    
@@ -126,6 +146,12 @@ describe("Testando o getForms", () => {
                 id: 'idForm004',
                 cnpj: '',
                 cpf: '',
+                functionPatient: "Jardineiro",
+                status: true,
+                typeExamAso: {
+                    id: "typeExamAso002",
+                    name: "Demissional"
+                },
                 createdAt: expect.any(String),
                 exams: [
                    

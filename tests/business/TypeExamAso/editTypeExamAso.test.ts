@@ -1,5 +1,4 @@
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
-import { InputEditOccupationalRiskSchema } from '../../../src/dtos/occupationalRisk/InputEditOccupationalRisk.dto'
 import { BaseError } from '../../../src/errors/BaseError'
 import { TypeExamAsoBusiness } from '../../../src/business/TypeExamAsoBusiness'
 import { TypeExamAsoDatabaseMock } from '../../moks/TypeExamAsoDatabaseMock'
@@ -28,14 +27,14 @@ describe("Testando o Type Exam Aso", () => {
 
         expect(output).toEqual(
             {
-                message: "Formulário atualizado com sucesso!"
+                message: "Tipo de exame aso editado com sucesso atualizado com sucesso!"
             }
         )
     })
 
     test("Edição sem passar o nome", async () => {
 
-        const input = InputEditOccupationalRiskSchema.parse({
+        const input = InputEditTypeExamAsoSchema.parse({
             id: "typeExamAso002"
         })
 
@@ -43,7 +42,7 @@ describe("Testando o Type Exam Aso", () => {
 
         expect(output).toEqual(
             {
-                message: "Formulário atualizado com sucesso!"
+                message: "Tipo de exame aso editado com sucesso atualizado com sucesso!"
             }
         )
     })
@@ -53,7 +52,7 @@ describe("Testando o Type Exam Aso", () => {
 
         try {
             
-            const input = InputEditOccupationalRiskSchema.parse(
+            const input = InputEditTypeExamAsoSchema.parse(
                 {
                     id: "id inválido"
                 }
@@ -72,10 +71,10 @@ describe("Testando o Type Exam Aso", () => {
 
         try {
             
-            const input = InputEditOccupationalRiskSchema.parse(
+            const input = InputEditTypeExamAsoSchema.parse(
                 {
                     id: "typeExamAso002",
-                    name: "Demissional"
+                    name: "Retorno ao trabalho"
                 }
             )
     

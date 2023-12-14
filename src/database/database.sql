@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS procedures_forms (
     FOREIGN KEY(id_exam) REFERENCES exams(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS occupationalRisk_forms (
+CREATE TABLE IF NOT EXISTS occupational_risk_forms (
     id TEXT PRIMARY KEY NOT NULL,
     id_form TEXT NOT NULL,
     id_risk TEXT NOT NULL,

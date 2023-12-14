@@ -1,50 +1,44 @@
-import {OccupationalRiskBusiness} from '../../../src/business/OccupationalRiskBusiness'
-import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
-import { OccupationalRiscModel } from '../../../src/types/types'
-import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
+import { TypeExamAsoModel } from '../../../src/types/types'
+import { TypeExamAsoBusiness } from '../../../src/business/TypeExamAsoBusiness'
+import { TypeExamAsoDatabaseMock } from '../../moks/TypeExamAsoDatabaseMock'
+import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 
 
 
-describe("Testando o occupationalRisk", () => {
+describe("Testando o get all type exam aso", () => {
 
-    const occupationalRisk = new OccupationalRiskBusiness(
-        new OccupationalRiskDatabaseMock(),
+    const typeExamAso = new TypeExamAsoBusiness (
+        new TypeExamAsoDatabaseMock(),
         new IdGeneratorMock(),
-        new OccupationalRiskFormsDatabaseMock()
+        new FormDatabaseMock()
     )
 
-    const occupationalModel: OccupationalRiscModel[] = [
+    const typeExamAsoModel: TypeExamAsoModel[] = [
         {
             createdAt: expect.any(String),
-            id: "occupational001",
-            name: "Fisico",
+            id: "typeExamAso001",
+            name: "Admissional",
             updatedAt: expect.any(String)
         },
         {
             createdAt: expect.any(String),
-            id: "occupational002",
-            name: "Ruído",
+            id: "typeExamAso002",
+            name: "Demissional",
             updatedAt: expect.any(String)
         },
         {
             createdAt: expect.any(String),
-            id: "occupational003",
-            name: "Poeira",
-            updatedAt: expect.any(String)
-        },
-        {
-            createdAt: expect.any(String),
-            id: "occupational004",
-            name: "Químico",
+            id: "typeExamAso003",
+            name: "Retorno ao trabalho",
             updatedAt: expect.any(String)
         }
     ]
 
-    test("Buscando todos os ricos ocupacionais", async () => {
+    test("Buscando todos os tipos de exames aso", async () => {
 
-        const searchAll = await occupationalRisk.getAllOccupationalRisk()
+        const searchAll = await typeExamAso.getAllTypeExamAso()
 
-        expect(searchAll).toEqual(occupationalModel)
+        expect(searchAll).toEqual(typeExamAsoModel)
     })
 })

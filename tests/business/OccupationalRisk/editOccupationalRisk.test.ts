@@ -1,7 +1,7 @@
 import {OccupationalRiskBusiness} from '../../../src/business/OccupationalRiskBusiness'
 import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
-import { InputEditInputEditOccupationalRiskSchema } from '../../../src/dtos/occupationalRisk/InputEditOccupationalRisk.dto'
+import { InputEditOccupationalRiskSchema } from '../../../src/dtos/occupationalRisk/InputEditOccupationalRisk.dto'
 import { BaseError } from '../../../src/errors/BaseError'
 import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
 
@@ -18,7 +18,7 @@ describe("Testando o occupationalRisk", () => {
 
     test("Edição completa", async () => {
 
-        const input = InputEditInputEditOccupationalRiskSchema.parse({
+        const input = InputEditOccupationalRiskSchema.parse({
             id: "occupational002",
             name: "Novo nome"
         })
@@ -34,7 +34,7 @@ describe("Testando o occupationalRisk", () => {
 
     test("Edição sem passar o nome", async () => {
 
-        const input = InputEditInputEditOccupationalRiskSchema.parse({
+        const input = InputEditOccupationalRiskSchema.parse({
             id: "occupational002"
         })
 
@@ -52,7 +52,7 @@ describe("Testando o occupationalRisk", () => {
 
         try {
             
-            const input = InputEditInputEditOccupationalRiskSchema.parse(
+            const input = InputEditOccupationalRiskSchema.parse(
                 {
                     id: "id inválido"
                 }
@@ -71,7 +71,7 @@ describe("Testando o occupationalRisk", () => {
 
         try {
             
-            const input = InputEditInputEditOccupationalRiskSchema.parse(
+            const input = InputEditOccupationalRiskSchema.parse(
                 {
                     id: "occupational002",
                     name: "Fisico"

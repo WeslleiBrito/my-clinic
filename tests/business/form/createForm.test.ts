@@ -1,5 +1,5 @@
 import {FormBusiness} from '../../../src/business/FormBusiness'
-import { InputCreateFormSchema } from '../../../src/dtos/Form/InputCreateForm.dto'
+import { InputCreateFormSchema } from '../../../src/dtos/form/InputCreateForm.dto'
 import { CompaniesDatabaseMock } from '../../moks/CompanyDatabaseMock'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
@@ -10,6 +10,7 @@ import { ZodError } from 'zod'
 import { BaseError } from '../../../src/errors/BaseError'
 import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
 import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
+import { TypeExamAsoDatabaseMock } from '../../moks/TypeExamAsoDatabaseMock'
 
 describe("Testando a form", () => {
 
@@ -21,15 +22,53 @@ describe("Testando a form", () => {
         new ProceduresFormsDatabaseMock(),
         new IdGeneratorMock(),
         new OccupationalRiskDatabaseMock(),
-        new OccupationalRiskFormsDatabaseMock()
+        new OccupationalRiskFormsDatabaseMock(),
+        new TypeExamAsoDatabaseMock()
     )
 
-    test('Deve criar um novo formulário', async () => {
+    test('Deve criar um novo formulário com status true', async () => {
 
         const input = InputCreateFormSchema.parse(
             {
                 idCompany: "idCompany002",
                 idPatient: "idPatient003",
+                idTypeExamAso: "typeExamAso001",
+                functionPatient: "Ajudante de pedreiro",
+                status: true,
+                idExams: [
+                    {
+                        id: "idExam002"
+                    },
+                    {
+                        id: "idExam001"
+                    }
+                ],
+                idOccupationalHazards: [
+                    {
+                        id: "occupational001"
+                    },
+                    {
+                        id: "occupational002"
+                    }
+                ]
+            }
+        )
+
+        const output = await formBusiness.createForm(input)
+
+        expect(output).toEqual({
+            message: "Formulário criado com sucesso!"
+        })
+    })
+    test('Deve criar um novo formulário com status false', async () => {
+
+        const input = InputCreateFormSchema.parse(
+            {
+                idCompany: "idCompany002",
+                idPatient: "idPatient003",
+                idTypeExamAso: "typeExamAso001",
+                functionPatient: "Ajudante de pedreiro",
+                status: false,
                 idExams: [
                     {
                         id: "idExam002"
@@ -56,15 +95,58 @@ describe("Testando a form", () => {
         })
     })
 
-    test("Deve gerar um erro caso o idComapany seja inválido.", async () => {
+    test("Deve gerar um erro caso o id do tipo do exame seja inválido.", async () => {
 
         expect.assertions(2)
 
         try {
             const input = InputCreateFormSchema.parse(
                 {
-                    idCompany: "idCompany inválido",
+                    idCompany: "idCompany002",
                     idPatient: "idPatient003",
+                    idTypeExamAso: "id inválido",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
+                    idExams : [
+                        {
+                            id: "idExam002"
+                        },
+                        {
+                            id: "idExam001"
+                        }
+                    ],
+                    idOccupationalHazards: [
+                        {
+                            id: "occupational001"
+                        },
+                        {
+                            id: "occupational002"
+                        }
+                    ]
+                }
+            )
+    
+            const output = await formBusiness.createForm(input)
+
+        } catch (error) {
+            expect(error).toBeDefined()
+            expect(error).toBeInstanceOf(BaseError)
+        }
+    })
+
+   
+    test("Deve gerar um erro caso o idCompany seja inválido.", async () => {
+
+        expect.assertions(2)
+
+        try {
+            const input = InputCreateFormSchema.parse(
+                {
+                    idCompany: "id inválido",
+                    idPatient: "idPatient003",
+                    idTypeExamAso: "typeExamAso001",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
                     idExams : [
                         {
                             id: "idExam002"
@@ -101,6 +183,9 @@ describe("Testando a form", () => {
                 {
                     idCompany: "idCompany002",
                     idPatient: "idPatient inválido",
+                    idTypeExamAso: "typeExamAso001",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
                     idExams : [
                         {
                             id: "idExam002"
@@ -137,6 +222,9 @@ describe("Testando a form", () => {
                 {
                     idCompany: "idCompany002",
                     idPatient: "idPatient003",
+                    idTypeExamAso: "typeExamAso001",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
                     idExams : [
                         {
                             id: "idExam inválido"
@@ -173,6 +261,9 @@ describe("Testando a form", () => {
                 {
                     idCompany: "idCompany002",
                     idPatient: "idPatient003",
+                    idTypeExamAso: "typeExamAso001",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
                     idExams : [
                         {
                             id: "idExam inválido"
@@ -209,6 +300,9 @@ describe("Testando a form", () => {
                 {
                     idCompany: "idCompany002",
                     idPatient: "idPatient003",
+                    idTypeExamAso: "typeExamAso001",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
                     idExams : [
                         {
                             id: "idExam001"
@@ -245,6 +339,9 @@ describe("Testando a form", () => {
                 {
                     idCompany: "idCompany002",
                     idPatient: "idPatient003",
+                    idTypeExamAso: "typeExamAso001",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
                     idExams : [
                         {
                             id: "idExam001"
@@ -280,6 +377,9 @@ describe("Testando a form", () => {
             const input = InputCreateFormSchema.parse(
                 {
                     idPatient: "idPatient003",
+                    idTypeExamAso: "typeExamAso001",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
                     idExams : [
                         {
                             id: "idExam002"
@@ -315,6 +415,9 @@ describe("Testando a form", () => {
             const input = InputCreateFormSchema.parse(
                 {
                     idCompany: "idCompany002",
+                    idTypeExamAso: "typeExamAso001",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
                     idExams : [
                         {
                             id: "idExam002"
@@ -351,6 +454,9 @@ describe("Testando a form", () => {
                 {
                     idCompany: "idCompany002",
                     idPatient: "idPatient003",
+                    idTypeExamAso: "typeExamAso001",
+                    functionPatient: "Ajudante de pedreiro",
+                    status: true,
                     idOccupationalHazards: [
                         {
                             id: "occupational001"

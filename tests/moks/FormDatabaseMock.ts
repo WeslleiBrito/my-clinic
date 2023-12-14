@@ -6,6 +6,9 @@ const FormMock: FormDB[] = [
         amount: 0,
         cnpj: "40968052000170",
         cpf: "14963598108",
+        function_patient: "Auxiliar Administrativo",
+        id_type_exam: "typeExamAso001",
+        status_exam: 1,
         created_at: new Date().toISOString(),
         id: 'idForm001',
         id_company: "idCompany001",
@@ -20,6 +23,9 @@ const FormMock: FormDB[] = [
         amount: 0,
         cnpj: "97316319000162",
         cpf: "75766888902",
+        function_patient: "Serviços gerais",
+        id_type_exam: "typeExamAso002",
+        status_exam: 0,
         created_at: new Date().toISOString(),
         id: 'idForm002',
         id_company: "idCompany002",
@@ -34,6 +40,9 @@ const FormMock: FormDB[] = [
         amount: 15,
         cnpj: "42941090000165",
         cpf: "98488159889",
+        function_patient: "Motorista",
+        id_type_exam: "typeExamAso001",
+        status_exam: 1,
         created_at: new Date().toISOString(),
         id: 'idForm003',
         id_company: "idCompany003",
@@ -48,6 +57,9 @@ const FormMock: FormDB[] = [
         amount: 15,
         cnpj: undefined,
         cpf: undefined,
+        function_patient: "Jardineiro",
+        id_type_exam: "typeExamAso002",
+        status_exam: 1,
         created_at: new Date().toISOString(),
         id: 'idForm004',
         id_company: "idCompany004",
@@ -85,7 +97,10 @@ export class FormDatabaseMock extends BaseDatabase {
                     name_patient: search.name_patient,
                     number_procedures: search.number_procedures,
                     rg: search.rg,
-                    updated_at: search.updated_at
+                    updated_at: search.updated_at,
+                    function_patient: search.function_patient,
+                    id_type_exam: search.id_type_exam,
+                    status_exam: search.status_exam
                 })
             }
         })

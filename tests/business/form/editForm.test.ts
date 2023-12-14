@@ -1,5 +1,5 @@
 import {FormBusiness} from '../../../src/business/FormBusiness'
-import { InputEditFormSchema } from '../../../src/dtos/Form/InputEditForm.dto'
+import { InputEditFormSchema } from '../../../src/dtos/form/InputEditForm.dto'
 import { CompaniesDatabaseMock } from '../../moks/CompanyDatabaseMock'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
@@ -9,6 +9,7 @@ import { FormDatabaseMock } from '../../moks/FormDatabaseMock'
 import { BaseError } from '../../../src/errors/BaseError'
 import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
 import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
+import { TypeExamAsoDatabaseMock } from '../../moks/TypeExamAsoDatabaseMock'
 
 
 describe("Testando a edição dos formulários", () => {
@@ -21,16 +22,99 @@ describe("Testando a edição dos formulários", () => {
         new ProceduresFormsDatabaseMock(),
         new IdGeneratorMock(),
         new OccupationalRiskDatabaseMock(),
-        new OccupationalRiskFormsDatabaseMock()
+        new OccupationalRiskFormsDatabaseMock(),
+        new TypeExamAsoDatabaseMock()
     )
 
-    test("Testando edição completa do form", async () => {
+    test("Testando edição completa do form com status true", async () => {
 
         const input = InputEditFormSchema.parse(
             {
                 id: "idForm001",
                 idCompany: "idCompany002",
                 idPatient: "idPatient002",
+                idTypeExamAso: "typeExamAso003",
+                functionPatient: "Marceneiro",
+                status: false,
+                idExams: [
+                    {
+                        id: "idExam002",
+                        acction: false
+                    },
+                    {
+                        id: "idExam004",
+                        acction: true
+                    }
+
+                ],
+                idOccupationalHazards: [
+                    {
+                        id: "occupational001",
+                        acction: false
+                    },
+                    {
+                        id: "occupational002",
+                        acction: true
+                    }
+                ]
+            }
+        )
+
+        const output = await formBusiness.editForm(input)
+
+        expect(output).toEqual({
+            message: "Formulário atualizado com sucesso!"
+        })
+    })
+
+    test("Testando edição completa do form com status false", async () => {
+
+        const input = InputEditFormSchema.parse(
+            {
+                id: "idForm002",
+                idCompany: "idCompany002",
+                idPatient: "idPatient002",
+                idTypeExamAso: "typeExamAso003",
+                functionPatient: "Marceneiro",
+                idExams: [
+                    {
+                        id: "idExam002",
+                        acction: false
+                    },
+                    {
+                        id: "idExam004",
+                        acction: true
+                    }
+
+                ],
+                idOccupationalHazards: [
+                    {
+                        id: "occupational001",
+                        acction: false
+                    },
+                    {
+                        id: "occupational002",
+                        acction: true
+                    }
+                ]
+            }
+        )
+
+        const output = await formBusiness.editForm(input)
+
+        expect(output).toEqual({
+            message: "Formulário atualizado com sucesso!"
+        })
+    })
+    
+    test("Testando edição completa do form sem editar a função", async () => {
+
+        const input = InputEditFormSchema.parse(
+            {
+                id: "idForm002",
+                idCompany: "idCompany002",
+                idPatient: "idPatient002",
+                idTypeExamAso: "typeExamAso003",
                 idExams: [
                     {
                         id: "idExam002",
@@ -82,6 +166,25 @@ describe("Testando a edição dos formulários", () => {
                             acction: false
                         }
                     ]
+                }
+            )
+    
+           await formBusiness.editForm(input)
+
+        } catch (error) {
+            expect(error).toBeDefined()
+            expect(error).toBeInstanceOf(BaseError)
+        }
+    })
+    test("Deve gerar um erro caso o id do tipo do exame seja inválido.", async () => {
+
+        expect.assertions(2)
+
+        try {
+            const input = InputEditFormSchema.parse(
+                {
+                    id: "idForm001",
+                    idTypeExamAso: "id inválido"
                 }
             )
     

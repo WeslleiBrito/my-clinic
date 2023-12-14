@@ -15,6 +15,12 @@ const TypeExamAsoBaseMock: TypeExameAsoDB[] = [
         name: "Demissional",
         updated_at: new Date().toISOString()
     },
+    {
+        created_at: new Date().toISOString(),
+        id: "typeExamAso003",
+        name: "Retorno ao trabalho",
+        updated_at: new Date().toISOString()
+    }
     
 ]
 
