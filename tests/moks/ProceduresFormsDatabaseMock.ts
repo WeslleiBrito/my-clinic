@@ -7,6 +7,7 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_exam: "idExam002",
         id_form: "idForm003",
         name_exam: "Espirometria",
+        date: "2023-06-20",
         price: 15
     },
     {
@@ -14,6 +15,7 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_exam: "idExam001",
         id_form: "idForm002",
         name_exam: "Glicose",
+        date: "2023-12-01",
         price: 0
     },
     {
@@ -21,6 +23,7 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_exam: "idExam003",
         id_form: "idForm001",
         name_exam: "Avaliação clínica",
+        date: "2023-08-03",
         price: 0
     },
     {
@@ -28,6 +31,7 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_exam: "idExam001",
         id_form: "idForm001",
         name_exam: "Glicose",
+        date: "2023-01-23",
         price: 0
     },
     {
@@ -35,6 +39,7 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_exam: "idExam002",
         id_form: "idForm001",
         name_exam: "Espirometria",
+        date: "2023-06-20",
         price: 0
     },
     {
@@ -42,6 +47,7 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_exam: "idExam002",
         id_form: "idForm004",
         name_exam: "Espirometria",
+        date: "2023-11-10",
         price: 15
     }
 ]
@@ -64,7 +70,8 @@ export class ProceduresFormsDatabaseMock extends BaseDatabase {
                     id_exam: search.id_exam,
                     id_form: search.id_form,
                     name_exam: search.name_exam,
-                    price: search.price
+                    price: search.price,
+                    date: search.date
                 })
             }
         })

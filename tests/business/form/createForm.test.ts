@@ -1,5 +1,5 @@
 import {FormBusiness} from '../../../src/business/FormBusiness'
-import { InputCreateFormSchema } from '../../../src/dtos/form/InputCreateForm.dto'
+import { InputCreateFormSchema } from '../../../src/dtos/Form/InputCreateForm.dto'
 import { CompaniesDatabaseMock } from '../../moks/CompanyDatabaseMock'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
@@ -37,10 +37,12 @@ describe("Testando a form", () => {
                 status: true,
                 idExams: [
                     {
-                        id: "idExam002"
+                        id: "idExam002",
+                        date: "2023-12-18"
                     },
                     {
-                        id: "idExam001"
+                        id: "idExam001",
+                        date: "2023-12-18"
                     }
                 ],
                 idOccupationalHazards: [
@@ -71,10 +73,12 @@ describe("Testando a form", () => {
                 status: false,
                 idExams: [
                     {
-                        id: "idExam002"
+                        id: "idExam002",
+                        date: "2023-12-18"
                     },
                     {
-                        id: "idExam001"
+                        id: "idExam001",
+                        date: "2023-12-18"
                     }
                 ],
                 idOccupationalHazards: [
@@ -109,10 +113,12 @@ describe("Testando a form", () => {
                     status: true,
                     idExams : [
                         {
-                            id: "idExam002"
+                            id: "idExam002",
+                            date: "2023-12-18"
                         },
                         {
-                            id: "idExam001"
+                            id: "idExam001",
+                            date: "2023-12-18"
                         }
                     ],
                     idOccupationalHazards: [
@@ -149,10 +155,12 @@ describe("Testando a form", () => {
                     status: true,
                     idExams : [
                         {
-                            id: "idExam002"
+                            id: "idExam002",
+                            date: "2023-12-18"
                         },
                         {
-                            id: "idExam001"
+                            id: "idExam001",
+                            date: "2023-12-18"
                         }
                     ],
                     idOccupationalHazards: [
@@ -188,10 +196,12 @@ describe("Testando a form", () => {
                     status: true,
                     idExams : [
                         {
-                            id: "idExam002"
+                            id: "idExam002",
+                            date: "2023-12-18"
                         },
                         {
-                            id: "idExam001"
+                            id: "idExam001",
+                            date: "2023-12-18"
                         }
                     ],
                     idOccupationalHazards: [
@@ -227,10 +237,12 @@ describe("Testando a form", () => {
                     status: true,
                     idExams : [
                         {
-                            id: "idExam inválido"
+                            id: "idExam inválido",
+                            date: "2023-12-18"
                         },
                         {
-                            id: "idExam001"
+                            id: "idExam001",
+                            date: "2023-12-18"
                         }
                     ],
                     idOccupationalHazards: [
@@ -266,10 +278,12 @@ describe("Testando a form", () => {
                     status: true,
                     idExams : [
                         {
-                            id: "idExam inválido"
+                            id: "idExam inválido",
+                            date: "2023-12-18"
                         },
                         {
-                            id: "idExam inválido"
+                            id: "idExam inválido",
+                            date: "2023-12-18"
                         }
                     ],
                     idOccupationalHazards: [
@@ -305,10 +319,12 @@ describe("Testando a form", () => {
                     status: true,
                     idExams : [
                         {
-                            id: "idExam001"
+                            id: "idExam001",
+                            date: "2023-12-18"
                         },
                         {
-                            id: "idExam002"
+                            id: "idExam002",
+                            date: "2023-12-18"
                         }
                     ],
                     idOccupationalHazards: [
@@ -344,10 +360,12 @@ describe("Testando a form", () => {
                     status: true,
                     idExams : [
                         {
-                            id: "idExam001"
+                            id: "idExam001",
+                            date: "2023-12-18"
                         },
                         {
-                            id: "idExam002"
+                            id: "idExam002",
+                            date: "2023-12-18"
                         }
                     ],
                     idOccupationalHazards: [
@@ -382,10 +400,12 @@ describe("Testando a form", () => {
                     status: true,
                     idExams : [
                         {
-                            id: "idExam002"
+                            id: "idExam002",
+                            date: "2023-12-18"
                         },
                         {
-                            id: "idExam001"
+                            id: "idExam001",
+                            date: "2023-12-18"
                         }
                     ],
                     idOccupationalHazards: [
@@ -420,10 +440,12 @@ describe("Testando a form", () => {
                     status: true,
                     idExams : [
                         {
-                            id: "idExam002"
+                            id: "idExam002",
+                            date: "2023-12-18"
                         },
                         {
-                            id: "idExam001"
+                            id: "idExam001",
+                            date: "2023-12-18"
                         }
                     ],
                     idOccupationalHazards: [

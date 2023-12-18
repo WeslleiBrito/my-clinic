@@ -35,24 +35,28 @@ describe("Testando o getForms", () => {
                 status: true,
                 typeExamAso: {
                     id: "typeExamAso001",
-                    name: "Admissional"
+                    name: "Admissional",
+                    
                 },
                 createdAt: expect.any(String),
                 exams: [
                     {
                         id: "idExam003",
                         name: "Avaliação clínica",
-                        price: 0
+                        price: 0,
+                        date: "2023-08-03"
                     },
                     {
                         id: "idExam001",
                         name: "Glicose",
-                        price: 0
+                        price: 0,
+                        date: "2023-01-23"
                     },
                     {
                         id: "idExam002",
                         name: "Espirometria",
-                        price: 0
+                        price: 0,
+                        date: "2023-06-20"
                     }
                 ],
                 amount: 0,
@@ -86,7 +90,8 @@ describe("Testando o getForms", () => {
                     {
                         id: "idExam001",
                         name: "Glicose",
-                        price: 0
+                        price: 0,
+                        date: "2023-12-01"
                     }
                 ],
                 amount: 0,
@@ -124,7 +129,8 @@ describe("Testando o getForms", () => {
                     {
                         id: "idExam002",
                         name: "Espirometria",
-                        price: 15
+                        price: 15,
+                        date: "2023-06-20"
                     }
                 ],
                 amount: 15,
@@ -158,7 +164,8 @@ describe("Testando o getForms", () => {
                     {
                         id: "idExam002",
                         name: "Espirometria",
-                        price: 15
+                        price: 15,
+                        date: "2023-11-10"
                     }
                 ],
                 amount: 15,

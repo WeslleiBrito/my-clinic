@@ -1,6 +1,6 @@
 import {FormBusiness} from '../../../src/business/FormBusiness'
 import { CompaniesDatabaseMock } from '../../moks/CompanyDatabaseMock'
-import { InputDeleteFormSchema } from '../../../src/dtos/form/InputDeleteForm.dto'
+import { InputDeleteFormSchema } from '../../../src/dtos/Form/InputDeleteForm.dto'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
 import { PatientDatabaseMock } from '../../moks/PatientDatabaseMock'

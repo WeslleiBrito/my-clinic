@@ -9,6 +9,7 @@ export interface InputEditFormDTO {
     status?: boolean,
     idExams? : {
         id: string,
+        date: Date
         acction: boolean
     }[],
     idOccupationalHazards?: {
@@ -25,7 +26,13 @@ export interface OutputEditFormDTO {
 export const idExamsSchema = z.object(
     {
         id: z.string({required_error: "O id do exame deve ser informado.", invalid_type_error: "Espera-se que o id do exame venha como uma string."}),
-        acction: z.boolean({required_error: "É obrigatório informar a ação a ser executada.", invalid_type_error: "Espera-se que a ação seja um valor boolean."})
+        acction: z.boolean({required_error: "É obrigatório informar a ação a ser executada.", invalid_type_error: "Espera-se que a ação seja um valor boolean."}),
+        date: z.string({ required_error: 'A data de realização do exame é obrigatória.', invalid_type_error: 'A data precisa ser do tipo string.' })
+            .refine((value) => {
+                const parsedDate = new Date(value);
+                return !isNaN(parsedDate.getTime()); // Garante que a string possa ser convertida para um objeto Date válido
+            })
+            .transform((value) => new Date(value))
     }
 )
 

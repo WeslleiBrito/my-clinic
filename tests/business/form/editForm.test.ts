@@ -1,5 +1,5 @@
 import {FormBusiness} from '../../../src/business/FormBusiness'
-import { InputEditFormSchema } from '../../../src/dtos/form/InputEditForm.dto'
+import { InputEditFormSchema } from '../../../src/dtos/Form/InputEditForm.dto'
 import { CompaniesDatabaseMock } from '../../moks/CompanyDatabaseMock'
 import { ExamsDatabaseMock } from '../../moks/ExamDatabaseMock'
 import { IdGeneratorMock } from '../../moks/IdGeneratorMock'
@@ -39,11 +39,13 @@ describe("Testando a edição dos formulários", () => {
                 idExams: [
                     {
                         id: "idExam002",
-                        acction: false
+                        acction: false,
+                        date: '2023-12-18'
                     },
                     {
                         id: "idExam004",
-                        acction: true
+                        acction: true,
+                        date: '2023-12-18'
                     }
 
                 ],
@@ -79,11 +81,13 @@ describe("Testando a edição dos formulários", () => {
                 idExams: [
                     {
                         id: "idExam002",
-                        acction: false
+                        acction: false,
+                        date: '2023-12-18'
                     },
                     {
                         id: "idExam004",
-                        acction: true
+                        acction: true,
+                        date: '2023-12-18'
                     }
 
                 ],
@@ -118,11 +122,13 @@ describe("Testando a edição dos formulários", () => {
                 idExams: [
                     {
                         id: "idExam002",
-                        acction: false
+                        acction: false,
+                        date: '2023-12-18'
                     },
                     {
                         id: "idExam004",
-                        acction: true
+                        acction: true,
+                        date: '2023-12-18'
                     }
 
                 ],
@@ -159,11 +165,13 @@ describe("Testando a edição dos formulários", () => {
                     idExams : [
                         {
                             id: "idExam002",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         },
                         {
                             id: "idExam001",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         }
                     ]
                 }
@@ -209,11 +217,13 @@ describe("Testando a edição dos formulários", () => {
                     idExams : [
                         {
                             id: "idExam002",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         },
                         {
                             id: "idExam001",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         }
                     ]
                 }
@@ -240,11 +250,13 @@ describe("Testando a edição dos formulários", () => {
                     idExams : [
                         {
                             id: "idExam002",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         },
                         {
                             id: "idExam001",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         }
                     ]
                 }
@@ -271,11 +283,13 @@ describe("Testando a edição dos formulários", () => {
                     idExams : [
                         {
                             id: "idExam invalido 1",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         },
                         {
                             id: "idExam001",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         }
                     ]
                 }
@@ -302,11 +316,13 @@ describe("Testando a edição dos formulários", () => {
                     idExams : [
                         {
                             id: "idExam invalido 1",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         },
                         {
                             id: "idExam invalido 2",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         }
                     ]
                 }
@@ -361,11 +377,13 @@ describe("Testando a edição dos formulários", () => {
                     idOccupationalHazards: [
                         {
                             id: "id inválido 1",
-                            acction: true
+                            acction: true,
+                            date: '2023-12-18'
                         },
                         {
                             id: "id inválido 2",
-                            acction: false
+                            acction: false,
+                            date: '2023-12-18'
                         }
                     ]
                 }

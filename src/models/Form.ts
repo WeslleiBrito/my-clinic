@@ -25,7 +25,8 @@ export class Form {
             exams: {
                 id: string,
                 name: string,
-                price: number
+                price: number,
+                date: string
             }[],
             occupationalHazards: {
                 id: string,
@@ -95,7 +96,7 @@ export class Form {
         return this.input.updatedAt
     }
 
-    public getExams = (): { id: string, name: string, price: number }[] => {
+    public getExams = (): { id: string, name: string, price: number, date: string }[] => {
         return this.input.exams
     }
 

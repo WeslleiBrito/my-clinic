@@ -6,9 +6,9 @@ import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
 import { TypeExamAsoDatabase } from "../database/TypeExamAsoDatabase";
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
-import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/form/InputCreateForm.dto'
-import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/form/InputDeleteForm.dto'
-import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/form/InputEditForm.dto'
+import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto'
+import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/Form/InputDeleteForm.dto'
+import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.dto'
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
@@ -61,13 +61,13 @@ export class FormBusiness {
             throw new NotFoundError('O paciente informada não existe.')
         }
 
-        const exams: {id: string, name: string, price: number, idExame: string, idForm: string}[] = examExistAll.map((exam) => {
+        const exams: {id: string, name: string, price: number, date: string}[] = examExistAll.map((exam) => {
+            const searchDate = idExams.find((element) => element.id === exam.id)?.date.toISOString() 
             return {
                 id: exam.id,
-                idExame: "",
-                idForm: "",
                 name: exam.name,
-                price: exam.price
+                price: exam.price,
+                date: searchDate as string
             }
         })
 
@@ -139,7 +139,8 @@ export class FormBusiness {
                 id_exam: exam.id,
                 id_form: newForm.getId(),
                 name_exam: exam.name,
-                price: exam.price
+                price: exam.price, 
+                date: exam.date
             }
         })
 
@@ -207,7 +208,7 @@ export class FormBusiness {
             idExams.forEach((item) => {
 
                 const examSearch = idExamsExist.find((exam) => exam.id === item.id) as ExamsDB
-
+                const searchDate = idExams.find((element) => element.id === item.id)?.date.toISOString() 
                 if(item.acction){
 
                     addProcedure.push(
@@ -216,7 +217,8 @@ export class FormBusiness {
                             id_exam: item.id,
                             id_form: id,
                             name_exam: examSearch.name,
-                            price: examSearch.price
+                            price: examSearch.price,
+                            date: searchDate as string
                         }
                     )
 
@@ -228,7 +230,8 @@ export class FormBusiness {
                             id_exam: item.id,
                             id_form: id,
                             name_exam: examSearch.name,
-                            price: examSearch.price
+                            price: examSearch.price,
+                            date: searchDate as string
                         }
                     )
                 }
@@ -399,7 +402,7 @@ export class FormBusiness {
         const formsModel: ModelForm[] = []
 
         for (const form of forms){
-            const procedures: {id: string, name: string, price: number}[] = []
+            const procedures: {id: string, name: string, price: number, date: string}[] = []
             const occupationalRisks: {id: string, name: string}[] = []
 
             proceduresAll.forEach((procedure) => {
@@ -409,7 +412,8 @@ export class FormBusiness {
                     procedures.push({
                         id: procedure.id_exam,
                         name: procedure.name_exam,
-                        price: procedure.price
+                        price: procedure.price,
+                        date: procedure.date
                     })
                 }
             })
