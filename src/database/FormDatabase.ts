@@ -37,7 +37,8 @@ export class FormDatabase extends BaseDatabase {
             updated_at,
             function_patient,
             id_type_exam,
-            status_exam
+            status_exam,
+            comments
         } = input
 
         await FormDatabase.connection(FormDatabase.TABLE_FORMS).insert(
@@ -56,7 +57,8 @@ export class FormDatabase extends BaseDatabase {
                 updated_at,
                 function_patient,
                 status_exam,
-                id_type_exam
+                id_type_exam,
+                comments
             }
         )
 
@@ -64,7 +66,7 @@ export class FormDatabase extends BaseDatabase {
 
     public editForm = async (input: FormDB): Promise<void> => {
         
-        const {id, updated_at, amount, cnpj, cpf, id_company, id_patient, name_company, name_patient, number_procedures, rg, function_patient, id_type_exam, status_exam} = input
+        const {id, updated_at, amount, cnpj, cpf, id_company, id_patient, name_company, name_patient, number_procedures, rg, function_patient, id_type_exam, status_exam, comments} = input
 
         await FormDatabase.connection(FormDatabase.TABLE_FORMS).update(
             {
@@ -80,7 +82,8 @@ export class FormDatabase extends BaseDatabase {
                 number_procedures,
                 function_patient,
                 id_type_exam,
-                status_exam
+                status_exam,
+                comments
             }
         ).where({id})
     }

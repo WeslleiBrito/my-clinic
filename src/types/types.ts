@@ -76,7 +76,8 @@ export interface FormDB {
     status_exam: 0 | 1,
     amount: number,
     created_at: string,
-    updated_at: string
+    updated_at: string,
+    comments: string
 }
 
 export interface ProceduresFormsDB {
@@ -116,7 +117,8 @@ export interface ModelForm {
     OccupationalHazards: {
         id: string,
         name: string
-    }[]   
+    }[],
+    comments?: string  
 }
 
 export interface ExamModel {

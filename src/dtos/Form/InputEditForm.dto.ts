@@ -15,8 +15,8 @@ export interface InputEditFormDTO {
     idOccupationalHazards?: {
         id: string,
         acction: boolean
-    }[]
-    
+    }[],
+    comments? : string 
 }
 
 export interface OutputEditFormDTO {
@@ -52,6 +52,7 @@ export const InputEditFormSchema = z.object(
         idOccupationalHazards: z.array(idOccupationalHazards).optional(),
         idTypeExamAso: z.string({invalid_type_error: "Espera-se que o id do tipo do exame venha como uma string."}).optional(),
         functionPatient: z.string({invalid_type_error: "Espera-se que função do paciente venha como uma string."}).optional(),
-        status: z.boolean({invalid_type_error: "O status deve ser um boolen"}).optional()
+        status: z.boolean({invalid_type_error: "O status deve ser um boolen"}).optional(),
+        comments: z.string({invalid_type_error: "Espera-se que as observações venham como strings."}).optional()
     }
 ).transform(data => data as InputEditFormDTO)

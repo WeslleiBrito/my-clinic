@@ -141,8 +141,11 @@ describe("Testando a edição dos formulários", () => {
                         id: "occupational002",
                         acction: true
                     }
-                ]
+                ],
+                status: true,
+                comments: "Depois de feita as avaliaçõe o paciente está apto."
             }
+
         )
 
         const output = await formBusiness.editForm(input)

@@ -33,7 +33,7 @@ export class FormBusiness {
 
     public createForm = async (input: InputCreateFormDTO): Promise<OutputCreateFormDTO> => {
 
-        const {idCompany, idExams, idPatient, idOccupationalHazards, idTypeExamAso, status, functionPatient} = input
+        const {idCompany, idExams, idPatient, idOccupationalHazards, idTypeExamAso, status, functionPatient, comments} = input
 
         const examExistAll = await this.examDatabase.findExamBy('id', idExams.map((exam) => exam.id))
 
@@ -62,12 +62,12 @@ export class FormBusiness {
         }
 
         const exams: {id: string, name: string, price: number, date: string}[] = examExistAll.map((exam) => {
-            const searchDate = idExams.find((element) => element.id === exam.id)?.date.toISOString() 
+            const searchDate = idExams.find((element) => element.id === exam.id) as {id: string, acction: boolean, date: Date}
             return {
                 id: exam.id,
                 name: exam.name,
                 price: exam.price,
-                date: searchDate as string
+                date: searchDate.date.toISOString()
             }
         })
 
@@ -108,7 +108,8 @@ export class FormBusiness {
                     name: typeExamAsoExist.name
                 },
                 status: status,
-                functionPatient: functionPatient
+                functionPatient: functionPatient,
+                comments: comments
             }
         )
         
@@ -129,7 +130,8 @@ export class FormBusiness {
                 updated_at: newForm.getUpdatedAt(),
                 id_type_exam: newForm.getIdTypeExamAso().id,
                 status_exam: newForm.getStatus() ? 1 : 0,
-                function_patient: newForm.getFunctionPatient()
+                function_patient: newForm.getFunctionPatient(),
+                comments: newForm.getComments()
             }
         )
         
@@ -163,7 +165,7 @@ export class FormBusiness {
 
     public editForm = async (input: InputEditFormDTO): Promise<OutputEditFormDTO> => {
         
-        const {id, idCompany, idExams, idPatient, idOccupationalHazards, functionPatient, idTypeExamAso, status} = input 
+        const {id, idCompany, idExams, idPatient, idOccupationalHazards, functionPatient, idTypeExamAso, status, comments} = input 
 
         let addProcedure: ProceduresFormsDB[] = []
         let removeProcedure: ProceduresFormsDB[] = []
@@ -208,7 +210,7 @@ export class FormBusiness {
             idExams.forEach((item) => {
 
                 const examSearch = idExamsExist.find((exam) => exam.id === item.id) as ExamsDB
-                const searchDate = idExams.find((element) => element.id === item.id)?.date.toISOString() 
+                const searchDate = idExams.find((element) => element.id === item.id) as {id: string, acction: boolean, date: Date}
                 if(item.acction){
 
                     addProcedure.push(
@@ -218,7 +220,7 @@ export class FormBusiness {
                             id_form: id,
                             name_exam: examSearch.name,
                             price: examSearch.price,
-                            date: searchDate as string
+                            date: searchDate.date.toISOString()
                         }
                     )
 
@@ -231,7 +233,7 @@ export class FormBusiness {
                             id_form: id,
                             name_exam: examSearch.name,
                             price: examSearch.price,
-                            date: searchDate as string
+                            date: searchDate.date.toISOString()
                         }
                     )
                 }
@@ -349,6 +351,14 @@ export class FormBusiness {
             newForm.setIdTypeExamAso({id: typeExamAso.id, name: typeExamAso.name})
         }
 
+        if(status){
+            newForm.setStatus(status)
+        }
+
+        if(comments){
+            newForm.setComments(comments)
+        }
+
         await this.formDatabase.editForm(
             {
                 amount: newForm.getAmount(),
@@ -365,7 +375,8 @@ export class FormBusiness {
                 updated_at: newForm.getUpdatedAt(),
                 function_patient: functionPatient || newForm.getFunctionPatient(),
                 id_type_exam: newForm.getIdTypeExamAso().id,
-                status_exam: newForm.getStatus() ? 1 : 0
+                status_exam: newForm.getStatus() ? 1 : 0,
+                comments: newForm.getComments()
             }
         )
 
@@ -452,7 +463,8 @@ export class FormBusiness {
                     updatedAt: form.updated_at,
                     amount: form.amount,
                     exams: procedures,
-                    occupationalHazards: occupationalRisks
+                    occupationalHazards: occupationalRisks,
+                    comments: form.comments
                 }
             )
 

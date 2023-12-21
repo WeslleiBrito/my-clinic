@@ -72,7 +72,8 @@ describe("Testando o getForms", () => {
                         id: "occupational001",
                         name: "Fisico"
                     }
-                ]
+                ],
+                comments: "Nescessário acompanhamento psicológico"
             },
             {
                 id: 'idForm002',
@@ -111,7 +112,8 @@ describe("Testando o getForms", () => {
                         id: "occupational003",
                         name: "Poeira"
                     }
-                ]
+                ],
+                comments: ""
             },
             {
                 id: 'idForm003',
@@ -146,7 +148,8 @@ describe("Testando o getForms", () => {
                         id: "occupational003",
                         name: "Poeira"
                     }
-                ]
+                ],
+                comments: "Paciente precisa de avaliação cardíaca"
             },
             {
                 id: 'idForm004',
@@ -176,8 +179,10 @@ describe("Testando o getForms", () => {
                 numberProcedures: 1,
                 rg: "134167879",
                 updatedAt: expect.any(String),
-                OccupationalHazards: []
+                OccupationalHazards: [],
+                comments: ""
             }
+            
         ]
 
         const result = await formBusiness.getAllForms()

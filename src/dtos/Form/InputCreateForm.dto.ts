@@ -13,8 +13,8 @@ export interface InputCreateFormDTO {
     }[],
     idOccupationalHazards: {
         id: string
-    }[]
-
+    }[],
+    comments? : string 
 }
 
 
@@ -49,6 +49,7 @@ export const InputCreateFormSchema = z.object(
         functionPatient: z.string({ required_error: "A função do paciente deve ser informado.", invalid_type_error: "Espera-se que função do paciente venha como uma string." }),
         status: z.boolean({ required_error: "O status do aso deve ser informado.", invalid_type_error: "O status deve ser um boolen" }),
         idExams: z.array(idExamSchema),
-        idOccupationalHazards: z.array(idOccupationalHazardsSchema)
+        idOccupationalHazards: z.array(idOccupationalHazardsSchema),
+        comments: z.string({invalid_type_error: "Espera-se que as observações venham como strings."}).optional()
     }
 ).transform(data => data as InputCreateFormDTO)

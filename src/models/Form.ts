@@ -32,6 +32,7 @@ export class Form {
                 id: string,
                 name: string
             }[]
+            comments?: string
         }
     ) { }
 
@@ -104,6 +105,10 @@ export class Form {
         return this.input.occupationalHazards
     }
 
+    public getComments = (): string  => {
+        return this.input.comments ? this.input.comments : ""
+    }
+
     public getAllFormModel = (): ModelForm => {
         
         return {
@@ -123,7 +128,8 @@ export class Form {
             numberProcedures: this.input.numberProcedures,
             typeExamAso: this.input.typeExamAso,
             exams: this.input.exams,
-            OccupationalHazards: this.input.occupationalHazards
+            OccupationalHazards: this.input.occupationalHazards,
+            comments: this.input.comments ? this.input.comments : ""
         }
     }
     public setNumberProcedures = (newNumberProcedures: number): void => {
@@ -178,4 +184,7 @@ export class Form {
         this.input.functionPatient = newFunctionPatient
     }
 
+    public setComments = (newComments: string | undefined): void => {
+        this.input.comments = newComments
+    }
 }

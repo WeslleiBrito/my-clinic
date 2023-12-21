@@ -17,7 +17,8 @@ const FormMock: FormDB[] = [
         name_patient: "Alexandre Anderson Geraldo Figueiredo",
         number_procedures: 3,
         rg: "184133580",
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        comments: "Nescessário acompanhamento psicológico"
     },
     {
         amount: 0,
@@ -34,7 +35,8 @@ const FormMock: FormDB[] = [
         name_patient: "Vanessa Benedita Rayssa Mendes",
         number_procedures: 1,
         rg: "256521098",
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        comments: ""
     },
     {
         amount: 15,
@@ -51,7 +53,8 @@ const FormMock: FormDB[] = [
         name_patient: "Cecília Rosa Carla Almada",
         number_procedures: 1,
         rg: "339141980",
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        comments: "Paciente precisa de avaliação cardíaca"
     },
     {
         amount: 15,
@@ -68,7 +71,8 @@ const FormMock: FormDB[] = [
         name_patient: "Emilly Gabrielly da Conceição",
         number_procedures: 1,
         rg: "134167879",
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        comments: ""
     }
 ]
 
@@ -100,7 +104,8 @@ export class FormDatabaseMock extends BaseDatabase {
                     updated_at: search.updated_at,
                     function_patient: search.function_patient,
                     id_type_exam: search.id_type_exam,
-                    status_exam: search.status_exam
+                    status_exam: search.status_exam,
+                    comments: search.comments
                 })
             }
         })
