@@ -30,7 +30,8 @@ describe('Testando o createCompany', () => {
         const output = await companyBusiness.createCompany(input)
 
         expect(output).toEqual({
-            message: "Empresa cadastrada com sucesso!"
+            message: "Empresa cadastrada com sucesso!",
+            id: "idMockNew"
         })
     })
 
@@ -45,7 +46,8 @@ describe('Testando o createCompany', () => {
         const output = await companyBusiness.createCompany(input)
 
         expect(output).toEqual({
-            message: "Empresa cadastrada com sucesso!"
+            message: "Empresa cadastrada com sucesso!",
+            id: "idMockNew"
         })
     })
 

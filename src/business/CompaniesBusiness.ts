@@ -68,7 +68,8 @@ export class CompaniesBusiness {
         )
 
         return {
-            message: "Empresa cadastrada com sucesso!"
+            message: "Empresa cadastrada com sucesso!",
+            id
         }
     }
 

@@ -7,7 +7,8 @@ export interface InputCreateCompanyDTO {
 }
 
 export interface OutputCreateCompanyDTO {
-    message: string
+    message: string,
+    id: string
 }
 
 export const InputCreateCompanySchema = z.object(
