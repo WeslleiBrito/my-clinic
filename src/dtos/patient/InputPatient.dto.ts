@@ -7,7 +7,8 @@ export interface InputPatientDTO {
 }
 
 export interface OutputPatientDTO {
-    message: string
+    message: string, 
+    id: string
 }
 
 export const InputPatientSchema = z.object(

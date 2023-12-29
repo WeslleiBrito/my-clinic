@@ -69,7 +69,8 @@ export class PatientBuisness {
         )
         
         return {
-            message: "Paciente cadastrado com sucesso!"
+            message: "Paciente cadastrado com sucesso!",
+            id
         }
     }
 

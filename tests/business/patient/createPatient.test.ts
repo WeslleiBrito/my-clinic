@@ -29,7 +29,8 @@ describe('Testando o patientBusiness', () => {
 
         expect(output).toEqual(
             {
-                message: "Paciente cadastrado com sucesso!"
+                message: "Paciente cadastrado com sucesso!",
+                id: "idMockNew"
             }
         )
     })
@@ -47,7 +48,8 @@ describe('Testando o patientBusiness', () => {
 
         expect(output).toEqual(
             {
-                message: "Paciente cadastrado com sucesso!"
+                message: "Paciente cadastrado com sucesso!",
+                id: "idMockNew"
             }
         )
     })
