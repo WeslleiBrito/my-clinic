@@ -16,7 +16,7 @@ export class FormController {
 
         try {
             
-            const { idCompany, idPatient, idExams, idTypeExamAso, functionPatient, status, idOccupationalHazards } = req.body
+            const { idCompany, idPatient, idExams, idTypeExamAso, functionPatient, status, idOccupationalHazards, comments } = req.body
 
             const input = InputCreateFormSchema.parse(
                 {
@@ -26,7 +26,8 @@ export class FormController {
                     idTypeExamAso,
                     functionPatient,
                     status,
-                    idOccupationalHazards
+                    idOccupationalHazards,
+                    comments
                 }
             )
 
