@@ -30,7 +30,7 @@ describe("Testando a edição dos formulários", () => {
 
         const input = InputDeleteFormSchema.parse(
             {
-                id: "idForm001"
+                idForms: ["idForm001"]
             }
         )
 
@@ -50,7 +50,7 @@ describe("Testando a edição dos formulários", () => {
         try {
             const input = InputDeleteFormSchema.parse(
                 {
-                    id: "id inválido",
+                    idForms: ["id inválido"],
                 }
             )
     

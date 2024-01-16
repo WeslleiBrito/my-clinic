@@ -2,7 +2,7 @@ import z from 'zod'
 
 
 export interface InputDeleteFormDTO {
-    id: string
+    idForms: string[]
 }
 
 
@@ -12,6 +12,6 @@ export interface OutputDeleteFormDTO {
 
 export const InputDeleteFormSchema = z.object(
     {
-        id: z.string({required_error: "O id do formulário não foi informado."})
+        idForms: z.array(z.string({required_error: "O id do formulário não foi informado."}))
     }
 ).transform(data => data as InputDeleteFormDTO)

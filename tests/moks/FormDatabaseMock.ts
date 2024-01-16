@@ -126,7 +126,7 @@ export class FormDatabaseMock extends BaseDatabase {
         
     }
 
-    public deleteForm = async (id: string): Promise<void> => {
+    public deleteForm = async (idForms: string[]): Promise<void> => {
         
     }
 }

@@ -477,14 +477,14 @@ export class FormBusiness {
 
     public deleteForm = async (input: InputDeleteFormDTO): Promise<OutputDeleteFormDTO> => {
 
-        const formExist = await this.formDatabase.findFormBy('id', [input.id])
+        const formExist = await this.formDatabase.findFormBy('id', input.idForms)
    
 
-        if(formExist.length === 0){
+        if(formExist.length !== input.idForms.length){
            throw new NotFoundError("O formulário informado não exite, verifique o id.")
         }
 
-        await this.formDatabase.deleteForm(input.id)
+        await this.formDatabase.deleteForm(input.idForms)
 
         return {
             message: "Formulário deletado com sucesso."
