@@ -58,7 +58,9 @@ export class FormController {
                     cnpj,
                     cpf,
                     idExams,
-                    idOccupationalHazards
+                    idOccupationalHazards,
+                    functionPatient,
+                    comments
                 } = req.body
 
             const input = InputEditFormSchema.parse(
@@ -69,7 +71,9 @@ export class FormController {
                     cnpj,
                     cpf,
                     idExams,
-                    idOccupationalHazards
+                    idOccupationalHazards,
+                    functionPatient,
+                    comments
                 }
             )
 
