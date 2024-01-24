@@ -1,47 +1,51 @@
-import  z  from "zod"
+
+
+import z from "zod";
+import { ACCTIONS_EDIT_EXAM } from "../../types/types";
 
 export interface InputEditFormDTO {
-    id: string,
-    idCompany?: string,
-    idPatient?: string,
-    idTypeExamAso?: string,
-    functionPatient?: string,
-    status?: boolean,
-    idExams? : {
-        id: string,
-        date: Date
-        acction: boolean
-    }[],
+    id: string;
+    idCompany?: string;
+    idPatient?: string;
+    idTypeExamAso?: string;
+    functionPatient?: string;
+    status?: boolean;
+    idExams?: {
+        id: string;
+        date: Date;
+        acction: ACCTIONS_EDIT_EXAM; // Use the enum type here
+    }[];
     idOccupationalHazards?: {
-        id: string,
-        acction: boolean
-    }[],
-    comments? : string 
+        id: string;
+        acction: boolean;
+    }[];
+    comments?: string;
 }
 
 export interface OutputEditFormDTO {
-    message: string
+    message: string;
 }
 
-export const idExamsSchema = z.object(
-    {
-        id: z.string({required_error: "O id do exame deve ser informado.", invalid_type_error: "Espera-se que o id do exame venha como uma string."}),
-        acction: z.boolean({required_error: "É obrigatório informar a ação a ser executada.", invalid_type_error: "Espera-se que a ação seja um valor boolean."}),
-        date: z.string({ required_error: 'A data de realização do exame é obrigatória.', invalid_type_error: 'A data precisa ser do tipo string.' })
-            .refine((value) => {
-                const parsedDate = new Date(value);
-                return !isNaN(parsedDate.getTime()); // Garante que a string possa ser convertida para um objeto Date válido
-            })
-            .transform((value) => new Date(value))
-    }
-)
+const ACCTIONS_EDIT_EXAMEnum = z.nativeEnum(ACCTIONS_EDIT_EXAM);
+type ACCTIONS_EDIT_EXAMEnum = z.infer<typeof ACCTIONS_EDIT_EXAMEnum>; // ACCTIONS_EDIT_EXAM
+
+const idExamsSchema = z.object({
+    id: z.string({ required_error: "O id do exame deve ser informado.", invalid_type_error: "Espera-se que o id do exame venha como uma string." }),
+    acction: ACCTIONS_EDIT_EXAMEnum,
+    date: z.string({ required_error: 'A data de realização do exame é obrigatória.', invalid_type_error: 'A data precisa ser do tipo string.' })
+        .refine((value) => {
+            const parsedDate = new Date(value);
+            return !isNaN(parsedDate.getTime()); // Garante que a string possa ser convertida para um objeto Date válido
+        })
+        .transform((value) => new Date(value))
+});
 
 export const idOccupationalHazards = z.object(
     {
         id: z.string({required_error: "O id do risco ocupacional deve ser informado.", invalid_type_error: "Espera-se que o id do risco ocupacional venha como uma string."}),
         acction: z.boolean({required_error: "É obrigatório informar a ação a ser executada.", invalid_type_error: "Espera-se que a ação seja um valor boolean."})
     }
-)
+);
 
 export const InputEditFormSchema = z.object(
     {
@@ -55,4 +59,4 @@ export const InputEditFormSchema = z.object(
         status: z.boolean({invalid_type_error: "O status deve ser um boolen"}).optional(),
         comments: z.string({invalid_type_error: "Espera-se que as observações venham como strings."}).optional()
     }
-).transform(data => data as InputEditFormDTO)
+).transform(data => data as InputEditFormDTO);

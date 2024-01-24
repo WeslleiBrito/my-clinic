@@ -5,6 +5,11 @@ export enum USER_ROLES {
     NORMAL = "NORMAL"
 }
 
+export enum ACCTIONS_EDIT_EXAM {
+    ADD = "ADD",
+    REMOVE = "REMOVE",
+    EDIT = "EDIT"
+}
 
 export interface PatientDB {
     id: string,

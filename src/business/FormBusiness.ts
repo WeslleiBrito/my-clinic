@@ -6,13 +6,13 @@ import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
 import { TypeExamAsoDatabase } from "../database/TypeExamAsoDatabase";
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
-import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto'
-import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/Form/InputDeleteForm.dto'
-import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.dto'
+import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/form/InputCreateForm.dto'
+import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/form/InputDeleteForm.dto'
+import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/form/InputEditForm.dto'
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
-import { CompanyDB, ExamsDB, ModelForm, OccupationalRiskFormsDB, OccupationalRisksDB, PatientDB, ProceduresFormsDB } from "../types/types";
+import { ACCTIONS_EDIT_EXAM, CompanyDB, ExamsDB, ModelForm, OccupationalRiskFormsDB, OccupationalRisksDB, PatientDB, ProceduresFormsDB } from "../types/types";
 
 
 export class FormBusiness {
@@ -210,8 +210,8 @@ export class FormBusiness {
             idExams.forEach((item) => {
 
                 const examSearch = idExamsExist.find((exam) => exam.id === item.id) as ExamsDB
-                const searchDate = idExams.find((element) => element.id === item.id) as {id: string, acction: boolean, date: Date}
-                if(item.acction){
+                const searchDate = idExams.find((element) => element.id === item.id) as {id: string, acction: ACCTIONS_EDIT_EXAM, date: Date}
+                if(item.acction === ACCTIONS_EDIT_EXAM.ADD){
 
                     addProcedure.push(
                         {
@@ -224,7 +224,7 @@ export class FormBusiness {
                         }
                     )
 
-                }else{
+                }else if(item.acction === ACCTIONS_EDIT_EXAM.REMOVE){
 
                     removeProcedure.push(
                         {
