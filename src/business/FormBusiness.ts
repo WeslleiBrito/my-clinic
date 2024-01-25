@@ -215,7 +215,7 @@ export class FormBusiness {
 
                 const examSearch = idExamsExist.find((exam) => exam.id === item.id) as ExamsDB
                 const searchDate = idExams.find((element) => element.id === item.id) as {id: string, acction: ACCTIONS_EDIT_EXAM, date: Date}
-                if(item.acction === ACCTIONS_EDIT_EXAM.ADD){
+                if(item.acction === ACCTIONS_EDIT_EXAM.ADD || item.acction === ACCTIONS_EDIT_EXAM.add){
 
                     addProcedure.push(
                         {
@@ -229,7 +229,7 @@ export class FormBusiness {
                         }
                     )
 
-                }else if(item.acction === ACCTIONS_EDIT_EXAM.REMOVE){
+                }else if(item.acction === ACCTIONS_EDIT_EXAM.REMOVE || item.acction === ACCTIONS_EDIT_EXAM.remove){
 
                     removeProcedure.push(
                         {

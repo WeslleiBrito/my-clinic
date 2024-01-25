@@ -8,7 +8,10 @@ export enum USER_ROLES {
 export enum ACCTIONS_EDIT_EXAM {
     ADD = "ADD",
     REMOVE = "REMOVE",
-    EDIT = "EDIT"
+    EDIT = "EDIT",
+    add = "add",
+    remove = "remove",
+    edit = "edit"
 }
 
 export interface PatientDB {
