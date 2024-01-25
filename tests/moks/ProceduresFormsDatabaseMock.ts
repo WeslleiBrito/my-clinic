@@ -8,7 +8,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_form: "idForm003",
         name_exam: "Espirometria",
         date: "2023-06-20",
-        price: 15
+        price: 15,
+        updated_at: "2023-06-20"
     },
     {
         id: "procedure002",
@@ -16,7 +17,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_form: "idForm002",
         name_exam: "Glicose",
         date: "2023-12-01",
-        price: 0
+        price: 0,
+        updated_at: "2023-12-01"
     },
     {
         id: "procedure003",
@@ -24,7 +26,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_form: "idForm001",
         name_exam: "Avaliação clínica",
         date: "2023-08-03",
-        price: 0
+        price: 0,
+        updated_at: "2023-08-03"
     },
     {
         id: "procedure004",
@@ -32,7 +35,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_form: "idForm001",
         name_exam: "Glicose",
         date: "2023-01-23",
-        price: 0
+        price: 0,
+        updated_at: "2023-01-23"
     },
     {
         id: "procedure005",
@@ -40,7 +44,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_form: "idForm001",
         name_exam: "Espirometria",
         date: "2023-06-20",
-        price: 0
+        price: 0,
+        updated_at: "2023-06-20"
     },
     {
         id: "procedure006",
@@ -48,7 +53,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         id_form: "idForm004",
         name_exam: "Espirometria",
         date: "2023-11-10",
-        price: 15
+        price: 15,
+        updated_at: "2023-11-10"
     }
 ]
 
@@ -71,7 +77,8 @@ export class ProceduresFormsDatabaseMock extends BaseDatabase {
                     id_form: search.id_form,
                     name_exam: search.name_exam,
                     price: search.price,
-                    date: search.date
+                    date: search.date,
+                    updated_at: search.updated_at
                 })
             }
         })
@@ -86,7 +93,7 @@ export class ProceduresFormsDatabaseMock extends BaseDatabase {
 
     public createProceduresForms = async (input: ProceduresFormsDB[]): Promise<void> => {}
 
-    public editProceduresForms = async (input: ProceduresFormsDB): Promise<void> => {}
+    public editProceduresForms = async (input: ProceduresFormsDB[]): Promise<void> => {}
 
     public deleteProceduresForms  = async (idForm: string, idExams: string[]): Promise<void> => {}
 }

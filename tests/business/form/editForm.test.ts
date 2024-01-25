@@ -10,6 +10,7 @@ import { BaseError } from '../../../src/errors/BaseError'
 import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabaseMock'
 import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
 import { TypeExamAsoDatabaseMock } from '../../moks/TypeExamAsoDatabaseMock'
+import { ACCTIONS_EDIT_EXAM } from '../../../src/types/types'
 
 
 describe("Testando a edição dos formulários", () => {
@@ -39,13 +40,18 @@ describe("Testando a edição dos formulários", () => {
                 idExams: [
                     {
                         id: "idExam002",
-                        acction: false,
+                        acction: ACCTIONS_EDIT_EXAM.REMOVE,
                         date: '2023-12-18'
                     },
                     {
                         id: "idExam004",
-                        acction: true,
+                        acction: ACCTIONS_EDIT_EXAM.ADD,
                         date: '2023-12-18'
+                    },
+                    {
+                        id: "idExam003",
+                        acction: ACCTIONS_EDIT_EXAM.EDIT,
+                        date: '2024-01-05'
                     }
 
                 ],
@@ -81,13 +87,18 @@ describe("Testando a edição dos formulários", () => {
                 idExams: [
                     {
                         id: "idExam002",
-                        acction: false,
+                        acction: ACCTIONS_EDIT_EXAM.REMOVE,
                         date: '2023-12-18'
                     },
                     {
                         id: "idExam004",
-                        acction: true,
+                        acction: ACCTIONS_EDIT_EXAM.ADD,
                         date: '2023-12-18'
+                    },
+                    {
+                        id: "idExam003",
+                        acction: ACCTIONS_EDIT_EXAM.EDIT,
+                        date: '2024-01-05'
                     }
 
                 ],
@@ -122,13 +133,18 @@ describe("Testando a edição dos formulários", () => {
                 idExams: [
                     {
                         id: "idExam002",
-                        acction: false,
+                        acction: ACCTIONS_EDIT_EXAM.REMOVE,
                         date: '2023-12-18'
                     },
                     {
                         id: "idExam004",
-                        acction: true,
+                        acction: ACCTIONS_EDIT_EXAM.ADD,
                         date: '2023-12-18'
+                    },
+                    {
+                        id: "idExam003",
+                        acction: ACCTIONS_EDIT_EXAM.EDIT,
+                        date: '2024-01-05'
                     }
 
                 ],
@@ -165,18 +181,24 @@ describe("Testando a edição dos formulários", () => {
                     id: "id form inválido",
                     idPatient: "idPatient003",
                     idCompany: "idComapany003",
-                    idExams : [
+                    idExams: [
                         {
                             id: "idExam002",
-                            acction: false,
+                            acction: ACCTIONS_EDIT_EXAM.REMOVE,
                             date: '2023-12-18'
                         },
                         {
-                            id: "idExam001",
-                            acction: false,
+                            id: "idExam004",
+                            acction: ACCTIONS_EDIT_EXAM.ADD,
                             date: '2023-12-18'
+                        },
+                        {
+                            id: "idExam003",
+                            acction: ACCTIONS_EDIT_EXAM.EDIT,
+                            date: '2024-01-05'
                         }
-                    ]
+    
+                    ],
                 }
             )
     
@@ -217,17 +239,23 @@ describe("Testando a edição dos formulários", () => {
                     id: "idForm002",
                     idCompany: "idComapany inválido",
                     idPatient: "idPatient003",
-                    idExams : [
+                    idExams: [
                         {
                             id: "idExam002",
-                            acction: false,
+                            acction: ACCTIONS_EDIT_EXAM.REMOVE,
                             date: '2023-12-18'
                         },
                         {
-                            id: "idExam001",
-                            acction: false,
+                            id: "idExam004",
+                            acction: ACCTIONS_EDIT_EXAM.ADD,
                             date: '2023-12-18'
+                        },
+                        {
+                            id: "idExam003",
+                            acction: ACCTIONS_EDIT_EXAM.EDIT,
+                            date: '2024-01-05'
                         }
+    
                     ]
                 }
             )
@@ -250,17 +278,23 @@ describe("Testando a edição dos formulários", () => {
                     id: "idForm002",
                     idCompany: "idCompany002",
                     idPatient: "idPatient inválido",
-                    idExams : [
+                    idExams: [
                         {
                             id: "idExam002",
-                            acction: false,
+                            acction: ACCTIONS_EDIT_EXAM.REMOVE,
                             date: '2023-12-18'
                         },
                         {
-                            id: "idExam001",
-                            acction: false,
+                            id: "idExam004",
+                            acction: ACCTIONS_EDIT_EXAM.ADD,
                             date: '2023-12-18'
+                        },
+                        {
+                            id: "idExam003",
+                            acction: ACCTIONS_EDIT_EXAM.EDIT,
+                            date: '2024-01-05'
                         }
+    
                     ]
                 }
             )
@@ -283,17 +317,23 @@ describe("Testando a edição dos formulários", () => {
                     id: "idForm002",
                     idCompany: "idCompany002",
                     idPatient: "idPatient003",
-                    idExams : [
+                    idExams: [
                         {
-                            id: "idExam invalido 1",
-                            acction: false,
+                            id: "id invalido",
+                            acction: ACCTIONS_EDIT_EXAM.REMOVE,
                             date: '2023-12-18'
                         },
                         {
-                            id: "idExam001",
-                            acction: false,
+                            id: "idExam004",
+                            acction: ACCTIONS_EDIT_EXAM.ADD,
                             date: '2023-12-18'
+                        },
+                        {
+                            id: "idExam003",
+                            acction: ACCTIONS_EDIT_EXAM.EDIT,
+                            date: '2024-01-05'
                         }
+    
                     ]
                 }
             )
@@ -316,17 +356,23 @@ describe("Testando a edição dos formulários", () => {
                     id: "idForm002",
                     idCompany: "idCompany002",
                     idPatient: "idPatient003",
-                    idExams : [
+                    idExams: [
                         {
                             id: "idExam invalido 1",
-                            acction: false,
+                            acction: ACCTIONS_EDIT_EXAM.REMOVE,
                             date: '2023-12-18'
                         },
                         {
                             id: "idExam invalido 2",
-                            acction: false,
+                            acction: ACCTIONS_EDIT_EXAM.ADD,
                             date: '2023-12-18'
+                        },
+                        {
+                            id: "idExam invalido 3",
+                            acction: ACCTIONS_EDIT_EXAM.EDIT,
+                            date: '2024-01-05'
                         }
+    
                     ]
                 }
             )

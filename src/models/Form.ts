@@ -26,7 +26,8 @@ export class Form {
                 id: string,
                 name: string,
                 price: number,
-                date: string
+                date: string,
+                updatedAt: string
             }[],
             occupationalHazards: {
                 id: string,

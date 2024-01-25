@@ -92,6 +92,7 @@ export interface ProceduresFormsDB {
     name_exam: string,
     date: string,
     price: number
+    updated_at: string
 }
 
 export interface ModelForm {
@@ -117,7 +118,8 @@ export interface ModelForm {
         id: string,
         name: string,
         price: number,
-        date: string
+        date: string,
+        updatedAt: string
     }[],
     OccupationalHazards: {
         id: string,

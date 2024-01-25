@@ -6,9 +6,9 @@ import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
 import { TypeExamAsoDatabase } from "../database/TypeExamAsoDatabase";
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
-import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/form/InputCreateForm.dto'
-import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/form/InputDeleteForm.dto'
-import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/form/InputEditForm.dto'
+import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto'
+import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/Form/InputDeleteForm.dto'
+import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.dto'
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
@@ -61,13 +61,15 @@ export class FormBusiness {
             throw new NotFoundError('O paciente informada não existe.')
         }
 
-        const exams: {id: string, name: string, price: number, date: string}[] = examExistAll.map((exam) => {
+        const exams: {id: string, name: string, price: number, date: string, updatedAt: string}[] = examExistAll.map((exam) => {
             const searchDate = idExams.find((element) => element.id === exam.id) as {id: string, acction: boolean, date: Date}
             return {
                 id: exam.id,
                 name: exam.name,
                 price: exam.price,
-                date: searchDate.date.toISOString()
+                date: searchDate.date.toISOString(),
+                updatedAt: searchDate.date.toISOString()
+                
             }
         })
 
@@ -142,7 +144,8 @@ export class FormBusiness {
                 id_form: newForm.getId(),
                 name_exam: exam.name,
                 price: exam.price, 
-                date: exam.date
+                date: exam.date,
+                updated_at: new Date().toISOString()
             }
         })
 
@@ -168,6 +171,7 @@ export class FormBusiness {
         const {id, idCompany, idExams, idPatient, idOccupationalHazards, functionPatient, idTypeExamAso, status, comments} = input 
 
         let addProcedure: ProceduresFormsDB[] = []
+        let editProcedure: ProceduresFormsDB[] = []
         let removeProcedure: ProceduresFormsDB[] = []
         const addOccupationalRisk: OccupationalRiskFormsDB[] = []
         const removeOccupationalRisk: OccupationalRiskFormsDB[] = []
@@ -220,7 +224,8 @@ export class FormBusiness {
                             id_form: id,
                             name_exam: examSearch.name,
                             price: examSearch.price,
-                            date: searchDate.date.toISOString()
+                            date: searchDate.date.toISOString(),
+                            updated_at: new Date().toISOString()
                         }
                     )
 
@@ -233,7 +238,20 @@ export class FormBusiness {
                             id_form: id,
                             name_exam: examSearch.name,
                             price: examSearch.price,
-                            date: searchDate.date.toISOString()
+                            date: searchDate.date.toISOString(),
+                            updated_at: ""
+                        }
+                    )
+                }else{
+                    editProcedure.push(
+                        {
+                            id: this.idGenerator.generate(),
+                            id_exam: item.id,
+                            id_form: id,
+                            name_exam: examSearch.name,
+                            price: examSearch.price,
+                            date: searchDate.date.toISOString(),
+                            updated_at: new Date().toISOString()
                         }
                     )
                 }
@@ -390,6 +408,10 @@ export class FormBusiness {
             await this.proceduresFormsDatabase.deleteProceduresForms(id, removeProcedure.map((exam) => exam.id_exam))
         }
         
+        if(editProcedure.length > 0){
+            await this.proceduresFormsDatabase.editProceduresForms(editProcedure, id)
+        }
+
         if(addOccupationalRisk.length > 0){
             
             await this.occupationalRiskFormDatabase.createOccupationalRiskForms(addOccupationalRisk)
@@ -413,7 +435,7 @@ export class FormBusiness {
         const formsModel: ModelForm[] = []
 
         for (const form of forms){
-            const procedures: {id: string, name: string, price: number, date: string}[] = []
+            const procedures: {id: string, name: string, price: number, date: string, updatedAt: string}[] = []
             const occupationalRisks: {id: string, name: string}[] = []
 
             proceduresAll.forEach((procedure) => {
@@ -424,7 +446,8 @@ export class FormBusiness {
                         id: procedure.id_exam,
                         name: procedure.name_exam,
                         price: procedure.price,
-                        date: procedure.date
+                        date: procedure.date,
+                        updatedAt: procedure.updated_at
                     })
                 }
             })
