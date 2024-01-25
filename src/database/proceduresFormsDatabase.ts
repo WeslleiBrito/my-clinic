@@ -27,14 +27,12 @@ export class ProceduresFormsDatabase extends BaseDatabase {
     }
 
     public editProceduresForms = async (input: ProceduresFormsDB[], idForm: string): Promise<void> => {
-        
-        
 
         for(const element of input){
 
-            const {id, date, updated_at} = element
+            const {id, date, updated_at, id_exam,} = element
 
-            await ProceduresFormsDatabase.connection(ProceduresFormsDatabase.TABLE_PROCEDURES_FORMS).where({id_form: idForm}).andWhere({id_exam: id}).update(
+            await ProceduresFormsDatabase.connection(ProceduresFormsDatabase.TABLE_PROCEDURES_FORMS).where({id_exam}).andWhere({id_form: idForm}).update(
                 {
                     date,
                     updated_at
