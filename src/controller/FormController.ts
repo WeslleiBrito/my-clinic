@@ -60,7 +60,9 @@ export class FormController {
                     idExams,
                     idOccupationalHazards,
                     functionPatient,
-                    comments
+                    comments,
+                    idTypeExamAso,
+                    status
                 } = req.body
 
             const input = InputEditFormSchema.parse(
@@ -73,7 +75,9 @@ export class FormController {
                     idExams,
                     idOccupationalHazards,
                     functionPatient,
-                    comments
+                    comments,
+                    idTypeExamAso,
+                    status
                 }
             )
 

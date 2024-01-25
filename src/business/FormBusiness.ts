@@ -170,6 +170,19 @@ export class FormBusiness {
         
         const {id, idCompany, idExams, idPatient, idOccupationalHazards, functionPatient, idTypeExamAso, status, comments} = input 
 
+        console.log({
+            id,
+            idCompany,
+            idExams,
+            idPatient,
+            idOccupationalHazards,
+            functionPatient,
+            idTypeExamAso,
+            status,
+            comments
+        });
+        
+
         let addProcedure: ProceduresFormsDB[] = []
         let editProcedure: ProceduresFormsDB[] = []
         let removeProcedure: ProceduresFormsDB[] = []
