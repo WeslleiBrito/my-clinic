@@ -11,6 +11,7 @@ import { OccupationalRiskDatabaseMock } from '../../moks/OccupationalRiskDatabas
 import { OccupationalRiskFormsDatabaseMock } from '../../moks/OccupationalRiskFormsDatabaseMock'
 import { TypeExamAsoDatabaseMock } from '../../moks/TypeExamAsoDatabaseMock'
 import { ACCTIONS_EDIT_EXAM } from '../../../src/types/types'
+import { ZodError } from 'zod'
 
 
 describe("Testando a edição dos formulários", () => {
@@ -443,6 +444,44 @@ describe("Testando a edição dos formulários", () => {
         } catch (error) {
             expect(error).toBeDefined()
             expect(error).toBeInstanceOf(BaseError)
+        }
+    })
+
+    test("Deve gerar um erro caso a acction do idExams não seja um ACCTIONS_EDIT_EXAM", async () => {
+
+        expect.assertions(1)
+
+        try {
+            const input = InputEditFormSchema.parse(
+                {
+                    id: "idForm002",
+                    idCompany: "idCompany002",
+                    idPatient: "idPatient003",
+                    idExams: [
+                        {
+                            id: "idExam002",
+                            acction: "QUALQUER COISA",
+                            date: '2023-12-18'
+                        },
+                        {
+                            id: "idExam004",
+                            acction: ACCTIONS_EDIT_EXAM.ADD,
+                            date: '2023-12-18'
+                        },
+                        {
+                            id: "idExam003",
+                            acction: ACCTIONS_EDIT_EXAM.EDIT,
+                            date: '2024-01-05'
+                        }
+    
+                    ]
+                }
+            )
+    
+           await formBusiness.editForm(input)
+
+        } catch (error) {
+            expect(error).toBeInstanceOf(ZodError)
         }
     })
 
