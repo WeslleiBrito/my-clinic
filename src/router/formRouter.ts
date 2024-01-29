@@ -31,4 +31,4 @@ const newFormController = new FormController(
 formRouter.post('/', newFormController.createForm)
 formRouter.put('/:id', newFormController.editForm)
 formRouter.get('/', newFormController.getAllForm)
-formRouter.delete('/:id', newFormController.deleteForm)
+formRouter.patch('/', newFormController.deleteForm)

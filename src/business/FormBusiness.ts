@@ -6,9 +6,9 @@ import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase";
 import { PatientDatabase } from "../database/PatientsDatabase";
 import { TypeExamAsoDatabase } from "../database/TypeExamAsoDatabase";
 import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
-import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/form/InputCreateForm.dto'
-import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/form/InputDeleteForm.dto'
-import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/form/InputEditForm.dto'
+import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto'
+import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/Form/InputDeleteForm.dto'
+import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.dto'
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
@@ -169,19 +169,6 @@ export class FormBusiness {
     public editForm = async (input: InputEditFormDTO): Promise<OutputEditFormDTO> => {
         
         const {id, idCompany, idExams, idPatient, idOccupationalHazards, functionPatient, idTypeExamAso, status, comments} = input 
-
-   /*      console.log({
-            id,
-            idCompany,
-            idExams,
-            idPatient,
-            idOccupationalHazards,
-            functionPatient,
-            idTypeExamAso,
-            status,
-            comments
-        });
-         */
 
         let addProcedure: ProceduresFormsDB[] = []
         let editProcedure: ProceduresFormsDB[] = []

@@ -123,7 +123,7 @@ export class FormController {
             
             const input = InputDeleteFormSchema.parse(
                 {
-                    id: req.params.id
+                    idForms: req.body.idForms
                 }
             )
 
