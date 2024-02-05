@@ -95,7 +95,8 @@ export interface ProceduresFormsDB {
     name_exam: string,
     date: string,
     price: number
-    updated_at: string
+    updated_at: string,
+    created_at: string
 }
 
 export interface ModelForm {
@@ -117,13 +118,7 @@ export interface ModelForm {
         id: string,
         name: string
     },
-    exams: {
-        id: string,
-        name: string,
-        price: number,
-        date: string,
-        updatedAt: string
-    }[],
+    exams: ExamModelForm[],
     OccupationalHazards: {
         id: string,
         name: string
@@ -158,4 +153,12 @@ export interface OccupationalRiskFormsDB {
     id_form: string,
     id_risk: string,
     name_risk: string
+}
+
+export interface ExamModelForm {
+    id: string,
+    name: string,
+    price: number,
+    date: string,
+    updatedAt: string
 }

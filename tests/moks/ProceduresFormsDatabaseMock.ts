@@ -9,7 +9,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         name_exam: "Espirometria",
         date: "2023-06-20",
         price: 15,
-        updated_at: "2023-06-20"
+        updated_at: "2023-06-20",
+        created_at: "2023-06-20",
     },
     {
         id: "procedure002",
@@ -18,7 +19,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         name_exam: "Glicose",
         date: "2023-12-01",
         price: 0,
-        updated_at: "2023-12-01"
+        updated_at: "2023-12-01",
+        created_at: "2023-12-01"
     },
     {
         id: "procedure003",
@@ -27,7 +29,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         name_exam: "Avaliação clínica",
         date: "2023-08-03",
         price: 0,
-        updated_at: "2023-08-03"
+        updated_at: "2023-08-03",
+        created_at: "2023-08-03"
     },
     {
         id: "procedure004",
@@ -36,7 +39,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         name_exam: "Glicose",
         date: "2023-01-23",
         price: 0,
-        updated_at: "2023-01-23"
+        updated_at: "2023-01-23",
+        created_at: "2023-01-23"
     },
     {
         id: "procedure005",
@@ -45,7 +49,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         name_exam: "Espirometria",
         date: "2023-06-20",
         price: 0,
-        updated_at: "2023-06-20"
+        updated_at: "2023-06-20",
+        created_at: "2023-06-20"
     },
     {
         id: "procedure006",
@@ -54,7 +59,8 @@ const ProceduresMock: ProceduresFormsDB[] = [
         name_exam: "Espirometria",
         date: "2023-11-10",
         price: 15,
-        updated_at: "2023-11-10"
+        updated_at: "2023-11-10",
+        created_at: "2023-11-10"
     }
 ]
 
@@ -78,7 +84,8 @@ export class ProceduresFormsDatabaseMock extends BaseDatabase {
                     name_exam: search.name_exam,
                     price: search.price,
                     date: search.date,
-                    updated_at: search.updated_at
+                    updated_at: search.updated_at,
+                    created_at: search.created_at
                 })
             }
         })

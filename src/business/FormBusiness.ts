@@ -9,10 +9,12 @@ import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase';
 import { InputCreateFormDTO, OutputCreateFormDTO } from '../dtos/Form/InputCreateForm.dto'
 import { InputDeleteFormDTO, OutputDeleteFormDTO } from '../dtos/Form/InputDeleteForm.dto'
 import { InputEditFormDTO, OutputEditFormDTO } from '../dtos/Form/InputEditForm.dto'
+import { InputCreatePDFDTO, OutputCreatePDFDTO } from "../dtos/print/InputCreatePDF.dto";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
-import { ACCTIONS_EDIT_EXAM, CompanyDB, ExamsDB, ModelForm, OccupationalRiskFormsDB, OccupationalRisksDB, PatientDB, ProceduresFormsDB } from "../types/types";
+import { Print } from "../services/Print";
+import { ACCTIONS_EDIT_EXAM, CompanyDB, ExamModel, ExamModelForm, ExamsDB, ModelForm, OccupationalRiskFormsDB, OccupationalRisksDB, PatientDB, ProceduresFormsDB } from "../types/types";
 
 
 export class FormBusiness {
@@ -26,7 +28,8 @@ export class FormBusiness {
         private idGenerator: IdGenerator,
         private occupationalRiskDatabase: OccupationalRiskDatabase,
         private occupationalRiskFormDatabase: OccupationalRiskFormsDatabase,
-        private typeExameAsoDatabase: TypeExamAsoDatabase
+        private typeExameAsoDatabase: TypeExamAsoDatabase,
+        private print: Print
 
     ){}
 
@@ -138,6 +141,8 @@ export class FormBusiness {
         )
         
         const proceduresDB: ProceduresFormsDB[] = exams.map((exam) => {
+            const date = new Date().toISOString()
+
             return {
                 id: this.idGenerator.generate(),
                 id_exam: exam.id,
@@ -145,7 +150,8 @@ export class FormBusiness {
                 name_exam: exam.name,
                 price: exam.price, 
                 date: exam.date,
-                updated_at: new Date().toISOString()
+                updated_at: date,
+                created_at: date
             }
         })
 
@@ -216,6 +222,7 @@ export class FormBusiness {
                 const examSearch = idExamsExist.find((exam) => exam.id === item.id) as ExamsDB
                 const searchDate = idExams.find((element) => element.id === item.id) as {id: string, acction: ACCTIONS_EDIT_EXAM, date: Date}
                 if(item.acction === ACCTIONS_EDIT_EXAM.ADD || item.acction === ACCTIONS_EDIT_EXAM.add){
+                    const date = new Date().toISOString()
 
                     addProcedure.push(
                         {
@@ -225,7 +232,8 @@ export class FormBusiness {
                             name_exam: examSearch.name,
                             price: examSearch.price,
                             date: searchDate.date.toISOString(),
-                            updated_at: new Date().toISOString()
+                            updated_at: date,
+                            created_at: date
                         }
                     )
 
@@ -239,7 +247,8 @@ export class FormBusiness {
                             name_exam: examSearch.name,
                             price: examSearch.price,
                             date: searchDate.date.toISOString(),
-                            updated_at: ""
+                            updated_at: "",
+                            created_at: ""
                         }
                     )
                 }else{
@@ -251,7 +260,8 @@ export class FormBusiness {
                             name_exam: examSearch.name,
                             price: examSearch.price,
                             date: searchDate.date.toISOString(),
-                            updated_at: new Date().toISOString()
+                            updated_at: new Date().toISOString(),
+                            created_at: examSearch.created_at
                         }
                     )
                 }
@@ -516,5 +526,80 @@ export class FormBusiness {
             message: "Formulário deletado com sucesso."
         }
 
+    }
+
+    public createPDF = async (input: InputCreatePDFDTO): Promise<OutputCreatePDFDTO> => {
+        
+        
+        const formExist = await this.formDatabase.findFormBy('id', [input.id])
+        console.log(formExist);
+        const proceduresAll = await this.proceduresFormsDatabase.findAllProceduresForms()
+        const occupationalRiskAll = await this.occupationalRiskFormDatabase.findAllOccupationalRiskForms()
+        const procedures: ExamModelForm[] = []
+        const occupationalRisks: {id: string, name: string}[] = []
+
+        if(formExist.length === 0){
+            throw new NotFoundError("O formulário informado não exite, verifique o id.")
+        }
+
+        const [form] = [...formExist]
+        const [typeExamAso] = await this.typeExameAsoDatabase.findTypeExamAsoBy('id', [form.id_type_exam]) 
+
+        proceduresAll.forEach((exam) => {
+
+            if(exam.id_form === input.id){
+                const item: ExamModelForm = {
+                    date: exam.date,
+                    id: exam.id,
+                    name: exam.name_exam,
+                    price: exam.price,
+                    updatedAt: exam.updated_at
+                }
+
+                procedures.push(item)
+            }
+        })
+
+        occupationalRiskAll.forEach((occupational) => {
+                
+            if(occupational.id_form === form.id){
+                
+                occupationalRisks.push({
+                    id: occupational.id_risk,
+                    name: occupational.name_risk
+                })
+            }
+        })
+
+        const formModel: ModelForm = {
+            amount: form.amount,
+            cnpj: form.cnpj,
+            cpf: form.cpf,
+            createdAt: form.created_at,
+            exams: procedures,
+            functionPatient: form.function_patient,
+            id: form.id,
+            idCompany: form.id_company,
+            idPatient: form.id_patient,
+            nameCompany: form.name_company,
+            namePatient: form.name_patient,
+            numberProcedures: form.number_procedures,
+            OccupationalHazards: occupationalRisks,
+            rg: form.rg,
+            status: form.status_exam ? true : false,
+            typeExamAso: {
+                id: typeExamAso.id,
+                name: typeExamAso.name
+            },
+            updatedAt: form.updated_at,
+            comments: form.comments
+        }
+
+        await this.print.printPDF(formModel)
+
+        return {
+            message: "PDF gerado com sucesso!"
+        }
+ 
     }
 }

@@ -10,6 +10,7 @@ import { ProceduresFormsDatabase } from '../database/proceduresFormsDatabase'
 import { OccupationalRiskDatabase } from "../database/OccupationalRiskDatabase"
 import { OccupationalRiskFormsDatabase } from "../database/OccupationalRisckFormDatabase"
 import { TypeExamAsoDatabase } from "../database/TypeExamAsoDatabase"
+import { Print } from "../services/Print"
 
 
 export const formRouter = express.Router()
@@ -24,7 +25,8 @@ const newFormController = new FormController(
         new IdGenerator(),
         new OccupationalRiskDatabase(),
         new OccupationalRiskFormsDatabase(),
-        new TypeExamAsoDatabase()
+        new TypeExamAsoDatabase(),
+        new Print()
     )
 )
 
@@ -32,3 +34,4 @@ formRouter.post('/', newFormController.createForm)
 formRouter.put('/:id', newFormController.editForm)
 formRouter.get('/', newFormController.getAllForm)
 formRouter.patch('/', newFormController.deleteForm)
+formRouter.get('/print/:id', newFormController.printForm)
