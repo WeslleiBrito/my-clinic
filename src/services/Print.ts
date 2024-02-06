@@ -1,12 +1,39 @@
-import { ModelForm } from "../types/types";
+import { ModelForm, PrintListExams, PrintRisk, PrintTypeExamAso } from "../types/types";
 import * as puppeteer from 'puppeteer';
 import * as handlebars from 'handlebars';
 import * as fs from 'fs';
 
+const forms: {patient: string, company: string, status: boolean}[] = [
+    {
+        patient: "Alberto Santos",
+        company: "Dumont",
+        status: true
+    },
+    {
+        patient: "Wilbur Wright",
+        company: "Irmãos Wright",
+        status: false
+    },
+    {
+        patient: "Orville Wright",
+        company: "Irmãos Wright",
+        status: false
+    }
+]  
+
+const list = forms.map((form) => {
+    const componet = `
+        <li>
+            ${form.patient} | ${form.company} | ${form.status ? "Aprovado" : "Reprovado"}
+        </li>
+    `
+    return componet
+}).toString().replace(new RegExp(',', 'g'), '')
+
 export class Print {
 
 
-    public printPDF = async (dataForm: ModelForm) => {
+    public printPDF = async (dataForm: ModelForm, typeExamAso: PrintTypeExamAso[], listExamsAll: PrintListExams[], risks: PrintRisk[]) => {
 
         function renderHtml(templatePath: string, data: any): Promise<string> {
             return new Promise<string>((resolve, reject) => {
@@ -21,6 +48,39 @@ export class Print {
                 });
             });
         }
+
+        const risksOccupational = risks.map((risk) => {
+            return(
+                `
+                    <li>
+                        <input type="checkbox" id=${risk.id} name=${risk.name} value=${risk.id} ${risk.selected ? "checked" : ""}/>
+                        <lable for=${risk.id}>${risk.name}</lable>
+                    </li>
+                `
+            )
+        }).toString().replace(new RegExp(',', 'g'), '')
+        const typeExam = typeExamAso.map((type) => {
+            return(
+                `
+                    <li>
+                        <input type="radio" id=${type.id} name=${type.name} value=${type.id} ${type.selected ? "checked" : ""}/>
+                        <lable for=${type.id}>${type.name}</lable>
+                    </li>
+                    
+                `
+            )
+        }).toString().replace(new RegExp(',', 'g'), '')
+
+        const exams = listExamsAll.map((exam, index) => {
+            return(
+                `
+                    <tr id=${exam.id}>
+                        <td>${index + 1}. ${exam.name}</td>
+                        <td>${exam.date}</td>
+                    </tr>
+                `
+            )
+        }).toString().replace(new RegExp(',', 'g'), '')
 
         async function generatePDF() {
             const browser = await puppeteer.launch();
@@ -42,8 +102,34 @@ export class Print {
                         </style>
                     </head>
                     <body>
-                        <h1>${"PDF gerado a partir de HTML"}</h1>
-                        <p>Este é um exemplo de PDF gerado a partir de HTML.</p>
+                        <ul>
+                            ${typeExam}
+                        </ul>
+                        <p>ATESTO QUE O(A) ${dataForm.namePatient}, RG ${dataForm.rg} submeteu-se a avliação de saúde, conforme regulamenta a Portaria
+                            Ministerial Nº 27 e 29 dezembro de 1994, NR-7, PCMSO.
+                        </p>
+                        <p>Empresa</p>
+                        <ul>
+                            <li>Nome: ${dataForm.nameCompany}</li>
+                            <li>CNPJ: ${dataForm.cnpj}</li>
+                        </ul>
+                        <p>Riscos ocupacionais</p>
+                        <ul>
+                            ${risksOccupational}
+                        </ul>
+                        <table border="1">
+                            <caption>Exames Realizado</caption>
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${exams}
+                            </tbody>
+                        </table>
+                        <P>Foi considerado ${dataForm.status ? "APTO": "INAPTO"} à desempenhar a função de ${dataForm.functionPatient.toUpperCase()}.</P>
                     </body>
                 </html>
             `;

@@ -14,8 +14,9 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { Form } from "../models/Form";
 import { IdGenerator } from "../services/IdGenerator";
 import { Print } from "../services/Print";
-import { ACCTIONS_EDIT_EXAM, CompanyDB, ExamModel, ExamModelForm, ExamsDB, ModelForm, OccupationalRiskFormsDB, OccupationalRisksDB, PatientDB, ProceduresFormsDB } from "../types/types";
-
+import { ACCTIONS_EDIT_EXAM, CompanyDB, ExamModel, ExamModelForm, ExamsDB, ModelForm, OccupationalRiskFormsDB, OccupationalRisksDB, PatientDB, PrintTypeExamAso, PrintListExams, ProceduresFormsDB, PrintRisk } from "../types/types";
+import { format } from 'date-fns'
+import path from 'path';
 
 export class FormBusiness {
 
@@ -30,7 +31,6 @@ export class FormBusiness {
         private occupationalRiskFormDatabase: OccupationalRiskFormsDatabase,
         private typeExameAsoDatabase: TypeExamAsoDatabase,
         private print: Print
-
     ){}
 
 
@@ -529,12 +529,14 @@ export class FormBusiness {
     }
 
     public createPDF = async (input: InputCreatePDFDTO): Promise<OutputCreatePDFDTO> => {
-        
-        
+
         const formExist = await this.formDatabase.findFormBy('id', [input.id])
-        console.log(formExist);
         const proceduresAll = await this.proceduresFormsDatabase.findAllProceduresForms()
         const occupationalRiskAll = await this.occupationalRiskFormDatabase.findAllOccupationalRiskForms()
+        const typeExamsAsoDatabase = await this.typeExameAsoDatabase.findAllTypeExamsAso()
+        const examsAll = await this.examDatabase.findExamAll()
+        const occupationalRiskAllDatabase = await this.occupationalRiskDatabase.findOccupationalRiskAll()
+
         const procedures: ExamModelForm[] = []
         const occupationalRisks: {id: string, name: string}[] = []
 
@@ -594,11 +596,43 @@ export class FormBusiness {
             updatedAt: form.updated_at,
             comments: form.comments
         }
+        
+        const typeExamAsoAll: PrintTypeExamAso[] = typeExamsAsoDatabase.map((type) => {
+            return {
+                id: type.id,
+                name: type.name,
+                selected: type.id === formModel.typeExamAso.id ? true : false
+            }
+        }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
 
-        await this.print.printPDF(formModel)
+        const listExamsAll: PrintListExams[] = examsAll.map((exam) => {
+            const isSelected = proceduresAll.find((examination) => examination.id_exam === exam.id && examination.id_form === input.id)
+
+            return {
+                id: exam.id,
+                name: exam.name,
+                date: isSelected ? format(isSelected.date, "dd/MM/yyyy") : "***"
+            }
+        }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
+
+        
+        const risks: PrintRisk[] = occupationalRiskAllDatabase.map((risk) => {
+            const isSelected = occupationalRisks.find((riskSelected) => riskSelected.id === risk.id)
+
+            return {
+                id: risk.id,
+                name: risk.name,
+                selected: isSelected ? true : false
+            }
+        }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
+
+        await this.print.printPDF(formModel, typeExamAsoAll, listExamsAll, risks)
+
+        const filePath = path.join(__dirname, '../../output.pdf');
 
         return {
-            message: "PDF gerado com sucesso!"
+            
+            filePath
         }
  
     }

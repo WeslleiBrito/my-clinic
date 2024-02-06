@@ -162,3 +162,21 @@ export interface ExamModelForm {
     date: string,
     updatedAt: string
 }
+
+export interface PrintTypeExamAso {
+    id: string, 
+    name: string, 
+    selected: boolean
+}
+
+export interface PrintListExams {
+    id: string, 
+    name: string,
+    date: string
+}
+
+export interface PrintRisk {
+    id: string, 
+    name: string, 
+    selected: boolean
+}

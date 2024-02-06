@@ -6,7 +6,7 @@ export interface InputCreatePDFDTO {
 }
 
 export interface OutputCreatePDFDTO {
-    message: string
+    filePath: string
 }
 
 export const InputCreatePDFSchema = z.object(

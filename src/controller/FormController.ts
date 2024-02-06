@@ -156,7 +156,7 @@ export class FormController {
 
             const output = await this.formBuisness.createPDF(input)
 
-            res.status(200).send(output)
+            res.sendFile(output.filePath)
 
         } catch (error) {
             if (error instanceof ZodError) {
