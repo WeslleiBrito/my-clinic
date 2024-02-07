@@ -177,6 +177,5 @@ export interface PrintListExams {
 
 export interface PrintRisk {
     id: string, 
-    name: string, 
-    selected: boolean
+    name: string
 }

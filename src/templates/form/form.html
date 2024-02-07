@@ -34,6 +34,35 @@
     <p>ATESTO QUE O(A) {{ namePatient }}, RG {{ rg }} submeteu-se a avliação de saúde, conforme regulamenta a Portaria
         Ministerial Nº 27 e 29 dezembro de 1994, NR-7, PCMSO.
     </p>
+    <table border="1">
+        <caption>Exames Realizado</caption>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <h4>Empresa:</h4>
+        <ul>
+            <li>Nome: {{ nameCompany }}</li>
+            <li>CNPJ: {{ cnpj }}</li>
+        </ul>
+        <h4>Riscos ocupacionais:</h4>
+        <ul id="listRisk">
+            {{#each riscks}}
+                <li>{{{ this }}}</li>
+            {{/each}}
+        </ul>
+        <tbody>
+            {{#each exams}}
+                {{{ this }}}
+            {{/each}}
+        </tbody>
+    </table>
+    <P>Foi considerado {{ status }} à desempenhar a função de {{ functionPatient }}.</P>
+    <h4>Obeservações:</h4>
+    <p>{{ comments }}</p>
+    <h4>Local e data: <samp>Feira de Santana - BA, {{ date }}</samp></h4>
 </body>
 
 </html>

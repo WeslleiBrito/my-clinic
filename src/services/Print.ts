@@ -34,7 +34,7 @@ const list = forms.map((form) => {
 export class Print {
 
 
-    public printPDF = async (dataForm: ModelForm, typeExamAso: PrintTypeExamAso[], listExamsAll: PrintListExams[], risks: PrintRisk[]) => {
+    public printPDF = async (dataForm: ModelForm, typeExamAso: PrintTypeExamAso[], listExamsAll: PrintListExams[]) => {
 
         function renderHtml(templatePath: string, data: any): Promise<string> {
             return new Promise<string>((resolve, reject) => {
@@ -50,36 +50,24 @@ export class Print {
             });
         }
 
-        const risksOccupational = risks.map((risk) => {
-            return (
-                `
-                    <li>
-                        <input type="checkbox" id=${risk.id} name=${risk.name} value=${risk.id} ${risk.selected ? "checked" : ""}/>
-                        <lable for=${risk.id}>${risk.name}</lable>
-                    </li>
-                `
-            )
-        }).toString().replace(new RegExp(',', 'g'), '')
+        const risksOccupational = dataForm.OccupationalHazards.map((risk) => {
+            return `${risk.name}`
+        })
 
         const typeExam = typeExamAso.map((type) => {
             return `
-                <li>
                     <input type="radio" id=${type.id} name=${type.name} value=${type.id} ${type.selected ? "checked" : ""}/>
-                    <lable for=${type.id}>${type.name}</lable>
-                </li>
-                
+                    <lable for=${type.id}>${type.name}</lable>                
             `
         })
 
         const exams = listExamsAll.map((exam, index) => {
-            return (
-                `
+            return `
                     <tr id=${exam.id}>
                         <td>${index + 1}. ${exam.name}</td>
                         <td>${exam.date}</td>
                     </tr>
                 `
-            )
         })
 
         try {
@@ -87,8 +75,16 @@ export class Print {
             const page = await browser.newPage();
             const data = {
                 typeExam,
+                nameCompany: dataForm.nameCompany,
+                cnpj: dataForm.cnpj,
                 namePatient: dataForm.namePatient,
-                rg: dataForm.rg
+                rg: dataForm.rg,
+                riscks: risksOccupational,
+                exams,
+                status: dataForm.status ? "APTO" : "INAPTO",
+                functionPatient: dataForm.functionPatient.toUpperCase(),
+                comments: dataForm.comments ? dataForm.comments : "",
+                date: dataForm.createdAt
             }
 
             const pathHTML = path.join(__dirname, '../templates/form/form.html')

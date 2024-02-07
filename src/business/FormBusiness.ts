@@ -577,7 +577,7 @@ export class FormBusiness {
             amount: form.amount,
             cnpj: form.cnpj,
             cpf: form.cpf,
-            createdAt: form.created_at,
+            createdAt: format(new Date(form.created_at), "dd/MM/yyyy"),
             exams: procedures,
             functionPatient: form.function_patient,
             id: form.id,
@@ -586,7 +586,7 @@ export class FormBusiness {
             nameCompany: form.name_company,
             namePatient: form.name_patient,
             numberProcedures: form.number_procedures,
-            OccupationalHazards: occupationalRisks,
+            OccupationalHazards: occupationalRisks.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR')),
             rg: form.rg,
             status: form.status_exam ? true : false,
             typeExamAso: {
@@ -626,7 +626,7 @@ export class FormBusiness {
             }
         }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
 
-        await this.print.printPDF(formModel, typeExamAsoAll, listExamsAll, risks)
+        await this.print.printPDF(formModel, typeExamAsoAll, listExamsAll)
 
         const filePath = path.join(__dirname, '../../output.pdf');
 
