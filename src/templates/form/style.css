@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+#listTypeExam {
+    display: flex;
+    gap: 2vw;
+}
+
+li {
+    display: flex;
+    gap: 1vw;
+}
