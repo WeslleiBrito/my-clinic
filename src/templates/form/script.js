@@ -295,19 +295,56 @@ const renderRisc = () => {
 const renderExams = () => {
 
     const table = document.getElementById("tableExams")
+    table.setAttribute("border", "1")
     const bodyTable = document.getElementById("bodyExams")
 
     listExams.forEach((examsAll, index) => {
         const accomplished = form.exams.find((exam) => exam.id === examsAll.id)
+
         const values = {
             id: examsAll.id,
             name: examsAll.name,
-            date: accomplished ? accomplished.date : "*******"
+            date: accomplished ? `${accomplished.date.slice(8, 10)}/${accomplished.date.slice(5, 7)}/${accomplished.date.slice(0, 4)}` : "*******"
+        }
+
+        if(bodyTable){
+            const tr = document.createElement('tr')
+            const tdName = document.createElement('td')
+            const tdDate = document.createElement('td')
+            
+            tdName.append(`${index + 1}. ${values.name}`)
+            tdDate.append(values.date)
+            tr.appendChild(tdName)
+            tr.appendChild(tdDate)
+
+            bodyTable.appendChild(tr)
         }
     })
-
 }
+
+const renderStatus = () => {
+    const statusElement = document.getElementById("status")
+
+    if(statusElement){
+        const message = `Declaramos que após investigação clínica, o candidato(a) à função de ${ form.functionPatient.toUpperCase() } 
+        foi considerado(a): ${ form.status ? "APTO" : "INPTO" }`
+        statusElement.append(message)
+    }
+}
+
+const renderHeader = () => {
+    const dateCreat = document.getElementById("created-at")
+
+    if(dateCreat){
+        const dateFormated = `${form.createdAt.slice(8, 10)}/${form.createdAt.slice(5, 7)}/${form.createdAt.slice(0, 4)}`
+        dateCreat.append(dateFormated)
+    }
+}
+
+renderHeader()
 renderListTypeExam()
 renderCertificate()
 renderCompany()
 renderRisc()
+renderExams()
+renderStatus()
