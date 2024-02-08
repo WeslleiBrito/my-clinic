@@ -32,6 +32,12 @@
     <p>ATESTO QUE O(A) {{ namePatient }}, RG {{ rg }} submeteu-se a avliação de saúde, conforme regulamenta a Portaria
         Ministerial Nº 27 e 29 dezembro de 1994, NR-7, PCMSO.
     </p>
+    <h4>Empresa:</h4>
+        <ul>
+            <li>Nome: {{ nameCompany }}</li>
+            <li>CNPJ: {{ cnpj }}</li>
+        </ul>
+    <h4>Riscos ocupacionais:</h4>
     <ul id="listRisk">
         {{{ riscks }}}
     </ul>
@@ -43,13 +49,6 @@
                 <th>Data</th>
             </tr>
         </thead>
-        <h4>Empresa:</h4>
-        <ul>
-            <li>Nome: {{ nameCompany }}</li>
-            <li>CNPJ: {{ cnpj }}</li>
-        </ul>
-        <h4>Riscos ocupacionais:</h4>
-        
         <tbody>
             {{{ exams }}}
         </tbody>
